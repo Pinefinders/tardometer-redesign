@@ -3,10 +3,8 @@ import { useState } from "react";
 const BookmarkletSection = () => {
   const [isDragging, setIsDragging] = useState(false);
 
-  // Get the base URL for the bookmarklet
-  const baseUrl = typeof window !== 'undefined' 
-    ? window.location.origin 
-    : 'https://tardometer.com';
+  // Always use production domain for bookmarklet
+  const baseUrl = 'https://tardometer.com';
 
   // Bookmarklet code - minified JavaScript
   const bookmarkletCode = `javascript:(function(){
