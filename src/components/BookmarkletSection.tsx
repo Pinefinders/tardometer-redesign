@@ -39,8 +39,14 @@ const BookmarkletSection = () => {
         <div className="flex justify-center mb-8">
           <a
             href={bookmarkletCode}
-            onClick={(e) => e.preventDefault()}
-            onDragStart={() => setIsDragging(true)}
+            draggable="true"
+            onDragStart={(e) => {
+              setIsDragging(true);
+              // Set drag data to help browser recognize this as a bookmark
+              e.dataTransfer.setData('text/uri-list', bookmarkletCode);
+              e.dataTransfer.setData('text/plain', 'Tard Score');
+              e.dataTransfer.effectAllowed = 'copyLink';
+            }}
             onDragEnd={() => setIsDragging(false)}
             className={`
               inline-flex items-center gap-2 px-6 py-3 
@@ -49,6 +55,7 @@ const BookmarkletSection = () => {
               shadow-lg cursor-grab active:cursor-grabbing
               transition-all duration-300
               hover:scale-105 hover:shadow-xl
+              select-none
               ${isDragging ? 'scale-110 shadow-2xl opacity-80' : ''}
             `}
             title="Drag me to your bookmarks bar!"
