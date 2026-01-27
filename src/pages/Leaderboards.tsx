@@ -255,7 +255,7 @@ const Leaderboards = () => {
               <img 
                 src={wojakCrying} 
                 alt="Wojak Crying" 
-                className="w-16 h-16 rounded-full object-cover border-2 border-destructive/50 mb-2"
+                className="w-32 h-32 rounded-full object-cover border-2 border-destructive/50 mb-2"
               />
               <h2 className="text-lg font-display font-bold text-destructive">TARD OF THE WEEK</h2>
             </div>
@@ -263,7 +263,7 @@ const Leaderboards = () => {
               <img 
                 src={gigachad} 
                 alt="Gigachad" 
-                className="w-16 h-16 rounded-full object-cover border-2 border-primary/50 mb-2"
+                className="w-32 h-32 rounded-full object-cover border-2 border-primary/50 mb-2"
               />
               <h2 className="text-lg font-display font-bold text-primary">CHAD OF THE WEEK</h2>
             </div>
@@ -298,14 +298,14 @@ const Leaderboards = () => {
               <img 
                 src={wojakBrainlet} 
                 alt="Wojak Brainlet" 
-                className="w-16 h-16 rounded-full object-cover border-2 border-destructive/50 mb-2 bg-white"
+                className="w-32 h-32 rounded-full object-cover border-2 border-destructive/50 mb-2 bg-white"
               />
             </div>
             <div className="flex flex-col items-center">
               <img 
                 src={gigachadLaptop} 
                 alt="Gigachad with Laptop" 
-                className="w-16 h-16 rounded-full object-cover border-2 border-primary/50 mb-2"
+                className="w-32 h-32 rounded-full object-cover border-2 border-primary/50 mb-2"
               />
             </div>
           </div>
