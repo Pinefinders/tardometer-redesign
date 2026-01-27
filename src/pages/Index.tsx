@@ -124,9 +124,7 @@ const Index = () => {
       </main>
 
       {/* Footer */}
-      <footer className="py-6 px-4 text-center text-muted-foreground text-sm">
-        <p>Using mock data for demo. Real Twitter API integration coming soon.</p>
-      </footer>
+      <footer className="py-6 px-4" />
     </div>
   );
 };
