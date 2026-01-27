@@ -23,23 +23,50 @@ const Gauge = ({ score, animated = true }: GaugeProps) => {
 
   // Determine the label and color based on score
   const getScoreInfo = (s: number) => {
-    if (s <= 33) return { label: "TARD", colorClass: "text-destructive", glowClass: "glow-tard" };
-    if (s <= 66) return { label: "MID", colorClass: "text-accent", glowClass: "glow-mid" };
-    return { label: "BASED", colorClass: "text-primary", glowClass: "glow-based" };
+    if (s <= 33) return { label: "TARD", colorClass: "text-destructive", glowClass: "glow-tard", zone: "tard" as const };
+    if (s <= 66) return { label: "MID", colorClass: "text-accent", glowClass: "glow-mid", zone: "mid" as const };
+    return { label: "BASED", colorClass: "text-primary", glowClass: "glow-based", zone: "based" as const };
   };
 
   const scoreInfo = getScoreInfo(displayScore);
+
+  // Mascot styles based on zone
+  const getTardMascotClasses = () => {
+    if (scoreInfo.zone === "tard") {
+      return "text-5xl sm:text-6xl md:text-7xl animate-bounce-slow drop-shadow-[0_0_20px_hsl(0,84%,60%)]";
+    }
+    if (scoreInfo.zone === "based") {
+      return "text-3xl sm:text-4xl md:text-4xl opacity-40 grayscale";
+    }
+    return "text-4xl sm:text-5xl md:text-5xl opacity-70";
+  };
+
+  const getBasedMascotClasses = () => {
+    if (scoreInfo.zone === "based") {
+      return "text-5xl sm:text-6xl md:text-7xl animate-bounce-slow drop-shadow-[0_0_20px_hsl(142,76%,45%)]";
+    }
+    if (scoreInfo.zone === "tard") {
+      return "text-3xl sm:text-4xl md:text-4xl opacity-40 grayscale";
+    }
+    return "text-4xl sm:text-5xl md:text-5xl opacity-70";
+  };
 
   return (
     <div className="flex flex-col items-center gap-6">
       {/* Gauge with Mascots */}
       <div className="flex items-end justify-center gap-2 sm:gap-4">
         {/* Tard Mascot (Left) */}
-        <div className="flex flex-col items-center gap-1 translate-y-2">
-          <span className="text-4xl sm:text-5xl md:text-6xl animate-pulse-slow" role="img" aria-label="Crying face">
+        <div className="flex flex-col items-center gap-1 translate-y-2 transition-all duration-500">
+          <span 
+            className={`transition-all duration-500 ${getTardMascotClasses()}`} 
+            role="img" 
+            aria-label="Crying face"
+          >
             😭
           </span>
-          <span className="text-xs font-bold text-destructive hidden sm:block">TARD</span>
+          <span className={`text-xs font-bold text-destructive hidden sm:block transition-opacity duration-500 ${scoreInfo.zone === "tard" ? "opacity-100" : "opacity-50"}`}>
+            TARD
+          </span>
         </div>
 
         {/* Gauge Container */}
@@ -123,11 +150,17 @@ const Gauge = ({ score, animated = true }: GaugeProps) => {
         </div>
 
         {/* Based Mascot (Right) */}
-        <div className="flex flex-col items-center gap-1 translate-y-2">
-          <span className="text-4xl sm:text-5xl md:text-6xl" role="img" aria-label="Gigachad">
+        <div className="flex flex-col items-center gap-1 translate-y-2 transition-all duration-500">
+          <span 
+            className={`transition-all duration-500 ${getBasedMascotClasses()}`} 
+            role="img" 
+            aria-label="Gigachad"
+          >
             🗿
           </span>
-          <span className="text-xs font-bold text-primary hidden sm:block">BASED</span>
+          <span className={`text-xs font-bold text-primary hidden sm:block transition-opacity duration-500 ${scoreInfo.zone === "based" ? "opacity-100" : "opacity-50"}`}>
+            BASED
+          </span>
         </div>
       </div>
 
