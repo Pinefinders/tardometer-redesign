@@ -165,18 +165,16 @@ const Index = () => {
                   </div>
                 </div>
               ) : result ? (
-                <>
-                  <div className="text-center mb-6">
-                    <button
-                      onClick={handleReset}
-                      className="text-sm text-muted-foreground hover:text-foreground transition-colors underline underline-offset-4"
-                    >
-                      ← Analyze another tweet
-                    </button>
-                  </div>
+                <div className="relative">
+                  <button
+                    onClick={handleReset}
+                    className="absolute -top-2 right-0 text-xs text-muted-foreground hover:text-foreground transition-colors px-3 py-1 rounded-full bg-muted/50 hover:bg-muted"
+                  >
+                    ✕ Reset
+                  </button>
                   <Gauge score={result.score.score} />
                   <MetricsDisplay metrics={result.metrics} score={result.score} />
-                </>
+                </div>
               ) : null}
             </div>
           </div>
