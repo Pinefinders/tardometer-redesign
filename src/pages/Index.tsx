@@ -3,20 +3,40 @@ import { useSearchParams } from "react-router-dom";
 import TweetInput from "@/components/TweetInput";
 import Gauge from "@/components/Gauge";
 import MetricsDisplay from "@/components/MetricsDisplay";
+import UserResultDisplay from "@/components/UserResultDisplay";
 import BookmarkletSection from "@/components/BookmarkletSection";
-import { extractTweetId, fetchTweetMetrics, calculateTardScore, TweetMetrics, TardScore } from "@/lib/twitter";
+import { 
+  parseTwitterUrl, 
+  fetchTweetMetrics, 
+  calculateTardScore, 
+  analyzeUserProfile,
+  TweetMetrics, 
+  TardScore,
+  UserAnalysis 
+} from "@/lib/twitter";
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
 
+type ResultType = 'tweet' | 'user';
+
+interface TweetResult {
+  type: 'tweet';
+  score: TardScore;
+  metrics: TweetMetrics;
+  tweetUrl: string;
+}
+
+interface UserResult {
+  type: 'user';
+  analysis: UserAnalysis;
+}
+
+type Result = TweetResult | UserResult;
 
 const Index = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
-  const [result, setResult] = useState<{
-    score: TardScore;
-    metrics: TweetMetrics;
-    tweetUrl: string;
-  } | null>(null);
+  const [loadingMessage, setLoadingMessage] = useState("");
+  const [result, setResult] = useState<Result | null>(null);
 
   // Handle tweet URL from bookmarklet (query parameter)
   useEffect(() => {
@@ -30,12 +50,12 @@ const Index = () => {
   }, []);
 
   const handleSubmit = async (url: string) => {
-    // Extract tweet ID from URL
-    const tweetId = extractTweetId(url);
+    // Parse the URL to determine type
+    const parsed = parseTwitterUrl(url);
     
-    if (!tweetId) {
+    if (parsed.type === 'invalid') {
       toast.error("Invalid Twitter/X URL", {
-        description: "Please enter a valid tweet URL (e.g., https://x.com/user/status/123...)",
+        description: "Please enter a valid tweet or profile URL (e.g., x.com/user or x.com/user/status/123...)",
       });
       return;
     }
@@ -44,23 +64,28 @@ const Index = () => {
     setResult(null);
 
     try {
-      // Fetch tweet metrics (mock for now)
-      const metrics = await fetchTweetMetrics(tweetId);
-      
-      // Calculate the tard score
-      const score = calculateTardScore(metrics);
-      
-      setResult({ score, metrics, tweetUrl: url });
+      if (parsed.type === 'tweet') {
+        // Handle tweet analysis
+        setLoadingMessage("Analyzing tweet...");
+        const metrics = await fetchTweetMetrics(parsed.tweetId!);
+        const score = calculateTardScore(metrics);
+        setResult({ type: 'tweet', score, metrics, tweetUrl: url });
+      } else {
+        // Handle user profile analysis
+        setLoadingMessage(`Analyzing @${parsed.username}'s recent tweets...`);
+        const analysis = await analyzeUserProfile(parsed.username!);
+        setResult({ type: 'user', analysis });
+      }
     } catch (error) {
-      console.error("Error fetching tweet:", error);
-      toast.error("Failed to analyze tweet", {
+      console.error("Error analyzing:", error);
+      toast.error("Failed to analyze", {
         description: "Please try again later.",
       });
     } finally {
       setIsLoading(false);
+      setLoadingMessage("");
     }
   };
-
 
   const handleReset = () => {
     setResult(null);
@@ -101,8 +126,8 @@ const Index = () => {
               {isLoading ? (
                 <div className="flex flex-col items-center gap-6">
                   <div className="w-72 h-40 sm:w-80 sm:h-44 md:w-96 md:h-52 flex items-center justify-center">
-                    <div className="animate-pulse-slow text-muted-foreground text-lg">
-                      Analyzing tweet...
+                    <div className="animate-pulse-slow text-muted-foreground text-lg text-center">
+                      {loadingMessage || "Analyzing..."}
                     </div>
                   </div>
                 </div>
@@ -110,12 +135,19 @@ const Index = () => {
                 <div className="relative">
                   <button
                     onClick={handleReset}
-                    className="absolute -top-2 right-0 text-sm text-muted-foreground hover:text-foreground transition-colors px-4 py-2 rounded-full bg-muted/50 hover:bg-muted font-medium"
+                    className="absolute -top-2 right-0 text-sm text-muted-foreground hover:text-foreground transition-colors px-4 py-2 rounded-full bg-muted/50 hover:bg-muted font-medium z-10"
                   >
                     ✕ Reset
                   </button>
-                  <Gauge score={result.score.score} />
-                  <MetricsDisplay metrics={result.metrics} score={result.score} />
+                  
+                  {result.type === 'tweet' ? (
+                    <>
+                      <Gauge score={result.score.score} />
+                      <MetricsDisplay metrics={result.metrics} score={result.score} />
+                    </>
+                  ) : (
+                    <UserResultDisplay analysis={result.analysis} />
+                  )}
                 </div>
               ) : null}
             </div>

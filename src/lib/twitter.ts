@@ -1,23 +1,46 @@
-// Extract tweet ID from Twitter/X URLs
-export const extractTweetId = (url: string): string | null => {
-  // Handle both twitter.com and x.com URLs
-  // Examples:
-  // https://twitter.com/username/status/1234567890
-  // https://x.com/username/status/1234567890
-  // https://twitter.com/username/status/1234567890?s=20
-  const patterns = [
-    /(?:twitter\.com|x\.com)\/\w+\/status\/(\d+)/i,
-    /(?:twitter\.com|x\.com)\/\w+\/statuses\/(\d+)/i,
+// URL type detection
+export type UrlType = 'tweet' | 'profile' | 'invalid';
+
+export interface ParsedUrl {
+  type: UrlType;
+  tweetId?: string;
+  username?: string;
+}
+
+// Parse a Twitter/X URL and determine its type
+export const parseTwitterUrl = (url: string): ParsedUrl => {
+  // Check for tweet URLs first (more specific pattern)
+  const tweetPatterns = [
+    /(?:twitter\.com|x\.com)\/(\w+)\/status\/(\d+)/i,
+    /(?:twitter\.com|x\.com)\/(\w+)\/statuses\/(\d+)/i,
   ];
 
-  for (const pattern of patterns) {
+  for (const pattern of tweetPatterns) {
     const match = url.match(pattern);
-    if (match && match[1]) {
-      return match[1];
+    if (match && match[1] && match[2]) {
+      return { type: 'tweet', tweetId: match[2], username: match[1] };
     }
   }
 
-  return null;
+  // Check for profile URLs
+  const profilePattern = /(?:twitter\.com|x\.com)\/(@?\w+)\/?$/i;
+  const profileMatch = url.match(profilePattern);
+  if (profileMatch && profileMatch[1]) {
+    const username = profileMatch[1].replace('@', '');
+    // Exclude common Twitter paths that aren't usernames
+    const excludedPaths = ['home', 'explore', 'notifications', 'messages', 'settings', 'i', 'search'];
+    if (!excludedPaths.includes(username.toLowerCase())) {
+      return { type: 'profile', username };
+    }
+  }
+
+  return { type: 'invalid' };
+};
+
+// Legacy function for backwards compatibility
+export const extractTweetId = (url: string): string | null => {
+  const parsed = parseTwitterUrl(url);
+  return parsed.type === 'tweet' ? parsed.tweetId! : null;
 };
 
 // Tweet metrics interface
@@ -111,5 +134,71 @@ export const calculateTardScore = (metrics: TweetMetrics): TardScore => {
     quoteRatio: Math.round(quoteRatio * 1000) / 1000,
     engagementQuality: Math.round(engagementQuality * 100) / 100,
     rawTardScore: Math.round(rawTardScore * 100) / 100,
+  };
+};
+
+// User analysis result
+export interface UserAnalysis {
+  username: string;
+  averageScore: TardScore;
+  tweetCount: number;
+  individualScores: TardScore[];
+}
+
+// Mock function to fetch a user's recent tweets and calculate their average score
+export const analyzeUserProfile = async (username: string): Promise<UserAnalysis> => {
+  // Simulate API delay (longer for user analysis)
+  await new Promise((resolve) => setTimeout(resolve, 1500 + Math.random() * 1000));
+
+  // Generate 10-20 mock tweets for this user
+  const tweetCount = 10 + Math.floor(Math.random() * 11); // 10-20 tweets
+  const individualScores: TardScore[] = [];
+
+  // Use username as seed for consistent results per user
+  const seed = username.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+
+  for (let i = 0; i < tweetCount; i++) {
+    // Generate mock metrics for each tweet
+    const mockMetrics: TweetMetrics = {
+      likes: Math.floor(Math.abs(Math.sin(seed * (i + 1)) * 50000)),
+      replies: Math.floor(Math.abs(Math.sin(seed * (i + 2)) * 5000)),
+      retweets: Math.floor(Math.abs(Math.sin(seed * (i + 3)) * 10000)),
+      quoteRetweets: Math.floor(Math.abs(Math.sin(seed * (i + 4)) * 3000)),
+      tweetId: `mock_${i}`,
+      authorUsername: username,
+    };
+    
+    const score = calculateTardScore(mockMetrics);
+    individualScores.push(score);
+  }
+
+  // Calculate average score
+  const avgScore = Math.round(
+    individualScores.reduce((sum, s) => sum + s.score, 0) / individualScores.length
+  );
+  const avgReplyRatio = Math.round(
+    (individualScores.reduce((sum, s) => sum + s.replyRatio, 0) / individualScores.length) * 1000
+  ) / 1000;
+  const avgQuoteRatio = Math.round(
+    (individualScores.reduce((sum, s) => sum + s.quoteRatio, 0) / individualScores.length) * 1000
+  ) / 1000;
+  const avgEngagementQuality = Math.round(
+    (individualScores.reduce((sum, s) => sum + s.engagementQuality, 0) / individualScores.length) * 100
+  ) / 100;
+  const avgRawTardScore = Math.round(
+    (individualScores.reduce((sum, s) => sum + s.rawTardScore, 0) / individualScores.length) * 100
+  ) / 100;
+
+  return {
+    username,
+    averageScore: {
+      score: avgScore,
+      replyRatio: avgReplyRatio,
+      quoteRatio: avgQuoteRatio,
+      engagementQuality: avgEngagementQuality,
+      rawTardScore: avgRawTardScore,
+    },
+    tweetCount,
+    individualScores,
   };
 };
