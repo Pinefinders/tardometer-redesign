@@ -20,14 +20,11 @@ const TweetInput = ({ onSubmit, isLoading = false }: TweetInputProps) => {
   return (
     <form onSubmit={handleSubmit} className="w-full max-w-xl mx-auto">
       <div className="glass-card p-6 sm:p-8">
-        <label htmlFor="tweet-url" className="block text-sm font-medium text-muted-foreground mb-3">
-          Paste a Twitter/X post URL
-        </label>
         <div className="flex flex-col sm:flex-row gap-3">
           <Input
             id="tweet-url"
             type="url"
-            placeholder="https://x.com/user/status/..."
+            placeholder="Tweet URL"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             className="flex-1 h-12 bg-input border-border text-foreground placeholder:text-muted-foreground focus-visible:ring-primary"
@@ -64,9 +61,6 @@ const TweetInput = ({ onSubmit, isLoading = false }: TweetInputProps) => {
             )}
           </Button>
         </div>
-        <p className="text-xs text-muted-foreground mt-3 text-center">
-          We'll analyze the post and give it a score from Tard to Based
-        </p>
       </div>
     </form>
   );
