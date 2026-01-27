@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Trophy, Clock, ChevronDown, ChevronUp, User, MessageSquare, ArrowLeft } from "lucide-react";
+import { Trophy, Clock, ChevronDown, ChevronUp, User, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Header from "@/components/Header";
 import wojakCrying from "@/assets/wojak-crying.webp";
 import wojakBrainlet from "@/assets/wojak-brainlet.webp";
 import gigachad from "@/assets/gigachad.jpg";
@@ -203,29 +204,24 @@ const Leaderboards = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      {/* Header */}
-      <header className="pt-8 pb-6 px-4">
-        <div className="max-w-2xl mx-auto">
-          <Link to="/" className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-4">
-            <ArrowLeft className="w-4 h-4" />
-            Back to Tardometer
-          </Link>
-          
-          <div className="text-center">
-            <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full bg-amber-500/20 border border-amber-500/50">
-              <span className="text-amber-400 font-bold text-xs uppercase tracking-wider">⚠️ Demo Mode</span>
-              <span className="text-amber-400/80 text-xs">Using simulated data</span>
-            </div>
-            
-            <h1 className="font-display text-4xl sm:text-5xl font-bold text-gradient-title tracking-tight">
-              🏆 LEADERBOARDS
-            </h1>
-            <p className="mt-2 text-muted-foreground">
-              Weekly Tard & Chad Champions
-            </p>
+      <Header />
+      
+      {/* Page Header */}
+      <section className="pt-6 pb-4 px-4">
+        <div className="max-w-2xl mx-auto text-center">
+          <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full bg-amber-500/20 border border-amber-500/50">
+            <span className="text-amber-400 font-bold text-xs uppercase tracking-wider">⚠️ Demo Mode</span>
+            <span className="text-amber-400/80 text-xs">Using simulated data</span>
           </div>
+          
+          <h1 className="font-display text-4xl sm:text-5xl font-bold text-gradient-title tracking-tight">
+            🏆 LEADERBOARDS
+          </h1>
+          <p className="mt-2 text-muted-foreground">
+            Weekly Tard & Chad Champions
+          </p>
         </div>
-      </header>
+      </section>
 
       {/* Countdown */}
       <div className="px-4 mb-8">

@@ -5,6 +5,7 @@ import Gauge from "@/components/Gauge";
 import MetricsDisplay from "@/components/MetricsDisplay";
 import UserResultDisplay from "@/components/UserResultDisplay";
 import BookmarkletSection from "@/components/BookmarkletSection";
+import Header from "@/components/Header";
 import { Trophy } from "lucide-react";
 
 import { 
@@ -184,8 +185,10 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      {/* Header */}
-      <header className="pt-12 pb-8 px-4 text-center">
+      <Header />
+      
+      {/* Hero Section */}
+      <section className="pt-8 pb-6 px-4 text-center">
         <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full bg-amber-500/20 border border-amber-500/50">
           <span className="text-amber-400 font-bold text-xs uppercase tracking-wider">⚠️ Demo Mode</span>
           <span className="text-amber-400/80 text-xs">Using simulated data</span>
@@ -198,7 +201,7 @@ const Index = () => {
           <span className="text-accent font-semibold">Mid</span>, or{" "}
           <span className="text-primary font-semibold">Based</span>
         </p>
-      </header>
+      </section>
 
       {/* Main Content */}
       <main className="flex-1 flex flex-col items-center justify-start px-4 pb-16">
