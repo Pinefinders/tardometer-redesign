@@ -95,6 +95,10 @@ const Index = () => {
     <div className="min-h-screen bg-background flex flex-col">
       {/* Header */}
       <header className="pt-12 pb-8 px-4 text-center">
+        <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full bg-amber-500/20 border border-amber-500/50">
+          <span className="text-amber-400 font-bold text-xs uppercase tracking-wider">⚠️ Demo Mode</span>
+          <span className="text-amber-400/80 text-xs">Using simulated data</span>
+        </div>
         <h1 className="font-display text-5xl sm:text-6xl md:text-7xl font-bold text-gradient-title tracking-tight">
           TARDOMETER
         </h1>
@@ -141,9 +145,9 @@ const Index = () => {
                   </button>
                   
                   {/* Demo Mode Banner */}
-                  <div className="mb-6 p-3 rounded-lg bg-amber-500/20 border border-amber-500/50 text-center">
-                    <p className="text-amber-400 font-semibold text-sm">
-                      ⚠️ DEMO MODE: Using simulated data. Not yet connected to Twitter/X API.
+                  <div className="mb-6 p-4 rounded-xl bg-amber-500 text-center">
+                    <p className="text-amber-950 font-bold text-sm">
+                      ⚠️ DEMO MODE: These scores are simulated. Real Twitter/X API coming soon!
                     </p>
                   </div>
                   
@@ -164,9 +168,11 @@ const Index = () => {
 
       {/* Footer */}
       <footer className="py-6 px-4 text-center">
-        <p className="text-sm text-muted-foreground">
-          Currently using mock data for demonstration. Real Twitter API integration coming soon.
-        </p>
+        <div className="inline-block px-4 py-2 rounded-lg bg-amber-500/10 border border-amber-500/30">
+          <p className="text-sm text-amber-400 font-medium">
+            🚧 Currently using mock data for demonstration. Real Twitter API integration coming soon.
+          </p>
+        </div>
       </footer>
     </div>
   );
