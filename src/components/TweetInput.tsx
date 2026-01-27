@@ -24,7 +24,7 @@ const TweetInput = ({ onSubmit, isLoading = false }: TweetInputProps) => {
           <Input
             id="tweet-url"
             type="url"
-            placeholder="Tweet URL"
+            placeholder="Paste tweet or profile URL"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             className="flex-1 h-12 bg-input border-border text-foreground placeholder:text-muted-foreground focus-visible:ring-primary"
