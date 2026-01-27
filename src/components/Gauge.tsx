@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import wojakCrying from "@/assets/wojak-crying.png";
+import wojakCrying from "@/assets/wojak-crying.webp";
 import gigachad from "@/assets/gigachad.jpg";
 
 interface GaugeProps {
