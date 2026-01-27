@@ -140,9 +140,16 @@ const Index = () => {
                     ✕ Reset
                   </button>
                   
+                  {/* Demo Mode Banner */}
+                  <div className="mb-6 p-3 rounded-lg bg-amber-500/20 border border-amber-500/50 text-center">
+                    <p className="text-amber-400 font-semibold text-sm">
+                      ⚠️ DEMO MODE: Using simulated data. Not yet connected to Twitter/X API.
+                    </p>
+                  </div>
+                  
                   {result.type === 'tweet' ? (
                     <>
-                      <Gauge score={result.score.score} />
+                      <Gauge score={result.score.score} showDemoBadge />
                       <MetricsDisplay metrics={result.metrics} score={result.score} />
                     </>
                   ) : (
@@ -156,7 +163,11 @@ const Index = () => {
       </main>
 
       {/* Footer */}
-      <footer className="py-6 px-4" />
+      <footer className="py-6 px-4 text-center">
+        <p className="text-sm text-muted-foreground">
+          Currently using mock data for demonstration. Real Twitter API integration coming soon.
+        </p>
+      </footer>
     </div>
   );
 };

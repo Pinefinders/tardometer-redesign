@@ -27,7 +27,7 @@ const UserResultDisplay = ({ analysis }: UserResultDisplayProps) => {
       </div>
 
       {/* Gauge */}
-      <Gauge score={averageScore.score} />
+      <Gauge score={averageScore.score} showDemoBadge />
 
       {/* Score Breakdown */}
       <div className="w-full p-4 rounded-xl bg-muted/30 border border-border/30">

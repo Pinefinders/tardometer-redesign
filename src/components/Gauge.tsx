@@ -6,11 +6,12 @@ import smugPepe from "@/assets/smug-pepe.webp";
 interface GaugeProps {
   score: number; // 0-100
   animated?: boolean;
+  showDemoBadge?: boolean;
 }
 
 type Zone = "tard" | "mid" | "based";
 
-const Gauge = ({ score, animated = true }: GaugeProps) => {
+const Gauge = ({ score, animated = true, showDemoBadge = false }: GaugeProps) => {
   const [displayScore, setDisplayScore] = useState(animated ? 0 : score);
 
   useEffect(() => {
@@ -211,7 +212,12 @@ const Gauge = ({ score, animated = true }: GaugeProps) => {
       </div>
 
       {/* Score Display */}
-      <div className={`text-center animate-fade-up ${scoreInfo.glowClass} rounded-2xl px-8 py-4`}>
+      <div className={`text-center animate-fade-up ${scoreInfo.glowClass} rounded-2xl px-8 py-4 relative`}>
+        {showDemoBadge && (
+          <span className="absolute -top-2 left-1/2 -translate-x-1/2 px-2 py-0.5 text-[10px] font-bold bg-amber-500 text-amber-950 rounded-full">
+            DEMO
+          </span>
+        )}
         <div className={`text-5xl md:text-6xl font-display font-bold ${scoreInfo.colorClass}`}>
           {Math.round(displayScore)}
         </div>
