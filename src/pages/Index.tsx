@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import TweetInput from "@/components/TweetInput";
 import Gauge from "@/components/Gauge";
 import MetricsDisplay from "@/components/MetricsDisplay";
+import BookmarkletSection from "@/components/BookmarkletSection";
 import { extractTweetId, fetchTweetMetrics, calculateTardScore, TweetMetrics, TardScore } from "@/lib/twitter";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -35,12 +37,24 @@ const EXAMPLE_MID: TweetMetrics = {
 };
 
 const Index = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState<{
     score: TardScore;
     metrics: TweetMetrics;
     tweetUrl: string;
   } | null>(null);
+
+  // Handle tweet URL from bookmarklet (query parameter)
+  useEffect(() => {
+    const tweetUrl = searchParams.get('tweet');
+    if (tweetUrl) {
+      // Clear the URL parameter to clean up the address bar
+      setSearchParams({}, { replace: true });
+      // Auto-submit the tweet URL
+      handleSubmit(tweetUrl);
+    }
+  }, []);
 
   const handleSubmit = async (url: string) => {
     // Extract tweet ID from URL
@@ -119,7 +133,7 @@ const Index = () => {
 
         {/* Example Buttons */}
         {!result && !isLoading && (
-          <div className="w-full max-w-xl mb-12">
+          <div className="w-full max-w-xl mb-8">
             <div className="text-center">
               <p className="text-sm text-muted-foreground mb-3">Or try an example:</p>
               <div className="flex flex-wrap justify-center gap-2">
@@ -149,6 +163,13 @@ const Index = () => {
                 </Button>
               </div>
             </div>
+          </div>
+        )}
+
+        {/* Bookmarklet Section */}
+        {!result && !isLoading && (
+          <div className="w-full max-w-xl mb-12">
+            <BookmarkletSection />
           </div>
         )}
 
