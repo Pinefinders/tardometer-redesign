@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import wojakCrying from "@/assets/wojak-crying.png";
+import gigachad from "@/assets/gigachad.png";
 
 interface GaugeProps {
   score: number; // 0-100
@@ -31,25 +33,58 @@ const Gauge = ({ score, animated = true }: GaugeProps) => {
   const scoreInfo = getScoreInfo(displayScore);
 
   // Mascot styles based on zone
-  const getTardMascotClasses = () => {
+  const getTardMascotStyles = () => {
     if (scoreInfo.zone === "tard") {
-      return "text-5xl sm:text-6xl md:text-7xl animate-bounce-slow drop-shadow-[0_0_20px_hsl(0,84%,60%)]";
+      return {
+        size: "w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24",
+        animation: "animate-bounce-slow",
+        filter: "drop-shadow(0 0 20px hsl(0, 84%, 60%))",
+        opacity: "opacity-100",
+      };
     }
     if (scoreInfo.zone === "based") {
-      return "text-3xl sm:text-4xl md:text-4xl opacity-40 grayscale";
+      return {
+        size: "w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14",
+        animation: "",
+        filter: "grayscale(100%)",
+        opacity: "opacity-40",
+      };
     }
-    return "text-4xl sm:text-5xl md:text-5xl opacity-70";
+    return {
+      size: "w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16",
+      animation: "",
+      filter: "",
+      opacity: "opacity-70",
+    };
   };
 
-  const getBasedMascotClasses = () => {
+  const getBasedMascotStyles = () => {
     if (scoreInfo.zone === "based") {
-      return "text-5xl sm:text-6xl md:text-7xl animate-bounce-slow drop-shadow-[0_0_20px_hsl(142,76%,45%)]";
+      return {
+        size: "w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24",
+        animation: "animate-bounce-slow",
+        filter: "drop-shadow(0 0 20px hsl(142, 76%, 45%))",
+        opacity: "opacity-100",
+      };
     }
     if (scoreInfo.zone === "tard") {
-      return "text-3xl sm:text-4xl md:text-4xl opacity-40 grayscale";
+      return {
+        size: "w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14",
+        animation: "",
+        filter: "grayscale(100%)",
+        opacity: "opacity-40",
+      };
     }
-    return "text-4xl sm:text-5xl md:text-5xl opacity-70";
+    return {
+      size: "w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16",
+      animation: "",
+      filter: "",
+      opacity: "opacity-70",
+    };
   };
+
+  const tardStyles = getTardMascotStyles();
+  const basedStyles = getBasedMascotStyles();
 
   return (
     <div className="flex flex-col items-center gap-6">
@@ -57,13 +92,16 @@ const Gauge = ({ score, animated = true }: GaugeProps) => {
       <div className="flex items-end justify-center gap-2 sm:gap-4">
         {/* Tard Mascot (Left) */}
         <div className="flex flex-col items-center gap-1 translate-y-2 transition-all duration-500">
-          <span 
-            className={`transition-all duration-500 ${getTardMascotClasses()}`} 
-            role="img" 
-            aria-label="Crying face"
+          <div 
+            className={`transition-all duration-500 rounded-full overflow-hidden border-2 border-destructive/50 ${tardStyles.size} ${tardStyles.animation} ${tardStyles.opacity}`}
+            style={{ filter: tardStyles.filter }}
           >
-            😭
-          </span>
+            <img 
+              src={wojakCrying} 
+              alt="Crying Wojak" 
+              className="w-full h-full object-cover"
+            />
+          </div>
           <span className={`text-xs font-bold text-destructive hidden sm:block transition-opacity duration-500 ${scoreInfo.zone === "tard" ? "opacity-100" : "opacity-50"}`}>
             TARD
           </span>
@@ -151,13 +189,16 @@ const Gauge = ({ score, animated = true }: GaugeProps) => {
 
         {/* Based Mascot (Right) */}
         <div className="flex flex-col items-center gap-1 translate-y-2 transition-all duration-500">
-          <span 
-            className={`transition-all duration-500 ${getBasedMascotClasses()}`} 
-            role="img" 
-            aria-label="Gigachad"
+          <div 
+            className={`transition-all duration-500 rounded-full overflow-hidden border-2 border-primary/50 ${basedStyles.size} ${basedStyles.animation} ${basedStyles.opacity}`}
+            style={{ filter: basedStyles.filter }}
           >
-            🗿
-          </span>
+            <img 
+              src={gigachad} 
+              alt="Gigachad" 
+              className="w-full h-full object-cover"
+            />
+          </div>
           <span className={`text-xs font-bold text-primary hidden sm:block transition-opacity duration-500 ${scoreInfo.zone === "based" ? "opacity-100" : "opacity-50"}`}>
             BASED
           </span>
