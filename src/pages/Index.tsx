@@ -6,6 +6,7 @@ import MetricsDisplay from "@/components/MetricsDisplay";
 import UserResultDisplay from "@/components/UserResultDisplay";
 import BookmarkletSection from "@/components/BookmarkletSection";
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import ShareButton from "@/components/ShareButton";
 import { Trophy } from "lucide-react";
 
@@ -320,14 +321,7 @@ const Index = () => {
         )}
       </main>
 
-      {/* Footer */}
-      <footer className="py-6 px-4 text-center">
-        <div className="inline-block px-4 py-2 rounded-lg bg-amber-500/10 border border-amber-500/30">
-          <p className="text-sm text-amber-400 font-medium">
-            🚧 Currently using mock data for demonstration. Real Twitter API integration coming soon.
-          </p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 };
