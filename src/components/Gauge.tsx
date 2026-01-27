@@ -76,24 +76,7 @@ const Gauge = ({ score, animated = true }: GaugeProps) => {
 
   return (
     <div className="flex flex-col items-center gap-6">
-      {/* Mid Mascot (Center/Top) */}
-      <div className="flex flex-col items-center gap-1 transition-all duration-500">
-        <div 
-          className={`transition-all duration-500 rounded-full overflow-hidden border-2 ${getBorderColor("mid")} ${midStyles.size} ${midStyles.animation} ${midStyles.opacity}`}
-          style={{ filter: midStyles.filter }}
-        >
-          <img 
-            src={smugPepe} 
-            alt="Smug Pepe" 
-            className="w-full h-full object-cover"
-          />
-        </div>
-        <span className={`text-xs font-bold text-accent transition-opacity duration-500 ${scoreInfo.zone === "mid" ? "opacity-100" : "opacity-50"}`}>
-          MID
-        </span>
-      </div>
-
-      {/* Gauge with Side Mascots */}
+      {/* Gauge with All Mascots */}
       <div className="flex items-end justify-center gap-2 sm:gap-4">
         {/* Tard Mascot (Left) */}
         <div className="flex flex-col items-center gap-1 translate-y-2 transition-all duration-500">
@@ -114,6 +97,23 @@ const Gauge = ({ score, animated = true }: GaugeProps) => {
 
         {/* Gauge Container */}
         <div className="relative w-56 h-32 sm:w-72 sm:h-40 md:w-80 md:h-44">
+          {/* Mid Mascot - positioned at top center of arc */}
+          <div className="absolute left-1/2 -translate-x-1/2 -top-8 sm:-top-10 md:-top-12 z-10 flex flex-col items-center gap-1 transition-all duration-500">
+            <div 
+              className={`transition-all duration-500 rounded-full overflow-hidden border-2 ${getBorderColor("mid")} ${midStyles.size} ${midStyles.animation} ${midStyles.opacity}`}
+              style={{ filter: midStyles.filter }}
+            >
+              <img 
+                src={smugPepe} 
+                alt="Smug Pepe" 
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <span className={`text-xs font-bold text-accent transition-opacity duration-500 ${scoreInfo.zone === "mid" ? "opacity-100" : "opacity-50"}`}>
+              MID
+            </span>
+          </div>
+
           {/* Background arc */}
           <svg
             viewBox="0 0 200 110"
