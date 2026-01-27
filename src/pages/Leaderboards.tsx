@@ -279,7 +279,7 @@ const Leaderboards = () => {
                 entry={chadPerson}
                 type="chad"
                 emptyMessage="No profiles analyzed yet!"
-                ctaText="Analyze a Profile"
+                ctaText="See profile"
                 isTweet={false}
               />
               
@@ -289,7 +289,7 @@ const Leaderboards = () => {
                 entry={chadTweet}
                 type="chad"
                 emptyMessage="No tweets analyzed yet!"
-                ctaText="Analyze a Tweet"
+                ctaText="See Tweet"
                 isTweet
               />
             </div>
@@ -311,7 +311,7 @@ const Leaderboards = () => {
                     entry={chadPerson}
                     type="chad"
                     emptyMessage="No profiles analyzed yet!"
-                    ctaText="Analyze a Profile"
+                    ctaText="See profile"
                     isTweet={false}
                   />
                 </div>
@@ -332,7 +332,7 @@ const Leaderboards = () => {
                     entry={chadTweet}
                     type="chad"
                     emptyMessage="No tweets analyzed yet!"
-                    ctaText="Analyze a Tweet"
+                    ctaText="See Tweet"
                     isTweet
                   />
                 </div>
@@ -370,7 +370,7 @@ const Leaderboards = () => {
                 entry={tardPerson}
                 type="tard"
                 emptyMessage="No profiles analyzed yet!"
-                ctaText="Analyze a Profile"
+                ctaText="See profile"
                 isTweet={false}
               />
               
@@ -380,7 +380,7 @@ const Leaderboards = () => {
                 entry={tardTweet}
                 type="tard"
                 emptyMessage="No tweets analyzed yet!"
-                ctaText="Analyze a Tweet"
+                ctaText="See Tweet"
                 isTweet
               />
             </div>
@@ -402,7 +402,7 @@ const Leaderboards = () => {
                     entry={tardPerson}
                     type="tard"
                     emptyMessage="No profiles analyzed yet!"
-                    ctaText="Analyze a Profile"
+                    ctaText="See profile"
                     isTweet={false}
                   />
                 </div>
@@ -423,7 +423,7 @@ const Leaderboards = () => {
                     entry={tardTweet}
                     type="tard"
                     emptyMessage="No tweets analyzed yet!"
-                    ctaText="Analyze a Tweet"
+                    ctaText="See Tweet"
                     isTweet
                   />
                 </div>
