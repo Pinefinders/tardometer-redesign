@@ -166,16 +166,16 @@ const Index = () => {
                 </div>
               ) : result ? (
                 <>
-                  <Gauge score={result.score.score} />
-                  <MetricsDisplay metrics={result.metrics} score={result.score} />
-                  <div className="mt-8 text-center">
+                  <div className="text-center mb-6">
                     <button
                       onClick={handleReset}
                       className="text-sm text-muted-foreground hover:text-foreground transition-colors underline underline-offset-4"
                     >
-                      Analyze another tweet
+                      ← Analyze another tweet
                     </button>
                   </div>
+                  <Gauge score={result.score.score} />
+                  <MetricsDisplay metrics={result.metrics} score={result.score} />
                 </>
               ) : null}
             </div>
