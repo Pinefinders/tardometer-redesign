@@ -247,10 +247,30 @@ const Leaderboards = () => {
       <main className="flex-1 px-4 pb-16">
         <div className="max-w-2xl mx-auto space-y-8">
           
+          {/* Column Headers with Mascots */}
+          <div className="grid gap-6 md:grid-cols-2">
+            <div className="flex flex-col items-center">
+              <img 
+                src={wojakCrying} 
+                alt="Wojak Crying" 
+                className="w-16 h-16 rounded-full object-cover border-2 border-destructive/50 mb-2"
+              />
+              <h2 className="text-lg font-display font-bold text-destructive">TARD OF THE WEEK</h2>
+            </div>
+            <div className="flex flex-col items-center">
+              <img 
+                src={gigachad} 
+                alt="Gigachad" 
+                className="w-16 h-16 rounded-full object-cover border-2 border-primary/50 mb-2"
+              />
+              <h2 className="text-lg font-display font-bold text-primary">CHAD OF THE WEEK</h2>
+            </div>
+          </div>
+
           {/* Tweet Leaderboards */}
           <div className="grid gap-6 md:grid-cols-2">
             <LeaderboardSection
-              title="Tard Tweet of the Week"
+              title="Tard Tweet"
               emoji="😭"
               entry={tardTweet}
               type="tard"
@@ -260,7 +280,7 @@ const Leaderboards = () => {
             />
             
             <LeaderboardSection
-              title="Chad Tweet of the Week"
+              title="Chad Tweet"
               emoji="🗿"
               entry={chadTweet}
               type="chad"
@@ -273,7 +293,7 @@ const Leaderboards = () => {
           {/* Person Leaderboards */}
           <div className="grid gap-6 md:grid-cols-2">
             <LeaderboardSection
-              title="Tard Person of the Week"
+              title="Tard Person"
               emoji="😭"
               entry={tardPerson}
               type="tard"
@@ -283,7 +303,7 @@ const Leaderboards = () => {
             />
             
             <LeaderboardSection
-              title="Chad Person of the Week"
+              title="Chad Person"
               emoji="🗿"
               entry={chadPerson}
               type="chad"
