@@ -272,7 +272,7 @@ const Leaderboards = () => {
           {/* Person Leaderboards */}
           <div className="grid gap-6 md:grid-cols-2">
             <LeaderboardSection
-              title="Tard Person"
+              title=""
               emoji=""
               entry={tardPerson}
               type="tard"
@@ -282,7 +282,7 @@ const Leaderboards = () => {
             />
             
             <LeaderboardSection
-              title="Chad Person"
+              title=""
               emoji=""
               entry={chadPerson}
               type="chad"
@@ -313,7 +313,7 @@ const Leaderboards = () => {
           {/* Tweet Leaderboards */}
           <div className="grid gap-6 md:grid-cols-2 -mt-4">
             <LeaderboardSection
-              title="Tard Tweet"
+              title=""
               emoji=""
               entry={tardTweet}
               type="tard"
@@ -323,7 +323,7 @@ const Leaderboards = () => {
             />
             
             <LeaderboardSection
-              title="Chad Tweet"
+              title=""
               emoji=""
               entry={chadTweet}
               type="chad"
