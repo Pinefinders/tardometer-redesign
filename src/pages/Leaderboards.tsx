@@ -273,7 +273,7 @@ const Leaderboards = () => {
           <div className="grid gap-6 md:grid-cols-2">
             <LeaderboardSection
               title="Tard Person"
-              emoji="😭"
+              emoji=""
               entry={tardPerson}
               type="tard"
               emptyMessage="No profiles analyzed yet!"
@@ -283,7 +283,7 @@ const Leaderboards = () => {
             
             <LeaderboardSection
               title="Chad Person"
-              emoji="🗿"
+              emoji=""
               entry={chadPerson}
               type="chad"
               emptyMessage="No profiles analyzed yet!"
@@ -314,7 +314,7 @@ const Leaderboards = () => {
           <div className="grid gap-6 md:grid-cols-2 -mt-4">
             <LeaderboardSection
               title="Tard Tweet"
-              emoji="😭"
+              emoji=""
               entry={tardTweet}
               type="tard"
               emptyMessage="No tweets analyzed yet!"
@@ -324,7 +324,7 @@ const Leaderboards = () => {
             
             <LeaderboardSection
               title="Chad Tweet"
-              emoji="🗿"
+              emoji=""
               entry={chadTweet}
               type="chad"
               emptyMessage="No tweets analyzed yet!"
