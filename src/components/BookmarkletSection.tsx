@@ -62,7 +62,7 @@ const BookmarkletSection = () => {
         <div className="text-center mb-6">
           <p className="text-sm text-muted-foreground flex items-center justify-center gap-2">
             <span className="animate-bounce-slow inline-block">⬆️</span>
-            Drag this button to your bookmarks bar
+            Drag the Tard Score button (above) to your bookmarks bar
             <span className="animate-bounce-slow inline-block">⬆️</span>
           </p>
         </div>
