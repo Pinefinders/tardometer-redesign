@@ -40,6 +40,73 @@ const Index = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState("");
   const [result, setResult] = useState<Result | null>(null);
+  const [isDemo, setIsDemo] = useState(false);
+
+  // Demo data for example results
+  const demoResults: Record<'tard' | 'mid' | 'chad', TweetResult> = {
+    tard: {
+      type: 'tweet',
+      score: { 
+        score: 12, 
+        replyRatio: 19.822,
+        quoteRatio: 1.950,
+        engagementQuality: 0.05,
+        rawTardScore: 88.0
+      },
+      metrics: {
+        likes: 45,
+        retweets: 8,
+        replies: 892,
+        quoteRetweets: 156,
+        tweetId: 'demo_tard',
+        authorUsername: 'demo_user',
+      },
+      tweetUrl: 'https://x.com/demo/status/123',
+    },
+    mid: {
+      type: 'tweet',
+      score: { 
+        score: 52, 
+        replyRatio: 0.272,
+        quoteRatio: 0.506,
+        engagementQuality: 3.48,
+        rawTardScore: 48.0
+      },
+      metrics: {
+        likes: 1250,
+        retweets: 89,
+        replies: 340,
+        quoteRetweets: 45,
+        tweetId: 'demo_mid',
+        authorUsername: 'demo_user',
+      },
+      tweetUrl: 'https://x.com/demo/status/456',
+    },
+    chad: {
+      type: 'tweet',
+      score: { 
+        score: 89, 
+        replyRatio: 0.058,
+        quoteRatio: 0.029,
+        engagementQuality: 19.43,
+        rawTardScore: 11.0
+      },
+      metrics: {
+        likes: 15420,
+        retweets: 4200,
+        replies: 890,
+        quoteRetweets: 120,
+        tweetId: 'demo_chad',
+        authorUsername: 'demo_user',
+      },
+      tweetUrl: 'https://x.com/demo/status/789',
+    },
+  };
+
+  const showDemoResult = (type: 'tard' | 'mid' | 'chad') => {
+    setIsDemo(true);
+    setResult(demoResults[type]);
+  };
 
   // Handle tweet URL from bookmarklet (query parameter)
   useEffect(() => {
@@ -65,6 +132,7 @@ const Index = () => {
 
     setIsLoading(true);
     setResult(null);
+    setIsDemo(false);
 
     try {
       if (parsed.type === 'tweet') {
@@ -111,6 +179,7 @@ const Index = () => {
 
   const handleReset = () => {
     setResult(null);
+    setIsDemo(false);
   };
 
   return (
@@ -138,9 +207,36 @@ const Index = () => {
           <TweetInput onSubmit={handleSubmit} isLoading={isLoading} />
         </div>
 
-        {/* Bookmarklet & Leaderboard Links */}
+        {/* Demo Buttons & Links */}
         {!result && !isLoading && (
           <div className="w-full max-w-xl mb-12 space-y-4">
+            {/* Demo Example Buttons */}
+            <div className="glass-card p-4">
+              <p className="text-center text-sm text-muted-foreground mb-3">
+                👀 See example results:
+              </p>
+              <div className="flex flex-wrap justify-center gap-2">
+                <button
+                  onClick={() => showDemoResult('tard')}
+                  className="px-4 py-2 rounded-lg bg-destructive/20 border border-destructive/50 text-destructive font-semibold text-sm hover:bg-destructive/30 transition-colors"
+                >
+                  😭 Tarded Example
+                </button>
+                <button
+                  onClick={() => showDemoResult('mid')}
+                  className="px-4 py-2 rounded-lg bg-accent/20 border border-accent/50 text-accent font-semibold text-sm hover:bg-accent/30 transition-colors"
+                >
+                  😐 Mid Example
+                </button>
+                <button
+                  onClick={() => showDemoResult('chad')}
+                  className="px-4 py-2 rounded-lg bg-primary/20 border border-primary/50 text-primary font-semibold text-sm hover:bg-primary/30 transition-colors"
+                >
+                  🗿 Chad Example
+                </button>
+              </div>
+            </div>
+            
             <BookmarkletSection />
             
             {/* Leaderboard Link */}
@@ -182,7 +278,10 @@ const Index = () => {
                   {/* Demo Mode Banner */}
                   <div className="mb-6 p-4 rounded-xl bg-amber-500 text-center">
                     <p className="text-amber-950 font-bold text-sm">
-                      ⚠️ DEMO MODE: These scores are simulated. Real Twitter/X API coming soon!
+                      {isDemo 
+                        ? "🎭 DEMO RESULT: This is an example to show how scores work!"
+                        : "⚠️ DEMO MODE: These scores are simulated. Real Twitter/X API coming soon!"
+                      }
                     </p>
                   </div>
                   
