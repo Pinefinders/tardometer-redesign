@@ -40,7 +40,6 @@ const Index = () => {
     score: TardScore;
     metrics: TweetMetrics;
     tweetUrl: string;
-    exampleType?: "tard" | "based" | "mid";
   } | null>(null);
 
   const handleSubmit = async (url: string) => {
@@ -89,7 +88,6 @@ const Index = () => {
       score,
       metrics,
       tweetUrl: `https://x.com/${metrics.authorUsername}/status/${metrics.tweetId}`,
-      exampleType: type,
     });
     setIsLoading(false);
   };
