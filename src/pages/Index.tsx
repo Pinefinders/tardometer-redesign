@@ -6,6 +6,7 @@ import MetricsDisplay from "@/components/MetricsDisplay";
 import UserResultDisplay from "@/components/UserResultDisplay";
 import BookmarkletSection from "@/components/BookmarkletSection";
 import Header from "@/components/Header";
+import ShareButton from "@/components/ShareButton";
 import { Trophy } from "lucide-react";
 
 import { 
@@ -292,9 +293,25 @@ const Index = () => {
                     <>
                       <Gauge score={result.score.score} showDemoBadge />
                       <MetricsDisplay metrics={result.metrics} score={result.score} />
+                      <div className="flex justify-center mt-6">
+                        <ShareButton 
+                          score={result.score.score} 
+                          type="tweet" 
+                          tweetUrl={result.tweetUrl} 
+                        />
+                      </div>
                     </>
                   ) : (
-                    <UserResultDisplay analysis={result.analysis} />
+                    <>
+                      <UserResultDisplay analysis={result.analysis} />
+                      <div className="flex justify-center mt-6">
+                        <ShareButton 
+                          score={result.analysis.averageScore.score} 
+                          type="user" 
+                          username={result.analysis.username} 
+                        />
+                      </div>
+                    </>
                   )}
                 </div>
               ) : null}
