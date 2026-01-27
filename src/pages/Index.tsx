@@ -168,15 +168,6 @@ const Index = () => {
                 </div>
               ) : result ? (
                 <>
-                  {result.exampleType && (
-                    <div className="text-center mb-4">
-                      <span className="inline-block px-3 py-1 text-xs font-medium rounded-full bg-muted text-muted-foreground">
-                        {result.exampleType === "tard" && "Example: Getting ratio'd hard"}
-                        {result.exampleType === "mid" && "Example: Average engagement"}
-                        {result.exampleType === "based" && "Example: Viral banger"}
-                      </span>
-                    </div>
-                  )}
                   <Gauge score={result.score.score} />
                   <MetricsDisplay metrics={result.metrics} score={result.score} />
                   <div className="mt-8 text-center">
