@@ -267,29 +267,6 @@ const Leaderboards = () => {
             </div>
           </div>
 
-          {/* Tweet Leaderboards */}
-          <div className="grid gap-6 md:grid-cols-2">
-            <LeaderboardSection
-              title="Tard Tweet"
-              emoji="😭"
-              entry={tardTweet}
-              type="tard"
-              emptyMessage="No tweets analyzed yet!"
-              ctaText="Analyze a Tweet"
-              isTweet
-            />
-            
-            <LeaderboardSection
-              title="Chad Tweet"
-              emoji="🗿"
-              entry={chadTweet}
-              type="chad"
-              emptyMessage="No tweets analyzed yet!"
-              ctaText="Analyze a Tweet"
-              isTweet
-            />
-          </div>
-
           {/* Person Leaderboards */}
           <div className="grid gap-6 md:grid-cols-2">
             <LeaderboardSection
@@ -310,6 +287,29 @@ const Leaderboards = () => {
               emptyMessage="No profiles analyzed yet!"
               ctaText="Analyze a Profile"
               isTweet={false}
+            />
+          </div>
+
+          {/* Tweet Leaderboards */}
+          <div className="grid gap-6 md:grid-cols-2">
+            <LeaderboardSection
+              title="Tard Tweet"
+              emoji="😭"
+              entry={tardTweet}
+              type="tard"
+              emptyMessage="No tweets analyzed yet!"
+              ctaText="Analyze a Tweet"
+              isTweet
+            />
+            
+            <LeaderboardSection
+              title="Chad Tweet"
+              emoji="🗿"
+              entry={chadTweet}
+              type="chad"
+              emptyMessage="No tweets analyzed yet!"
+              ctaText="Analyze a Tweet"
+              isTweet
             />
           </div>
 
