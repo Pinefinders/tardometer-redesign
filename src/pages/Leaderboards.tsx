@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import wojakCrying from "@/assets/wojak-crying.webp";
 import wojakBrainlet from "@/assets/wojak-brainlet.webp";
 import gigachad from "@/assets/gigachad.jpg";
+import gigachadLaptop from "@/assets/gigachad-laptop.jpg";
 import { 
   getTardTweetOfWeek, 
   getChadTweetOfWeek,
@@ -302,8 +303,8 @@ const Leaderboards = () => {
             </div>
             <div className="flex flex-col items-center">
               <img 
-                src={gigachad} 
-                alt="Gigachad" 
+                src={gigachadLaptop} 
+                alt="Gigachad with Laptop" 
                 className="w-16 h-16 rounded-full object-cover border-2 border-primary/50 mb-2"
               />
             </div>
