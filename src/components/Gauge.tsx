@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import wojakCrying from "@/assets/wojak-crying.webp";
 import gigachad from "@/assets/gigachad.jpg";
-// TODO: Replace with actual Pepe image
-// import smugPepe from "@/assets/smug-pepe.png";
+import smugPepe from "@/assets/smug-pepe.webp";
 
 interface GaugeProps {
   score: number; // 0-100
@@ -83,10 +82,11 @@ const Gauge = ({ score, animated = true }: GaugeProps) => {
           className={`transition-all duration-500 rounded-full overflow-hidden border-2 ${getBorderColor("mid")} ${midStyles.size} ${midStyles.animation} ${midStyles.opacity}`}
           style={{ filter: midStyles.filter }}
         >
-          {/* Placeholder for Pepe - using a colored div until image is provided */}
-          <div className="w-full h-full bg-accent/30 flex items-center justify-center text-accent font-bold text-xs">
-            PEPE
-          </div>
+          <img 
+            src={smugPepe} 
+            alt="Smug Pepe" 
+            className="w-full h-full object-cover"
+          />
         </div>
         <span className={`text-xs font-bold text-accent transition-opacity duration-500 ${scoreInfo.zone === "mid" ? "opacity-100" : "opacity-50"}`}>
           MID
