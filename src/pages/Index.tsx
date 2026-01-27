@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, Link } from "react-router-dom";
 import TweetInput from "@/components/TweetInput";
 import Gauge from "@/components/Gauge";
 import MetricsDisplay from "@/components/MetricsDisplay";
 import UserResultDisplay from "@/components/UserResultDisplay";
 import BookmarkletSection from "@/components/BookmarkletSection";
+import { Trophy } from "lucide-react";
 import { 
   parseTwitterUrl, 
   fetchTweetMetrics, 
@@ -14,6 +15,7 @@ import {
   TardScore,
   UserAnalysis 
 } from "@/lib/twitter";
+import { saveTweetEntry, saveUserEntry } from "@/lib/leaderboard";
 import { toast } from "sonner";
 
 type ResultType = 'tweet' | 'user';
@@ -69,11 +71,30 @@ const Index = () => {
         setLoadingMessage("Analyzing tweet...");
         const metrics = await fetchTweetMetrics(parsed.tweetId!);
         const score = calculateTardScore(metrics);
+        
+        // Save to leaderboard
+        saveTweetEntry({
+          tweetUrl: url,
+          tweetId: parsed.tweetId!,
+          authorUsername: parsed.username || metrics.authorUsername,
+          score,
+          metrics,
+        });
+        
         setResult({ type: 'tweet', score, metrics, tweetUrl: url });
       } else {
         // Handle user profile analysis
         setLoadingMessage(`Analyzing @${parsed.username}'s recent tweets...`);
         const analysis = await analyzeUserProfile(parsed.username!);
+        
+        // Save to leaderboard
+        saveUserEntry({
+          username: analysis.username,
+          profileUrl: url,
+          averageScore: analysis.averageScore,
+          tweetCount: analysis.tweetCount,
+        });
+        
         setResult({ type: 'user', analysis });
       }
     } catch (error) {
@@ -116,10 +137,26 @@ const Index = () => {
           <TweetInput onSubmit={handleSubmit} isLoading={isLoading} />
         </div>
 
-        {/* Bookmarklet Section */}
+        {/* Bookmarklet & Leaderboard Links */}
         {!result && !isLoading && (
-          <div className="w-full max-w-xl mb-12">
+          <div className="w-full max-w-xl mb-12 space-y-4">
             <BookmarkletSection />
+            
+            {/* Leaderboard Link */}
+            <Link 
+              to="/leaderboards"
+              className="block glass-card p-4 text-center hover:border-primary/50 transition-colors group"
+            >
+              <div className="flex items-center justify-center gap-2">
+                <Trophy className="w-5 h-5 text-accent group-hover:text-primary transition-colors" />
+                <span className="font-semibold text-foreground group-hover:text-primary transition-colors">
+                  View Weekly Leaderboards
+                </span>
+              </div>
+              <p className="text-sm text-muted-foreground mt-1">
+                See this week's Tard champions 🏆
+              </p>
+            </Link>
           </div>
         )}
 
