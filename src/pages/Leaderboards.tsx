@@ -47,12 +47,7 @@ const MiniGauge = ({ score }: { score: number }) => {
 };
 
 const TweetCard = ({ entry, isCurrent, type }: { entry: TweetEntry; isCurrent?: boolean; type: WinnerType }) => (
-  <a 
-    href={entry.tweetUrl} 
-    target="_blank" 
-    rel="noopener noreferrer"
-    className="block p-4 rounded-xl bg-secondary/50 border border-border/50 hover:border-primary/50 transition-colors"
-  >
+  <div className="p-4 rounded-xl bg-secondary/50 border border-border/50">
     <div className="flex items-start justify-between gap-4">
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 mb-2">
@@ -68,25 +63,25 @@ const TweetCard = ({ entry, isCurrent, type }: { entry: TweetEntry; isCurrent?: 
           )}
           <span className="text-muted-foreground">@{entry.authorUsername}</span>
         </div>
-        <p className="text-xs text-muted-foreground truncate">
-          {entry.tweetUrl}
-        </p>
         <p className="text-xs text-muted-foreground mt-1">
           Submitted {new Date(entry.submittedAt).toLocaleDateString()}
         </p>
+        <a 
+          href={entry.tweetUrl} 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1 mt-2 text-sm text-primary hover:underline font-medium"
+        >
+          See Tweet →
+        </a>
       </div>
       <MiniGauge score={entry.score.score} />
     </div>
-  </a>
+  </div>
 );
 
 const UserCard = ({ entry, isCurrent, type }: { entry: UserEntry; isCurrent?: boolean; type: WinnerType }) => (
-  <a 
-    href={entry.profileUrl} 
-    target="_blank" 
-    rel="noopener noreferrer"
-    className="block p-4 rounded-xl bg-secondary/50 border border-border/50 hover:border-primary/50 transition-colors"
-  >
+  <div className="p-4 rounded-xl bg-secondary/50 border border-border/50">
     <div className="flex items-start justify-between gap-4">
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 mb-2">
@@ -109,10 +104,18 @@ const UserCard = ({ entry, isCurrent, type }: { entry: UserEntry; isCurrent?: bo
         <p className="text-xs text-muted-foreground mt-1">
           Submitted {new Date(entry.submittedAt).toLocaleDateString()}
         </p>
+        <a 
+          href={entry.profileUrl} 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1 mt-2 text-sm text-primary hover:underline font-medium"
+        >
+          Visit Twitter Account →
+        </a>
       </div>
       <MiniGauge score={entry.averageScore.score} />
     </div>
-  </a>
+  </div>
 );
 
 const EmptyState = ({ message, ctaText }: { message: string; ctaText: string }) => (
