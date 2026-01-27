@@ -26,7 +26,9 @@ export interface WeeklyWinners {
   weekStart: string;
   weekEnd: string;
   tardTweet: TweetEntry | null;
+  chadTweet: TweetEntry | null;
   tardPerson: UserEntry | null;
+  chadPerson: UserEntry | null;
 }
 
 const STORAGE_KEY_TWEETS = "tardometer_tweet_entries";
@@ -151,6 +153,16 @@ export const getTardTweetOfWeek = (): TweetEntry | null => {
   );
 };
 
+// Get the most Chad/Based tweet of the current week (highest score)
+export const getChadTweetOfWeek = (): TweetEntry | null => {
+  const tweets = getCurrentWeekTweets();
+  if (tweets.length === 0) return null;
+  
+  return tweets.reduce((highest, current) => 
+    current.score.score > highest.score.score ? current : highest
+  );
+};
+
 // Get the most Tard person of the current week (lowest average score)
 export const getTardPersonOfWeek = (): UserEntry | null => {
   const users = getCurrentWeekUsers();
@@ -158,6 +170,16 @@ export const getTardPersonOfWeek = (): UserEntry | null => {
   
   return users.reduce((lowest, current) => 
     current.averageScore.score < lowest.averageScore.score ? current : lowest
+  );
+};
+
+// Get the most Chad/Based person of the current week (highest average score)
+export const getChadPersonOfWeek = (): UserEntry | null => {
+  const users = getCurrentWeekUsers();
+  if (users.length === 0) return null;
+  
+  return users.reduce((highest, current) => 
+    current.averageScore.score > highest.averageScore.score ? current : highest
   );
 };
 
@@ -186,11 +208,13 @@ export const archiveCurrentWeek = (): void => {
     weekStart: weekStart.toISOString(),
     weekEnd: weekEnd.toISOString(),
     tardTweet: getTardTweetOfWeek(),
+    chadTweet: getChadTweetOfWeek(),
     tardPerson: getTardPersonOfWeek(),
+    chadPerson: getChadPersonOfWeek(),
   };
   
   // Only archive if there are winners
-  if (winners.tardTweet || winners.tardPerson) {
+  if (winners.tardTweet || winners.chadTweet || winners.tardPerson || winners.chadPerson) {
     archive.unshift(winners); // Add to beginning
     localStorage.setItem(STORAGE_KEY_ARCHIVE, JSON.stringify(archive.slice(0, 52))); // Keep max 52 weeks
   }
@@ -235,16 +259,26 @@ export const getPastWeekWinners = (): WeeklyWinners[] => {
     const tardTweet = data.tweets.length > 0 
       ? data.tweets.reduce((lowest, current) => current.score.score < lowest.score.score ? current : lowest)
       : null;
+    
+    const chadTweet = data.tweets.length > 0 
+      ? data.tweets.reduce((highest, current) => current.score.score > highest.score.score ? current : highest)
+      : null;
       
     const tardPerson = data.users.length > 0
       ? data.users.reduce((lowest, current) => current.averageScore.score < lowest.averageScore.score ? current : lowest)
+      : null;
+    
+    const chadPerson = data.users.length > 0
+      ? data.users.reduce((highest, current) => current.averageScore.score > highest.averageScore.score ? current : highest)
       : null;
     
     winners.push({
       weekStart,
       weekEnd: weekEndDate.toISOString(),
       tardTweet,
+      chadTweet,
       tardPerson,
+      chadPerson,
     });
   });
   
@@ -272,13 +306,13 @@ export const generateMockArchive = (): void => {
     weekEnd.setUTCDate(weekEnd.getUTCDate() + 6);
     weekEnd.setUTCHours(23, 59, 59, 999);
     
-    const mockTweet: TweetEntry = {
-      id: `mock_tweet_${i}`,
-      tweetUrl: `https://x.com/mockuser${i}/status/${1234567890 + i}`,
+    const mockTardTweet: TweetEntry = {
+      id: `mock_tard_tweet_${i}`,
+      tweetUrl: `https://x.com/tardposter${i}/status/${1234567890 + i}`,
       tweetId: `${1234567890 + i}`,
-      authorUsername: ['elonmusk', 'dril', 'aoc', 'benshapiro'][i - 1] || 'mockuser',
+      authorUsername: ['angry_poster', 'ratio_victim', 'hot_take_haver', 'main_character'][i - 1] || 'mockuser',
       score: {
-        score: 5 + Math.floor(Math.random() * 20),
+        score: 5 + Math.floor(Math.random() * 15),
         replyRatio: 1.2 + Math.random(),
         quoteRatio: 0.8 + Math.random(),
         engagementQuality: 1 + Math.random() * 2,
@@ -290,18 +324,42 @@ export const generateMockArchive = (): void => {
         retweets: Math.floor(Math.random() * 5000),
         quoteRetweets: Math.floor(Math.random() * 10000),
         tweetId: `${1234567890 + i}`,
-        authorUsername: ['elonmusk', 'dril', 'aoc', 'benshapiro'][i - 1] || 'mockuser',
+        authorUsername: ['angry_poster', 'ratio_victim', 'hot_take_haver', 'main_character'][i - 1] || 'mockuser',
       },
       submittedAt: weekStart.toISOString(),
       weekStart: weekStart.toISOString(),
     };
     
-    const mockUser: UserEntry = {
-      id: `mock_user_${i}`,
-      username: ['angry_poster', 'ratio_king', 'hot_take_haver', 'main_character'][i - 1] || 'mockuser',
-      profileUrl: `https://x.com/${['angry_poster', 'ratio_king', 'hot_take_haver', 'main_character'][i - 1]}`,
+    const mockChadTweet: TweetEntry = {
+      id: `mock_chad_tweet_${i}`,
+      tweetUrl: `https://x.com/basedking${i}/status/${9876543210 + i}`,
+      tweetId: `${9876543210 + i}`,
+      authorUsername: ['naval', 'paulg', 'balajis', 'vikiivalencia'][i - 1] || 'baseduser',
+      score: {
+        score: 80 + Math.floor(Math.random() * 20),
+        replyRatio: 0.05 + Math.random() * 0.1,
+        quoteRatio: 0.1 + Math.random() * 0.1,
+        engagementQuality: 20 + Math.random() * 30,
+        rawTardScore: 5 + Math.random() * 15,
+      },
+      metrics: {
+        likes: 50000 + Math.floor(Math.random() * 100000),
+        replies: Math.floor(Math.random() * 5000),
+        retweets: 20000 + Math.floor(Math.random() * 30000),
+        quoteRetweets: Math.floor(Math.random() * 2000),
+        tweetId: `${9876543210 + i}`,
+        authorUsername: ['naval', 'paulg', 'balajis', 'vikiivalencia'][i - 1] || 'baseduser',
+      },
+      submittedAt: weekStart.toISOString(),
+      weekStart: weekStart.toISOString(),
+    };
+    
+    const mockTardUser: UserEntry = {
+      id: `mock_tard_user_${i}`,
+      username: ['ratio_king', 'always_wrong', 'bad_take_bot', 'controversy_enjoyer'][i - 1] || 'mockuser',
+      profileUrl: `https://x.com/${['ratio_king', 'always_wrong', 'bad_take_bot', 'controversy_enjoyer'][i - 1]}`,
       averageScore: {
-        score: 8 + Math.floor(Math.random() * 18),
+        score: 8 + Math.floor(Math.random() * 12),
         replyRatio: 1.0 + Math.random(),
         quoteRatio: 0.6 + Math.random(),
         engagementQuality: 1.5 + Math.random() * 2,
@@ -312,11 +370,29 @@ export const generateMockArchive = (): void => {
       weekStart: weekStart.toISOString(),
     };
     
+    const mockChadUser: UserEntry = {
+      id: `mock_chad_user_${i}`,
+      username: ['wisdom_dropper', 'based_poster', 'w_collector', 'gigabrain'][i - 1] || 'chaduser',
+      profileUrl: `https://x.com/${['wisdom_dropper', 'based_poster', 'w_collector', 'gigabrain'][i - 1]}`,
+      averageScore: {
+        score: 82 + Math.floor(Math.random() * 18),
+        replyRatio: 0.08 + Math.random() * 0.1,
+        quoteRatio: 0.1 + Math.random() * 0.15,
+        engagementQuality: 15 + Math.random() * 25,
+        rawTardScore: 8 + Math.random() * 12,
+      },
+      tweetCount: 15 + Math.floor(Math.random() * 10),
+      submittedAt: weekStart.toISOString(),
+      weekStart: weekStart.toISOString(),
+    };
+    
     mockWinners.push({
       weekStart: weekStart.toISOString(),
       weekEnd: weekEnd.toISOString(),
-      tardTweet: mockTweet,
-      tardPerson: mockUser,
+      tardTweet: mockTardTweet,
+      chadTweet: mockChadTweet,
+      tardPerson: mockTardUser,
+      chadPerson: mockChadUser,
     });
   }
   

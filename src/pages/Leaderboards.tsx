@@ -2,9 +2,13 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Trophy, Clock, ChevronDown, ChevronUp, User, MessageSquare, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import wojakCrying from "@/assets/wojak-crying.webp";
+import gigachad from "@/assets/gigachad.jpg";
 import { 
   getTardTweetOfWeek, 
+  getChadTweetOfWeek,
   getTardPersonOfWeek, 
+  getChadPersonOfWeek,
   getTimeUntilReset, 
   formatWeekRange,
   getCurrentWeekStart,
@@ -14,6 +18,8 @@ import {
   TweetEntry,
   UserEntry
 } from "@/lib/leaderboard";
+
+type WinnerType = 'tard' | 'chad';
 
 const MiniGauge = ({ score }: { score: number }) => {
   const getColor = (s: number) => {
@@ -40,7 +46,7 @@ const MiniGauge = ({ score }: { score: number }) => {
   );
 };
 
-const TweetCard = ({ entry, isCurrent }: { entry: TweetEntry; isCurrent?: boolean }) => (
+const TweetCard = ({ entry, isCurrent, type }: { entry: TweetEntry; isCurrent?: boolean; type: WinnerType }) => (
   <a 
     href={entry.tweetUrl} 
     target="_blank" 
@@ -50,7 +56,16 @@ const TweetCard = ({ entry, isCurrent }: { entry: TweetEntry; isCurrent?: boolea
     <div className="flex items-start justify-between gap-4">
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 mb-2">
-          {isCurrent && <Trophy className="w-5 h-5 text-amber-400" />}
+          {isCurrent && (
+            <>
+              <Trophy className="w-5 h-5 text-amber-400" />
+              <img 
+                src={type === 'tard' ? wojakCrying : gigachad} 
+                alt={type === 'tard' ? 'Wojak' : 'Gigachad'} 
+                className="w-6 h-6 rounded-full object-cover"
+              />
+            </>
+          )}
           <span className="text-muted-foreground">@{entry.authorUsername}</span>
         </div>
         <p className="text-xs text-muted-foreground truncate">
@@ -65,7 +80,7 @@ const TweetCard = ({ entry, isCurrent }: { entry: TweetEntry; isCurrent?: boolea
   </a>
 );
 
-const UserCard = ({ entry, isCurrent }: { entry: UserEntry; isCurrent?: boolean }) => (
+const UserCard = ({ entry, isCurrent, type }: { entry: UserEntry; isCurrent?: boolean; type: WinnerType }) => (
   <a 
     href={entry.profileUrl} 
     target="_blank" 
@@ -75,7 +90,16 @@ const UserCard = ({ entry, isCurrent }: { entry: UserEntry; isCurrent?: boolean 
     <div className="flex items-start justify-between gap-4">
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 mb-2">
-          {isCurrent && <Trophy className="w-5 h-5 text-amber-400" />}
+          {isCurrent && (
+            <>
+              <Trophy className="w-5 h-5 text-amber-400" />
+              <img 
+                src={type === 'tard' ? wojakCrying : gigachad} 
+                alt={type === 'tard' ? 'Wojak' : 'Gigachad'} 
+                className="w-6 h-6 rounded-full object-cover"
+              />
+            </>
+          )}
           <User className="w-4 h-4 text-primary" />
           <span className="font-semibold text-foreground">@{entry.username}</span>
         </div>
@@ -91,9 +115,62 @@ const UserCard = ({ entry, isCurrent }: { entry: UserEntry; isCurrent?: boolean 
   </a>
 );
 
+const EmptyState = ({ message, ctaText }: { message: string; ctaText: string }) => (
+  <div className="text-center py-8 text-muted-foreground">
+    <p className="text-lg mb-2">{message}</p>
+    <p className="text-sm">Be the first to submit this week's winner!</p>
+    <Link to="/">
+      <Button variant="calculate" className="mt-4">
+        {ctaText}
+      </Button>
+    </Link>
+  </div>
+);
+
+const LeaderboardSection = ({ 
+  title, 
+  emoji, 
+  entry, 
+  type,
+  emptyMessage,
+  ctaText,
+  isTweet 
+}: { 
+  title: string; 
+  emoji: string;
+  entry: TweetEntry | UserEntry | null; 
+  type: WinnerType;
+  emptyMessage: string;
+  ctaText: string;
+  isTweet: boolean;
+}) => (
+  <section>
+    <div className="flex items-center gap-2 mb-4">
+      <span className="text-xl">{emoji}</span>
+      <h2 className="text-xl font-display font-bold text-foreground">
+        {title}
+      </h2>
+    </div>
+    
+    <div className={`glass-card p-6 ${type === 'chad' ? 'border-primary/30' : 'border-destructive/30'}`}>
+      {entry ? (
+        isTweet ? (
+          <TweetCard entry={entry as TweetEntry} isCurrent type={type} />
+        ) : (
+          <UserCard entry={entry as UserEntry} isCurrent type={type} />
+        )
+      ) : (
+        <EmptyState message={emptyMessage} ctaText={ctaText} />
+      )}
+    </div>
+  </section>
+);
+
 const Leaderboards = () => {
   const [tardTweet, setTardTweet] = useState<TweetEntry | null>(null);
+  const [chadTweet, setChadTweet] = useState<TweetEntry | null>(null);
   const [tardPerson, setTardPerson] = useState<UserEntry | null>(null);
+  const [chadPerson, setChadPerson] = useState<UserEntry | null>(null);
   const [timeUntilReset, setTimeUntilReset] = useState(getTimeUntilReset());
   const [pastWinners, setPastWinners] = useState<WeeklyWinners[]>([]);
   const [showArchive, setShowArchive] = useState(false);
@@ -104,7 +181,9 @@ const Leaderboards = () => {
     
     // Load current week's winners
     setTardTweet(getTardTweetOfWeek());
+    setChadTweet(getChadTweetOfWeek());
     setTardPerson(getTardPersonOfWeek());
+    setChadPerson(getChadPersonOfWeek());
     setPastWinners(getPastWeekWinners());
 
     // Update countdown every minute
@@ -137,7 +216,7 @@ const Leaderboards = () => {
               🏆 LEADERBOARDS
             </h1>
             <p className="mt-2 text-muted-foreground">
-              Weekly Tard Champions
+              Weekly Tard & Chad Champions
             </p>
           </div>
         </div>
@@ -165,57 +244,51 @@ const Leaderboards = () => {
       <main className="flex-1 px-4 pb-16">
         <div className="max-w-2xl mx-auto space-y-8">
           
-          {/* Tard Tweet of the Week */}
-          <section>
-            <div className="flex items-center gap-2 mb-4">
-              <MessageSquare className="w-5 h-5 text-destructive" />
-              <h2 className="text-xl font-display font-bold text-foreground">
-                Tard Tweet of the Week
-              </h2>
-            </div>
+          {/* Tweet Leaderboards */}
+          <div className="grid gap-6 md:grid-cols-2">
+            <LeaderboardSection
+              title="Tard Tweet of the Week"
+              emoji="😭"
+              entry={tardTweet}
+              type="tard"
+              emptyMessage="No tweets analyzed yet!"
+              ctaText="Analyze a Tweet"
+              isTweet
+            />
             
-            <div className="glass-card p-6">
-              {tardTweet ? (
-                <TweetCard entry={tardTweet} isCurrent />
-              ) : (
-                <div className="text-center py-8 text-muted-foreground">
-                  <p className="text-lg mb-2">No tweets analyzed this week yet!</p>
-                  <p className="text-sm">Be the first to submit a tweet and claim the throne.</p>
-                  <Link to="/">
-                    <Button variant="calculate" className="mt-4">
-                      Analyze a Tweet
-                    </Button>
-                  </Link>
-                </div>
-              )}
-            </div>
-          </section>
+            <LeaderboardSection
+              title="Chad Tweet of the Week"
+              emoji="🗿"
+              entry={chadTweet}
+              type="chad"
+              emptyMessage="No tweets analyzed yet!"
+              ctaText="Analyze a Tweet"
+              isTweet
+            />
+          </div>
 
-          {/* Tard Person of the Week */}
-          <section>
-            <div className="flex items-center gap-2 mb-4">
-              <User className="w-5 h-5 text-destructive" />
-              <h2 className="text-xl font-display font-bold text-foreground">
-                Tard Person of the Week
-              </h2>
-            </div>
+          {/* Person Leaderboards */}
+          <div className="grid gap-6 md:grid-cols-2">
+            <LeaderboardSection
+              title="Tard Person of the Week"
+              emoji="😭"
+              entry={tardPerson}
+              type="tard"
+              emptyMessage="No profiles analyzed yet!"
+              ctaText="Analyze a Profile"
+              isTweet={false}
+            />
             
-            <div className="glass-card p-6">
-              {tardPerson ? (
-                <UserCard entry={tardPerson} isCurrent />
-              ) : (
-                <div className="text-center py-8 text-muted-foreground">
-                  <p className="text-lg mb-2">No profiles analyzed this week yet!</p>
-                  <p className="text-sm">Analyze a Twitter profile to see who's the most Tard.</p>
-                  <Link to="/">
-                    <Button variant="calculate" className="mt-4">
-                      Analyze a Profile
-                    </Button>
-                  </Link>
-                </div>
-              )}
-            </div>
-          </section>
+            <LeaderboardSection
+              title="Chad Person of the Week"
+              emoji="🗿"
+              entry={chadPerson}
+              type="chad"
+              emptyMessage="No profiles analyzed yet!"
+              ctaText="Analyze a Profile"
+              isTweet={false}
+            />
+          </div>
 
           {/* Previous Winners Archive */}
           <section>
@@ -243,24 +316,52 @@ const Leaderboards = () => {
                         Week of {formatWeekRange(week.weekStart)}
                       </h3>
                       
-                      <div className="space-y-4">
-                        {week.tardTweet && (
-                          <div>
-                            <p className="text-xs text-muted-foreground mb-2 flex items-center gap-1">
-                              <MessageSquare className="w-3 h-3" /> Tard Tweet
-                            </p>
-                            <TweetCard entry={week.tardTweet} />
-                          </div>
-                        )}
+                      <div className="grid gap-4 md:grid-cols-2">
+                        {/* Tard Winners */}
+                        <div className="space-y-3">
+                          <p className="text-xs font-bold text-destructive flex items-center gap-1">
+                            😭 TARD WINNERS
+                          </p>
+                          {week.tardTweet && (
+                            <div>
+                              <p className="text-xs text-muted-foreground mb-1 flex items-center gap-1">
+                                <MessageSquare className="w-3 h-3" /> Tweet
+                              </p>
+                              <TweetCard entry={week.tardTweet} type="tard" />
+                            </div>
+                          )}
+                          {week.tardPerson && (
+                            <div>
+                              <p className="text-xs text-muted-foreground mb-1 flex items-center gap-1">
+                                <User className="w-3 h-3" /> Person
+                              </p>
+                              <UserCard entry={week.tardPerson} type="tard" />
+                            </div>
+                          )}
+                        </div>
                         
-                        {week.tardPerson && (
-                          <div>
-                            <p className="text-xs text-muted-foreground mb-2 flex items-center gap-1">
-                              <User className="w-3 h-3" /> Tard Person
-                            </p>
-                            <UserCard entry={week.tardPerson} />
-                          </div>
-                        )}
+                        {/* Chad Winners */}
+                        <div className="space-y-3">
+                          <p className="text-xs font-bold text-primary flex items-center gap-1">
+                            🗿 CHAD WINNERS
+                          </p>
+                          {week.chadTweet && (
+                            <div>
+                              <p className="text-xs text-muted-foreground mb-1 flex items-center gap-1">
+                                <MessageSquare className="w-3 h-3" /> Tweet
+                              </p>
+                              <TweetCard entry={week.chadTweet} type="chad" />
+                            </div>
+                          )}
+                          {week.chadPerson && (
+                            <div>
+                              <p className="text-xs text-muted-foreground mb-1 flex items-center gap-1">
+                                <User className="w-3 h-3" /> Person
+                              </p>
+                              <UserCard entry={week.chadPerson} type="chad" />
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </div>
                   ))
