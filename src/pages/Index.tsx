@@ -1,23 +1,48 @@
 import { useState } from "react";
 import TweetInput from "@/components/TweetInput";
 import Gauge from "@/components/Gauge";
+import MetricsDisplay from "@/components/MetricsDisplay";
+import { extractTweetId, fetchTweetMetrics, calculateTardScore, TweetMetrics, TardScore } from "@/lib/twitter";
+import { toast } from "sonner";
 
 const Index = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [result, setResult] = useState<{ score: number; tweetUrl: string } | null>(null);
+  const [result, setResult] = useState<{
+    score: TardScore;
+    metrics: TweetMetrics;
+    tweetUrl: string;
+  } | null>(null);
 
   const handleSubmit = async (url: string) => {
+    // Extract tweet ID from URL
+    const tweetId = extractTweetId(url);
+    
+    if (!tweetId) {
+      toast.error("Invalid Twitter/X URL", {
+        description: "Please enter a valid tweet URL (e.g., https://x.com/user/status/123...)",
+      });
+      return;
+    }
+
     setIsLoading(true);
     setResult(null);
 
-    // Simulate API call with mock data
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-
-    // Generate a random score for demo purposes
-    const mockScore = Math.floor(Math.random() * 101);
-    
-    setResult({ score: mockScore, tweetUrl: url });
-    setIsLoading(false);
+    try {
+      // Fetch tweet metrics (mock for now)
+      const metrics = await fetchTweetMetrics(tweetId);
+      
+      // Calculate the tard score
+      const score = calculateTardScore(metrics);
+      
+      setResult({ score, metrics, tweetUrl: url });
+    } catch (error) {
+      console.error("Error fetching tweet:", error);
+      toast.error("Failed to analyze tweet", {
+        description: "Please try again later.",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleReset = () => {
@@ -59,7 +84,8 @@ const Index = () => {
                 </div>
               ) : result ? (
                 <>
-                  <Gauge score={result.score} />
+                  <Gauge score={result.score.score} />
+                  <MetricsDisplay metrics={result.metrics} score={result.score} />
                   <div className="mt-8 text-center">
                     <button
                       onClick={handleReset}
@@ -77,7 +103,7 @@ const Index = () => {
 
       {/* Footer */}
       <footer className="py-6 px-4 text-center text-muted-foreground text-sm">
-        <p>For entertainment purposes only. No actual analysis is performed yet.</p>
+        <p>Using mock data for demo. Real Twitter API integration coming soon.</p>
       </footer>
     </div>
   );
