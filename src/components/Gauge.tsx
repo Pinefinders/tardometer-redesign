@@ -96,9 +96,9 @@ const Gauge = ({ score, animated = true }: GaugeProps) => {
         </div>
 
         {/* Gauge Container */}
-        <div className="relative w-56 h-32 sm:w-72 sm:h-40 md:w-80 md:h-44">
-          {/* Mid Mascot - positioned at top center of arc */}
-          <div className="absolute left-1/2 -translate-x-1/2 -top-8 sm:-top-10 md:-top-12 z-10 flex flex-col items-center gap-1 transition-all duration-500">
+        <div className="relative w-56 h-32 sm:w-72 sm:h-40 md:w-80 md:h-44 mt-16 sm:mt-20 md:mt-24">
+          {/* Mid Mascot - positioned well above the arc's center */}
+          <div className="absolute left-1/2 -translate-x-1/2 -top-20 sm:-top-24 md:-top-28 z-10 flex flex-col items-center gap-1 transition-all duration-500">
             <div 
               className={`transition-all duration-500 rounded-full overflow-hidden border-2 ${getBorderColor("mid")} ${midStyles.size} ${midStyles.animation} ${midStyles.opacity}`}
               style={{ filter: midStyles.filter }}
