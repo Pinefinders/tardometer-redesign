@@ -4,6 +4,7 @@ import { Trophy, Clock, ChevronDown, ChevronUp, User, MessageSquare } from "luci
 import { Button } from "@/components/ui/button";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { hasNote } from "@/components/NotesSection";
 import wojakCrying from "@/assets/wojak-crying.webp";
 import wojakBrainlet from "@/assets/wojak-brainlet.webp";
 import gigachad from "@/assets/gigachad.jpg";
@@ -50,77 +51,87 @@ const MiniGauge = ({ score }: { score: number }) => {
   );
 };
 
-const TweetCard = ({ entry, isCurrent, type }: { entry: TweetEntry; isCurrent?: boolean; type: WinnerType }) => (
-  <div className="p-4 rounded-xl bg-secondary/50 border border-border/50">
-    <div className="flex items-start justify-between gap-4">
-      <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2 mb-2">
-          {isCurrent && (
-            <>
-              <Trophy className="w-5 h-5 text-amber-400" />
-              <img 
-                src={type === 'tard' ? wojakCrying : gigachad} 
-                alt={type === 'tard' ? 'Wojak' : 'Gigachad'} 
-                className="w-6 h-6 rounded-full object-cover"
-              />
-            </>
-          )}
-          <span className="text-muted-foreground">@{entry.authorUsername}</span>
+const TweetCard = ({ entry, isCurrent, type }: { entry: TweetEntry; isCurrent?: boolean; type: WinnerType }) => {
+  const noteExists = hasNote('tweet', entry.tweetId);
+  
+  return (
+    <div className="p-4 rounded-xl bg-secondary/50 border border-border/50">
+      <div className="flex items-start justify-between gap-4">
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 mb-2">
+            {isCurrent && (
+              <>
+                <Trophy className="w-5 h-5 text-amber-400" />
+                <img 
+                  src={type === 'tard' ? wojakCrying : gigachad} 
+                  alt={type === 'tard' ? 'Wojak' : 'Gigachad'} 
+                  className="w-6 h-6 rounded-full object-cover"
+                />
+              </>
+            )}
+            <span className="text-muted-foreground">@{entry.authorUsername}</span>
+            {noteExists && <span title="Has notes">📝</span>}
+          </div>
+          <p className="text-xs text-muted-foreground mt-1">
+            Submitted {new Date(entry.submittedAt).toLocaleDateString()}
+          </p>
+          <a 
+            href={entry.tweetUrl} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 mt-2 text-sm text-primary hover:underline font-medium"
+          >
+            Go to Tweet →
+          </a>
         </div>
-        <p className="text-xs text-muted-foreground mt-1">
-          Submitted {new Date(entry.submittedAt).toLocaleDateString()}
-        </p>
-        <a 
-          href={entry.tweetUrl} 
-          target="_blank" 
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-1 mt-2 text-sm text-primary hover:underline font-medium"
-        >
-          Go to Tweet →
-        </a>
+        <MiniGauge score={entry.score.score} />
       </div>
-      <MiniGauge score={entry.score.score} />
     </div>
-  </div>
-);
+  );
+};
 
-const UserCard = ({ entry, isCurrent, type }: { entry: UserEntry; isCurrent?: boolean; type: WinnerType }) => (
-  <div className="p-4 rounded-xl bg-secondary/50 border border-border/50">
-    <div className="flex items-start justify-between gap-4">
-      <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2 mb-2">
-          {isCurrent && (
-            <>
-              <Trophy className="w-5 h-5 text-amber-400" />
-              <img 
-                src={type === 'tard' ? wojakCrying : gigachad} 
-                alt={type === 'tard' ? 'Wojak' : 'Gigachad'} 
-                className="w-6 h-6 rounded-full object-cover"
-              />
-            </>
-          )}
-          <User className="w-4 h-4 text-primary" />
-          <span className="font-semibold text-foreground">@{entry.username}</span>
+const UserCard = ({ entry, isCurrent, type }: { entry: UserEntry; isCurrent?: boolean; type: WinnerType }) => {
+  const noteExists = hasNote('user', entry.username);
+  
+  return (
+    <div className="p-4 rounded-xl bg-secondary/50 border border-border/50">
+      <div className="flex items-start justify-between gap-4">
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 mb-2">
+            {isCurrent && (
+              <>
+                <Trophy className="w-5 h-5 text-amber-400" />
+                <img 
+                  src={type === 'tard' ? wojakCrying : gigachad} 
+                  alt={type === 'tard' ? 'Wojak' : 'Gigachad'} 
+                  className="w-6 h-6 rounded-full object-cover"
+                />
+              </>
+            )}
+            <User className="w-4 h-4 text-primary" />
+            <span className="font-semibold text-foreground">@{entry.username}</span>
+            {noteExists && <span title="Has notes">📝</span>}
+          </div>
+          <p className="text-xs text-muted-foreground">
+            Based on {entry.tweetCount} tweets analyzed
+          </p>
+          <p className="text-xs text-muted-foreground mt-1">
+            Submitted {new Date(entry.submittedAt).toLocaleDateString()}
+          </p>
+          <a 
+            href={entry.profileUrl} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 mt-2 text-sm text-primary hover:underline font-medium"
+          >
+            Visit profile →
+          </a>
         </div>
-        <p className="text-xs text-muted-foreground">
-          Based on {entry.tweetCount} tweets analyzed
-        </p>
-        <p className="text-xs text-muted-foreground mt-1">
-          Submitted {new Date(entry.submittedAt).toLocaleDateString()}
-        </p>
-        <a 
-          href={entry.profileUrl} 
-          target="_blank" 
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-1 mt-2 text-sm text-primary hover:underline font-medium"
-        >
-          Visit profile →
-        </a>
+        <MiniGauge score={entry.averageScore.score} />
       </div>
-      <MiniGauge score={entry.averageScore.score} />
     </div>
-  </div>
-);
+  );
+};
 
 const EmptyState = ({ message, ctaText }: { message: string; ctaText: string }) => (
   <div className="text-center py-8 text-muted-foreground">

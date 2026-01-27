@@ -8,6 +8,7 @@ import BookmarkletSection from "@/components/BookmarkletSection";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ShareButton from "@/components/ShareButton";
+import NotesSection from "@/components/NotesSection";
 import { Trophy } from "lucide-react";
 
 import { 
@@ -301,6 +302,7 @@ const Index = () => {
                           tweetUrl={result.tweetUrl} 
                         />
                       </div>
+                      <NotesSection type="tweet" identifier={result.metrics.tweetId} />
                     </>
                   ) : (
                     <>
@@ -312,6 +314,7 @@ const Index = () => {
                           username={result.analysis.username} 
                         />
                       </div>
+                      <NotesSection type="user" identifier={result.analysis.username} />
                     </>
                   )}
                 </div>
