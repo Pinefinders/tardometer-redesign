@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
 import wojakCrying from "@/assets/wojak-crying.webp";
 import gigachad from "@/assets/gigachad.jpg";
+// TODO: Replace with actual Pepe image
+// import smugPepe from "@/assets/smug-pepe.png";
 
 interface GaugeProps {
   score: number; // 0-100
   animated?: boolean;
 }
+
+type Zone = "tard" | "mid" | "based";
 
 const Gauge = ({ score, animated = true }: GaugeProps) => {
   const [displayScore, setDisplayScore] = useState(animated ? 0 : score);
@@ -23,77 +27,78 @@ const Gauge = ({ score, animated = true }: GaugeProps) => {
   // Convert score (0-100) to rotation angle (-90 to 90 degrees)
   const needleRotation = -90 + (displayScore / 100) * 180;
 
-  // Determine the label and color based on score
-  const getScoreInfo = (s: number) => {
-    if (s <= 33) return { label: "TARD", colorClass: "text-destructive", glowClass: "glow-tard", zone: "tard" as const };
-    if (s <= 66) return { label: "MID", colorClass: "text-accent", glowClass: "glow-mid", zone: "mid" as const };
-    return { label: "BASED", colorClass: "text-primary", glowClass: "glow-based", zone: "based" as const };
+  // Updated zone detection: 0-24 = TARD, 25-75 = MID, 76-100 = BASED
+  const getScoreInfo = (s: number): { label: string; colorClass: string; glowClass: string; zone: Zone } => {
+    if (s <= 24) return { label: "TARD", colorClass: "text-destructive", glowClass: "glow-tard", zone: "tard" };
+    if (s <= 75) return { label: "MID", colorClass: "text-accent", glowClass: "glow-mid", zone: "mid" };
+    return { label: "BASED", colorClass: "text-primary", glowClass: "glow-based", zone: "based" };
   };
 
   const scoreInfo = getScoreInfo(displayScore);
 
-  // Mascot styles based on zone
-  const getTardMascotStyles = () => {
-    if (scoreInfo.zone === "tard") {
+  // Mascot styles based on active zone
+  const getMascotStyles = (mascotZone: Zone) => {
+    const isActive = scoreInfo.zone === mascotZone;
+    
+    if (isActive) {
       return {
         size: "w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24",
         animation: "animate-bounce-slow",
-        filter: "drop-shadow(0 0 20px hsl(0, 84%, 60%))",
+        filter: mascotZone === "tard" 
+          ? "drop-shadow(0 0 20px hsl(0, 84%, 60%))"
+          : mascotZone === "mid"
+          ? "drop-shadow(0 0 20px hsl(45, 100%, 55%))"
+          : "drop-shadow(0 0 20px hsl(142, 76%, 45%))",
         opacity: "opacity-100",
       };
     }
-    if (scoreInfo.zone === "based") {
-      return {
-        size: "w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14",
-        animation: "",
-        filter: "grayscale(100%)",
-        opacity: "opacity-40",
-      };
-    }
+    
+    // Inactive mascots
     return {
-      size: "w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16",
+      size: "w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14",
       animation: "",
-      filter: "",
-      opacity: "opacity-70",
+      filter: "grayscale(100%)",
+      opacity: "opacity-40",
     };
   };
 
-  const getBasedMascotStyles = () => {
-    if (scoreInfo.zone === "based") {
-      return {
-        size: "w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24",
-        animation: "animate-bounce-slow",
-        filter: "drop-shadow(0 0 20px hsl(142, 76%, 45%))",
-        opacity: "opacity-100",
-      };
-    }
-    if (scoreInfo.zone === "tard") {
-      return {
-        size: "w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14",
-        animation: "",
-        filter: "grayscale(100%)",
-        opacity: "opacity-40",
-      };
-    }
-    return {
-      size: "w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16",
-      animation: "",
-      filter: "",
-      opacity: "opacity-70",
-    };
-  };
+  const tardStyles = getMascotStyles("tard");
+  const midStyles = getMascotStyles("mid");
+  const basedStyles = getMascotStyles("based");
 
-  const tardStyles = getTardMascotStyles();
-  const basedStyles = getBasedMascotStyles();
+  // Border colors for each mascot
+  const getBorderColor = (zone: Zone) => {
+    switch (zone) {
+      case "tard": return "border-destructive/50";
+      case "mid": return "border-accent/50";
+      case "based": return "border-primary/50";
+    }
+  };
 
   return (
     <div className="flex flex-col items-center gap-6">
-      {/* Gauge with Mascots */}
+      {/* Mid Mascot (Center/Top) */}
+      <div className="flex flex-col items-center gap-1 transition-all duration-500">
+        <div 
+          className={`transition-all duration-500 rounded-full overflow-hidden border-2 ${getBorderColor("mid")} ${midStyles.size} ${midStyles.animation} ${midStyles.opacity}`}
+          style={{ filter: midStyles.filter }}
+        >
+          {/* Placeholder for Pepe - using a colored div until image is provided */}
+          <div className="w-full h-full bg-accent/30 flex items-center justify-center text-accent font-bold text-xs">
+            PEPE
+          </div>
+        </div>
+        <span className={`text-xs font-bold text-accent transition-opacity duration-500 ${scoreInfo.zone === "mid" ? "opacity-100" : "opacity-50"}`}>
+          MID
+        </span>
+      </div>
+
+      {/* Gauge with Side Mascots */}
       <div className="flex items-end justify-center gap-2 sm:gap-4">
         {/* Tard Mascot (Left) */}
         <div className="flex flex-col items-center gap-1 translate-y-2 transition-all duration-500">
           <div 
-            className={`transition-all duration-500 rounded-full overflow-hidden border-2 border-destructive/50 ${tardStyles.size} ${tardStyles.animation} ${tardStyles.opacity}`}
+            className={`transition-all duration-500 rounded-full overflow-hidden border-2 ${getBorderColor("tard")} ${tardStyles.size} ${tardStyles.animation} ${tardStyles.opacity}`}
             style={{ filter: tardStyles.filter }}
           >
             <img 
@@ -118,7 +123,8 @@ const Gauge = ({ score, animated = true }: GaugeProps) => {
             <defs>
               <linearGradient id="gaugeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
                 <stop offset="0%" stopColor="hsl(0, 84%, 60%)" />
-                <stop offset="50%" stopColor="hsl(45, 100%, 55%)" />
+                <stop offset="25%" stopColor="hsl(45, 100%, 55%)" />
+                <stop offset="75%" stopColor="hsl(45, 100%, 55%)" />
                 <stop offset="100%" stopColor="hsl(142, 76%, 45%)" />
               </linearGradient>
               <filter id="glow">
@@ -149,8 +155,8 @@ const Gauge = ({ score, animated = true }: GaugeProps) => {
               filter="url(#glow)"
             />
 
-            {/* Tick marks */}
-            {[0, 25, 50, 75, 100].map((tick) => {
+            {/* Tick marks - updated for new zones */}
+            {[0, 24, 50, 75, 100].map((tick) => {
               const angle = -180 + (tick / 100) * 180;
               const rad = (angle * Math.PI) / 180;
               const innerR = 60;
@@ -190,7 +196,7 @@ const Gauge = ({ score, animated = true }: GaugeProps) => {
         {/* Based Mascot (Right) */}
         <div className="flex flex-col items-center gap-1 translate-y-2 transition-all duration-500">
           <div 
-            className={`transition-all duration-500 rounded-full overflow-hidden border-2 border-primary/50 ${basedStyles.size} ${basedStyles.animation} ${basedStyles.opacity}`}
+            className={`transition-all duration-500 rounded-full overflow-hidden border-2 ${getBorderColor("based")} ${basedStyles.size} ${basedStyles.animation} ${basedStyles.opacity}`}
             style={{ filter: basedStyles.filter }}
           >
             <img 
