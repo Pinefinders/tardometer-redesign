@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Trophy, Clock, ChevronDown, ChevronUp, User, MessageSquare, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import wojakCrying from "@/assets/wojak-crying.webp";
+import wojakBrainlet from "@/assets/wojak-brainlet.webp";
 import gigachad from "@/assets/gigachad.jpg";
 import { 
   getTardTweetOfWeek, 
@@ -290,8 +291,26 @@ const Leaderboards = () => {
             />
           </div>
 
-          {/* Tweet Leaderboards */}
+          {/* Tweet Column Headers */}
           <div className="grid gap-6 md:grid-cols-2">
+            <div className="flex flex-col items-center">
+              <img 
+                src={wojakBrainlet} 
+                alt="Wojak Brainlet" 
+                className="w-16 h-16 rounded-full object-cover border-2 border-destructive/50 mb-2 bg-white"
+              />
+            </div>
+            <div className="flex flex-col items-center">
+              <img 
+                src={gigachad} 
+                alt="Gigachad" 
+                className="w-16 h-16 rounded-full object-cover border-2 border-primary/50 mb-2"
+              />
+            </div>
+          </div>
+
+          {/* Tweet Leaderboards */}
+          <div className="grid gap-6 md:grid-cols-2 -mt-4">
             <LeaderboardSection
               title="Tard Tweet"
               emoji="😭"
