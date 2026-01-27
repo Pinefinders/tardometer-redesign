@@ -4,6 +4,35 @@ import Gauge from "@/components/Gauge";
 import MetricsDisplay from "@/components/MetricsDisplay";
 import { extractTweetId, fetchTweetMetrics, calculateTardScore, TweetMetrics, TardScore } from "@/lib/twitter";
 import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+
+// Example presets for demonstration
+const EXAMPLE_TARD: TweetMetrics = {
+  likes: 500,
+  replies: 2500,
+  retweets: 100,
+  quoteRetweets: 400,
+  tweetId: "example_tard",
+  authorUsername: "ratio_king",
+};
+
+const EXAMPLE_BASED: TweetMetrics = {
+  likes: 50000,
+  replies: 1200,
+  retweets: 12000,
+  quoteRetweets: 300,
+  tweetId: "example_based",
+  authorUsername: "gigachad_poster",
+};
+
+const EXAMPLE_MID: TweetMetrics = {
+  likes: 2000,
+  replies: 800,
+  retweets: 400,
+  quoteRetweets: 150,
+  tweetId: "example_mid",
+  authorUsername: "average_poster",
+};
 
 const Index = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -11,6 +40,7 @@ const Index = () => {
     score: TardScore;
     metrics: TweetMetrics;
     tweetUrl: string;
+    exampleType?: "tard" | "based" | "mid";
   } | null>(null);
 
   const handleSubmit = async (url: string) => {
@@ -45,6 +75,25 @@ const Index = () => {
     }
   };
 
+  const showExample = async (type: "tard" | "based" | "mid") => {
+    setIsLoading(true);
+    setResult(null);
+
+    // Simulate loading
+    await new Promise((resolve) => setTimeout(resolve, 800));
+
+    const metrics = type === "tard" ? EXAMPLE_TARD : type === "based" ? EXAMPLE_BASED : EXAMPLE_MID;
+    const score = calculateTardScore(metrics);
+
+    setResult({
+      score,
+      metrics,
+      tweetUrl: `https://x.com/${metrics.authorUsername}/status/${metrics.tweetId}`,
+      exampleType: type,
+    });
+    setIsLoading(false);
+  };
+
   const handleReset = () => {
     setResult(null);
   };
@@ -66,9 +115,44 @@ const Index = () => {
       {/* Main Content */}
       <main className="flex-1 flex flex-col items-center justify-start px-4 pb-16">
         {/* Input Section */}
-        <div className="w-full max-w-xl mb-12">
+        <div className="w-full max-w-xl mb-6">
           <TweetInput onSubmit={handleSubmit} isLoading={isLoading} />
         </div>
+
+        {/* Example Buttons */}
+        {!result && !isLoading && (
+          <div className="w-full max-w-xl mb-12">
+            <div className="text-center">
+              <p className="text-sm text-muted-foreground mb-3">Or try an example:</p>
+              <div className="flex flex-wrap justify-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => showExample("tard")}
+                  className="border-destructive/50 text-destructive hover:bg-destructive/10 hover:text-destructive"
+                >
+                  😭 Tard Example
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => showExample("mid")}
+                  className="border-accent/50 text-accent hover:bg-accent/10 hover:text-accent"
+                >
+                  😐 Mid Example
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => showExample("based")}
+                  className="border-primary/50 text-primary hover:bg-primary/10 hover:text-primary"
+                >
+                  🗿 Based Example
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Results Section */}
         {(result || isLoading) && (
@@ -84,6 +168,15 @@ const Index = () => {
                 </div>
               ) : result ? (
                 <>
+                  {result.exampleType && (
+                    <div className="text-center mb-4">
+                      <span className="inline-block px-3 py-1 text-xs font-medium rounded-full bg-muted text-muted-foreground">
+                        {result.exampleType === "tard" && "Example: Getting ratio'd hard"}
+                        {result.exampleType === "mid" && "Example: Average engagement"}
+                        {result.exampleType === "based" && "Example: Viral banger"}
+                      </span>
+                    </div>
+                  )}
                   <Gauge score={result.score.score} />
                   <MetricsDisplay metrics={result.metrics} score={result.score} />
                   <div className="mt-8 text-center">
