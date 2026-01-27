@@ -358,7 +358,7 @@ const Leaderboards = () => {
                   alt="Wojak Brainlet" 
                   className="w-32 h-32 rounded-full object-cover border-2 border-destructive/50 mb-2 bg-white"
                 />
-                <h2 className="text-lg font-display font-bold text-destructive">TARD TWEET OF THE WEEK</h2>
+                <h2 className="text-lg font-display font-bold text-destructive">TARDED TWEET OF THE WEEK</h2>
               </div>
             </div>
 
@@ -415,7 +415,7 @@ const Leaderboards = () => {
                   alt="Wojak Brainlet" 
                   className="w-24 h-24 rounded-full object-cover border-2 border-destructive/50 mb-2 bg-white"
                 />
-                <h2 className="text-lg font-display font-bold text-destructive mb-4">TARD TWEET OF THE WEEK</h2>
+                <h2 className="text-lg font-display font-bold text-destructive mb-4">TARDED TWEET OF THE WEEK</h2>
                 <div className="w-full">
                   <LeaderboardSection
                     title=""
