@@ -41,7 +41,7 @@ const Gauge = ({ score, animated = true }: GaugeProps) => {
     
     if (isActive) {
       return {
-        size: "w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24",
+        size: "w-12 h-12 sm:w-20 sm:h-20 md:w-24 md:h-24",
         animation: "animate-bounce-slow",
         filter: mascotZone === "tard" 
           ? "drop-shadow(0 0 20px hsl(0, 84%, 60%))"
@@ -54,7 +54,7 @@ const Gauge = ({ score, animated = true }: GaugeProps) => {
     
     // Inactive mascots
     return {
-      size: "w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14",
+      size: "w-8 h-8 sm:w-12 sm:h-12 md:w-14 md:h-14",
       animation: "",
       filter: "grayscale(100%)",
       opacity: "opacity-40",
@@ -75,9 +75,9 @@ const Gauge = ({ score, animated = true }: GaugeProps) => {
   };
 
   return (
-    <div className="flex flex-col items-center gap-6">
+    <div className="flex flex-col items-center gap-6 px-4">
       {/* Gauge with All Mascots */}
-      <div className="flex items-end justify-center gap-2 sm:gap-4">
+      <div className="flex items-end justify-center gap-1 sm:gap-4 w-full max-w-[320px] sm:max-w-none">
         {/* Tard Mascot (Left) */}
         <div className="flex flex-col items-center gap-1 translate-y-2 transition-all duration-500">
           <div 
@@ -95,10 +95,9 @@ const Gauge = ({ score, animated = true }: GaugeProps) => {
           </span>
         </div>
 
-        {/* Gauge Container */}
-        <div className="relative w-56 h-32 sm:w-72 sm:h-40 md:w-80 md:h-44 mt-16 sm:mt-20 md:mt-24">
+        <div className="relative w-44 h-28 sm:w-72 sm:h-40 md:w-80 md:h-44 mt-12 sm:mt-20 md:mt-24">
           {/* Mid Mascot - positioned well above the arc's center */}
-          <div className="absolute left-1/2 -translate-x-1/2 -top-20 sm:-top-24 md:-top-28 z-10 flex flex-col items-center gap-1 transition-all duration-500">
+          <div className="absolute left-1/2 -translate-x-1/2 -top-16 sm:-top-24 md:-top-28 z-10 flex flex-col items-center gap-1 transition-all duration-500">
             <div 
               className={`transition-all duration-500 rounded-full overflow-hidden border-2 ${getBorderColor("mid")} ${midStyles.size} ${midStyles.animation} ${midStyles.opacity}`}
               style={{ filter: midStyles.filter }}
@@ -185,7 +184,7 @@ const Gauge = ({ score, animated = true }: GaugeProps) => {
             className="absolute bottom-2 left-1/2 -translate-x-1/2 origin-bottom animate-needle"
             style={{ transform: `translateX(-50%) rotate(${needleRotation}deg)` }}
           >
-            <div className="w-1 h-20 sm:h-24 md:h-28 bg-gradient-to-t from-foreground via-foreground to-transparent rounded-full" />
+            <div className="w-1 h-16 sm:h-24 md:h-28 bg-gradient-to-t from-foreground via-foreground to-transparent rounded-full" />
             <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-5 h-5 rounded-full bg-foreground border-2 border-muted" />
           </div>
 
