@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Lock } from "lucide-react";
 
-const BETA_PASSWORD = "tardometer2026";
+const BETA_PASSWORD = "Retard1";
 const AUTH_KEY = "tardometer_beta_auth";
 
 interface PasswordGateProps {
