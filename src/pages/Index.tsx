@@ -110,7 +110,7 @@ const Index = () => {
                 <div className="relative">
                   <button
                     onClick={handleReset}
-                    className="absolute -top-2 right-0 text-xs text-muted-foreground hover:text-foreground transition-colors px-3 py-1 rounded-full bg-muted/50 hover:bg-muted"
+                    className="absolute -top-2 right-0 text-sm text-muted-foreground hover:text-foreground transition-colors px-4 py-2 rounded-full bg-muted/50 hover:bg-muted font-medium"
                   >
                     ✕ Reset
                   </button>
