@@ -249,90 +249,186 @@ const Leaderboards = () => {
       <main className="flex-1 px-4 pb-16">
         <div className="max-w-2xl mx-auto space-y-8">
           
-          {/* Column Headers with Mascots */}
-          <div className="grid gap-6 md:grid-cols-2">
-            <div className="flex flex-col items-center">
-              <img 
-                src={wojakCrying} 
-                alt="Wojak Crying" 
-                className="w-32 h-32 rounded-full object-cover border-2 border-destructive/50 mb-2"
-              />
-              <h2 className="text-lg font-display font-bold text-destructive">TARD OF THE WEEK</h2>
+          {/* Tweet Section */}
+          <div className="space-y-4">
+            {/* Tweet Headers - Desktop: side by side, Mobile: stacked with content */}
+            <div className="hidden md:grid md:grid-cols-2 gap-6">
+              <div className="flex flex-col items-center">
+                <img 
+                  src={wojakBrainlet} 
+                  alt="Wojak Brainlet" 
+                  className="w-32 h-32 rounded-full object-cover border-2 border-destructive/50 mb-2 bg-white"
+                />
+                <h2 className="text-lg font-display font-bold text-destructive">TARD TWEET OF THE WEEK</h2>
+              </div>
+              <div className="flex flex-col items-center">
+                <img 
+                  src={gigachadLaptop} 
+                  alt="Gigachad with Laptop" 
+                  className="w-32 h-32 rounded-full object-cover border-2 border-primary/50 mb-2"
+                />
+                <h2 className="text-lg font-display font-bold text-primary">CHAD TWEET OF THE WEEK</h2>
+              </div>
             </div>
-            <div className="flex flex-col items-center">
-              <img 
-                src={gigachad} 
-                alt="Gigachad" 
-                className="w-32 h-32 rounded-full object-cover border-2 border-primary/50 mb-2"
+
+            {/* Desktop: Tweet boxes side by side */}
+            <div className="hidden md:grid md:grid-cols-2 gap-6">
+              <LeaderboardSection
+                title=""
+                emoji=""
+                entry={tardTweet}
+                type="tard"
+                emptyMessage="No tweets analyzed yet!"
+                ctaText="Analyze a Tweet"
+                isTweet
               />
-              <h2 className="text-lg font-display font-bold text-primary">CHAD OF THE WEEK</h2>
+              
+              <LeaderboardSection
+                title=""
+                emoji=""
+                entry={chadTweet}
+                type="chad"
+                emptyMessage="No tweets analyzed yet!"
+                ctaText="Analyze a Tweet"
+                isTweet
+              />
+            </div>
+
+            {/* Mobile: Tard Tweet first, then Chad Tweet */}
+            <div className="md:hidden space-y-6">
+              {/* Tard Tweet */}
+              <div className="flex flex-col items-center">
+                <img 
+                  src={wojakBrainlet} 
+                  alt="Wojak Brainlet" 
+                  className="w-24 h-24 rounded-full object-cover border-2 border-destructive/50 mb-2 bg-white"
+                />
+                <h2 className="text-lg font-display font-bold text-destructive mb-4">TARD TWEET OF THE WEEK</h2>
+                <div className="w-full">
+                  <LeaderboardSection
+                    title=""
+                    emoji=""
+                    entry={tardTweet}
+                    type="tard"
+                    emptyMessage="No tweets analyzed yet!"
+                    ctaText="Analyze a Tweet"
+                    isTweet
+                  />
+                </div>
+              </div>
+              
+              {/* Chad Tweet */}
+              <div className="flex flex-col items-center">
+                <img 
+                  src={gigachadLaptop} 
+                  alt="Gigachad with Laptop" 
+                  className="w-24 h-24 rounded-full object-cover border-2 border-primary/50 mb-2"
+                />
+                <h2 className="text-lg font-display font-bold text-primary mb-4">CHAD TWEET OF THE WEEK</h2>
+                <div className="w-full">
+                  <LeaderboardSection
+                    title=""
+                    emoji=""
+                    entry={chadTweet}
+                    type="chad"
+                    emptyMessage="No tweets analyzed yet!"
+                    ctaText="Analyze a Tweet"
+                    isTweet
+                  />
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Person Leaderboards */}
-          <div className="grid gap-6 md:grid-cols-2">
-            <LeaderboardSection
-              title=""
-              emoji=""
-              entry={tardPerson}
-              type="tard"
-              emptyMessage="No profiles analyzed yet!"
-              ctaText="Analyze a Profile"
-              isTweet={false}
-            />
-            
-            <LeaderboardSection
-              title=""
-              emoji=""
-              entry={chadPerson}
-              type="chad"
-              emptyMessage="No profiles analyzed yet!"
-              ctaText="Analyze a Profile"
-              isTweet={false}
-            />
-          </div>
-
-          {/* Tweet Column Headers */}
-          <div className="grid gap-6 md:grid-cols-2">
-            <div className="flex flex-col items-center">
-              <img 
-                src={wojakBrainlet} 
-                alt="Wojak Brainlet" 
-                className="w-32 h-32 rounded-full object-cover border-2 border-destructive/50 mb-2 bg-white"
-              />
-              <h2 className="text-lg font-display font-bold text-destructive">TARD TWEET OF THE WEEK</h2>
+          {/* Person Section */}
+          <div className="space-y-4">
+            {/* Person Headers - Desktop only */}
+            <div className="hidden md:grid md:grid-cols-2 gap-6">
+              <div className="flex flex-col items-center">
+                <img 
+                  src={wojakCrying} 
+                  alt="Wojak Crying" 
+                  className="w-32 h-32 rounded-full object-cover border-2 border-destructive/50 mb-2"
+                />
+                <h2 className="text-lg font-display font-bold text-destructive">TARD OF THE WEEK</h2>
+              </div>
+              <div className="flex flex-col items-center">
+                <img 
+                  src={gigachad} 
+                  alt="Gigachad" 
+                  className="w-32 h-32 rounded-full object-cover border-2 border-primary/50 mb-2"
+                />
+                <h2 className="text-lg font-display font-bold text-primary">CHAD OF THE WEEK</h2>
+              </div>
             </div>
-            <div className="flex flex-col items-center">
-              <img 
-                src={gigachadLaptop} 
-                alt="Gigachad with Laptop" 
-                className="w-32 h-32 rounded-full object-cover border-2 border-primary/50 mb-2"
-              />
-              <h2 className="text-lg font-display font-bold text-primary">CHAD TWEET OF THE WEEK</h2>
-            </div>
-          </div>
 
-          {/* Tweet Leaderboards */}
-          <div className="grid gap-6 md:grid-cols-2 -mt-4">
-            <LeaderboardSection
-              title=""
-              emoji=""
-              entry={tardTweet}
-              type="tard"
-              emptyMessage="No tweets analyzed yet!"
-              ctaText="Analyze a Tweet"
-              isTweet
-            />
-            
-            <LeaderboardSection
-              title=""
-              emoji=""
-              entry={chadTweet}
-              type="chad"
-              emptyMessage="No tweets analyzed yet!"
-              ctaText="Analyze a Tweet"
-              isTweet
-            />
+            {/* Desktop: Person boxes side by side */}
+            <div className="hidden md:grid md:grid-cols-2 gap-6">
+              <LeaderboardSection
+                title=""
+                emoji=""
+                entry={tardPerson}
+                type="tard"
+                emptyMessage="No profiles analyzed yet!"
+                ctaText="Analyze a Profile"
+                isTweet={false}
+              />
+              
+              <LeaderboardSection
+                title=""
+                emoji=""
+                entry={chadPerson}
+                type="chad"
+                emptyMessage="No profiles analyzed yet!"
+                ctaText="Analyze a Profile"
+                isTweet={false}
+              />
+            </div>
+
+            {/* Mobile: Tard Person first, then Chad Person */}
+            <div className="md:hidden space-y-6">
+              {/* Tard Person */}
+              <div className="flex flex-col items-center">
+                <img 
+                  src={wojakCrying} 
+                  alt="Wojak Crying" 
+                  className="w-24 h-24 rounded-full object-cover border-2 border-destructive/50 mb-2"
+                />
+                <h2 className="text-lg font-display font-bold text-destructive mb-4">TARD OF THE WEEK</h2>
+                <div className="w-full">
+                  <LeaderboardSection
+                    title=""
+                    emoji=""
+                    entry={tardPerson}
+                    type="tard"
+                    emptyMessage="No profiles analyzed yet!"
+                    ctaText="Analyze a Profile"
+                    isTweet={false}
+                  />
+                </div>
+              </div>
+              
+              {/* Chad Person */}
+              <div className="flex flex-col items-center">
+                <img 
+                  src={gigachad} 
+                  alt="Gigachad" 
+                  className="w-24 h-24 rounded-full object-cover border-2 border-primary/50 mb-2"
+                />
+                <h2 className="text-lg font-display font-bold text-primary mb-4">CHAD OF THE WEEK</h2>
+                <div className="w-full">
+                  <LeaderboardSection
+                    title=""
+                    emoji=""
+                    entry={chadPerson}
+                    type="chad"
+                    emptyMessage="No profiles analyzed yet!"
+                    ctaText="Analyze a Profile"
+                    isTweet={false}
+                  />
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Previous Winners Archive */}
