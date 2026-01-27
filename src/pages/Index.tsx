@@ -5,7 +5,7 @@ import Gauge from "@/components/Gauge";
 import MetricsDisplay from "@/components/MetricsDisplay";
 import UserResultDisplay from "@/components/UserResultDisplay";
 import BookmarkletSection from "@/components/BookmarkletSection";
-import { Trophy } from "lucide-react";
+
 import { 
   parseTwitterUrl, 
   fetchTweetMetrics, 
@@ -147,15 +147,9 @@ const Index = () => {
               to="/leaderboards"
               className="block glass-card p-4 text-center hover:border-primary/50 transition-colors group"
             >
-              <div className="flex items-center justify-center gap-2">
-                <Trophy className="w-5 h-5 text-accent group-hover:text-primary transition-colors" />
-                <span className="font-semibold text-foreground group-hover:text-primary transition-colors">
-                  View Weekly Leaderboards
-                </span>
-              </div>
-              <p className="text-sm text-muted-foreground mt-1">
-                See this week's Tard 😭 & Chad 🗿 champions
-              </p>
+              <span className="font-semibold text-foreground group-hover:text-primary transition-colors">
+                View Weekly Leaderboards
+              </span>
             </Link>
           </div>
         )}
