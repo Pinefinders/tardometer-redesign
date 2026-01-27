@@ -300,6 +300,7 @@ const Leaderboards = () => {
                 alt="Wojak Brainlet" 
                 className="w-32 h-32 rounded-full object-cover border-2 border-destructive/50 mb-2 bg-white"
               />
+              <h2 className="text-lg font-display font-bold text-destructive">TARD TWEET OF THE WEEK</h2>
             </div>
             <div className="flex flex-col items-center">
               <img 
@@ -307,6 +308,7 @@ const Leaderboards = () => {
                 alt="Gigachad with Laptop" 
                 className="w-32 h-32 rounded-full object-cover border-2 border-primary/50 mb-2"
               />
+              <h2 className="text-lg font-display font-bold text-primary">CHAD TWEET OF THE WEEK</h2>
             </div>
           </div>
 
