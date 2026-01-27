@@ -154,7 +154,7 @@ const Index = () => {
                 </span>
               </div>
               <p className="text-sm text-muted-foreground mt-1">
-                See this week's Tard champions 🏆
+                See this week's Tard 😭 & Chad 🗿 champions
               </p>
             </Link>
           </div>
