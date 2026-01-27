@@ -72,7 +72,7 @@ const TweetCard = ({ entry, isCurrent, type }: { entry: TweetEntry; isCurrent?: 
           rel="noopener noreferrer"
           className="inline-flex items-center gap-1 mt-2 text-sm text-primary hover:underline font-medium"
         >
-          See Tweet →
+          Go to Tweet →
         </a>
       </div>
       <MiniGauge score={entry.score.score} />
@@ -110,7 +110,7 @@ const UserCard = ({ entry, isCurrent, type }: { entry: UserEntry; isCurrent?: bo
           rel="noopener noreferrer"
           className="inline-flex items-center gap-1 mt-2 text-sm text-primary hover:underline font-medium"
         >
-          Visit Twitter Account →
+          Visit profile →
         </a>
       </div>
       <MiniGauge score={entry.averageScore.score} />
