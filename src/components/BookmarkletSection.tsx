@@ -6,15 +6,8 @@ const BookmarkletSection = () => {
   // Always use production domain for bookmarklet
   const baseUrl = 'https://tardometer.com';
 
-  // Bookmarklet code - minified JavaScript
-  const bookmarkletCode = `javascript:(function(){
-    var url = window.location.href;
-    if(!/(?:twitter\\.com|x\\.com)\\/\\w+\\/status\\/\\d+/.test(url)){
-      alert('Please navigate to a tweet first!');
-      return;
-    }
-    window.open('${baseUrl}/?tweet=' + encodeURIComponent(url), '_blank', 'width=600,height=700');
-  })();`;
+  // Bookmarklet code - must be single line with no extra whitespace
+  const bookmarkletCode = `javascript:(function(){var url=window.location.href;if(!/(?:twitter\\.com|x\\.com)\\/\\w+\\/status\\/\\d+/.test(url)){alert('Please navigate to a tweet first!');return;}window.open('${baseUrl}/?tweet='+encodeURIComponent(url),'_blank','width=600,height=700');})();`;
 
   const steps = [
     { emoji: "👆", title: "Drag", description: "Drag the button to your bookmarks bar" },
