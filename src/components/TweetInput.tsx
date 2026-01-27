@@ -63,7 +63,7 @@ const TweetInput = ({ onSubmit, isLoading = false }: TweetInputProps) => {
                   Calculating...
                 </span>
               ) : (
-                "Calculate Score"
+                "Analyze"
               )}
             </Button>
             {url.trim() && !isLoading && (
