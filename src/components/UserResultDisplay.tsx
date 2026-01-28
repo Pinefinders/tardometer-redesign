@@ -30,9 +30,6 @@ const UserResultDisplay = ({ analysis }: UserResultDisplayProps) => {
       {/* Gauge */}
       <Gauge score={averageScore.score} showDemoBadge />
 
-      {/* Account Health Section */}
-      <AccountHealth health={accountHealth} />
-
       {/* Community Notes Warning */}
       {communityNotePercentage > 0 && (
         <div className="w-full flex items-center justify-center gap-2 p-3 rounded-xl bg-amber-500/20 border border-amber-500/50">
@@ -43,9 +40,9 @@ const UserResultDisplay = ({ analysis }: UserResultDisplayProps) => {
         </div>
       )}
 
-      {/* Score Breakdown */}
+      {/* Tard Score Breakdown */}
       <div className="w-full p-4 rounded-xl bg-muted/30 border border-border/30">
-        <h4 className="text-sm font-semibold text-muted-foreground mb-3 text-center">Average Score Breakdown</h4>
+        <h4 className="text-sm font-semibold text-muted-foreground mb-3 text-center">Tard Score Breakdown</h4>
         <div className="grid grid-cols-3 gap-2 text-center">
           <div>
             <div className="text-xs text-muted-foreground">Avg Reply Ratio</div>
@@ -67,6 +64,9 @@ const UserResultDisplay = ({ analysis }: UserResultDisplayProps) => {
           </div>
         </div>
       </div>
+
+      {/* Account Health Section */}
+      <AccountHealth health={accountHealth} />
     </div>
   );
 };
