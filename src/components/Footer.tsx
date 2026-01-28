@@ -16,7 +16,7 @@ const Footer = () => {
               TARDOMETER
             </Link>
             <p className="mt-2 text-sm text-muted-foreground">
-              Measuring Tardness one tweet at a time
+              Measuring Tardedness one Tweet at a time
             </p>
           </div>
 
