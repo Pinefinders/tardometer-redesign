@@ -34,7 +34,7 @@ const MiniGauge = ({ score }: { score: number }) => {
   };
 
   const getLabel = (s: number) => {
-    if (s <= 24) return "TARD";
+    if (s <= 24) return "TARDED";
     if (s <= 75) return "MID";
     return "BASED";
   };
@@ -230,7 +230,7 @@ const Leaderboards = () => {
             🏆 LEADERBOARDS
           </h1>
           <p className="mt-2 text-muted-foreground">
-            Weekly Tard & Chad Champions
+            Weekly Tarded & Chad Champions
           </p>
         </div>
       </section>
@@ -358,7 +358,7 @@ const Leaderboards = () => {
                   alt="Wojak Crying" 
                   className="w-32 h-32 rounded-full object-cover border-2 border-destructive/50 mb-2"
                 />
-                <h2 className="text-lg font-display font-bold text-destructive">TARD OF THE WEEK</h2>
+                <h2 className="text-lg font-display font-bold text-destructive">MOST TARDED OF THE WEEK</h2>
               </div>
               <div className="flex flex-col items-center">
                 <img 
@@ -366,7 +366,7 @@ const Leaderboards = () => {
                   alt="Wojak Brainlet" 
                   className="w-32 h-32 rounded-full object-cover border-2 border-destructive/50 mb-2 bg-white"
                 />
-                <h2 className="text-lg font-display font-bold text-destructive">TARDED TWEET OF THE WEEK</h2>
+                <h2 className="text-lg font-display font-bold text-destructive">MOST TARDED TWEET OF THE WEEK</h2>
               </div>
             </div>
 
@@ -402,7 +402,7 @@ const Leaderboards = () => {
                   alt="Wojak Crying" 
                   className="w-24 h-24 rounded-full object-cover border-2 border-destructive/50 mb-2"
                 />
-                <h2 className="text-lg font-display font-bold text-destructive mb-4">TARD OF THE WEEK</h2>
+                <h2 className="text-lg font-display font-bold text-destructive mb-4">MOST TARDED OF THE WEEK</h2>
                 <div className="w-full">
                   <LeaderboardSection
                     title=""
@@ -423,7 +423,7 @@ const Leaderboards = () => {
                   alt="Wojak Brainlet" 
                   className="w-24 h-24 rounded-full object-cover border-2 border-destructive/50 mb-2 bg-white"
                 />
-                <h2 className="text-lg font-display font-bold text-destructive mb-4">TARDED TWEET OF THE WEEK</h2>
+                <h2 className="text-lg font-display font-bold text-destructive mb-4">MOST TARDED TWEET OF THE WEEK</h2>
                 <div className="w-full">
                   <LeaderboardSection
                     title=""
@@ -469,7 +469,7 @@ const Leaderboards = () => {
                         {/* Tard Winners */}
                         <div className="space-y-3">
                           <p className="text-xs font-bold text-destructive flex items-center gap-1">
-                            😭 TARD WINNERS
+                            😭 MOST TARDED
                           </p>
                           {week.tardTweet && (
                             <div>

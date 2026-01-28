@@ -128,7 +128,7 @@ const HowItWorks = () => {
                       <div className="p-4 rounded-xl bg-destructive/10 border border-destructive/30">
                         <div className="flex items-center gap-3 mb-2">
                           <span className="text-2xl">😭</span>
-                          <h4 className="font-bold text-destructive">TARD (0-24)</h4>
+                          <h4 className="font-bold text-destructive">TARDED (0-24)</h4>
                         </div>
                         <p className="text-sm text-muted-foreground">
                           Getting ratioed into oblivion. High reply/quote ratios mean people are arguing, not agreeing.
@@ -224,7 +224,7 @@ const HowItWorks = () => {
                     </p>
                     <ul className="space-y-1 text-sm text-muted-foreground">
                       <li>• <strong>Chad Tweet/Person of the Week:</strong> Highest scores (most Based)</li>
-                      <li>• <strong>Tard Tweet/Person of the Week:</strong> Lowest scores (most Tard)</li>
+                      <li>• <strong>Most Tarded Tweet/Person of the Week:</strong> Lowest scores (most Tarded)</li>
                       <li>• Resets every Monday</li>
                       <li>• Only includes tweets/users that people have analyzed</li>
                     </ul>
@@ -306,7 +306,7 @@ const HowItWorks = () => {
                   <h3 className="font-bold text-foreground">Community Notes Penalty</h3>
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  Tweets with fact-check warnings get 50% Tard penalty. Users with multiple flagged tweets get scaling penalties.
+                  Tweets with fact-check warnings get +50% more Tarded. Users with multiple flagged tweets get scaling penalties.
                 </p>
               </div>
             </div>
@@ -334,12 +334,12 @@ const HowItWorks = () => {
             <div className="grid sm:grid-cols-2 gap-4">
               <div className="p-4 rounded-xl bg-primary/5 border border-primary/20">
                 <p className="text-sm text-foreground">
-                  ✅ <strong>Compare Over Time:</strong> Archive tweets to track if someone's getting more or less Tard
+                  ✅ <strong>Compare Over Time:</strong> Archive tweets to track if someone's getting more or less Tarded
                 </p>
               </div>
               <div className="p-4 rounded-xl bg-primary/5 border border-primary/20">
                 <p className="text-sm text-foreground">
-                  ✅ <strong>Browse Leaderboards:</strong> Discover legendary Tard moments submitted by the community
+                  ✅ <strong>Browse Leaderboards:</strong> Discover legendary Tarded moments submitted by the community
                 </p>
               </div>
               <div className="p-4 rounded-xl bg-primary/5 border border-primary/20">

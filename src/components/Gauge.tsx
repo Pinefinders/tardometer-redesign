@@ -29,7 +29,7 @@ const Gauge = ({ score, animated = true, showDemoBadge = false }: GaugeProps) =>
 
   // Updated zone detection: 0-24 = TARD, 25-75 = MID, 76-100 = BASED
   const getScoreInfo = (s: number): { label: string; colorClass: string; glowClass: string; zone: Zone } => {
-    if (s <= 24) return { label: "TARD", colorClass: "text-destructive", glowClass: "glow-tard", zone: "tard" };
+    if (s <= 24) return { label: "TARDED", colorClass: "text-destructive", glowClass: "glow-tard", zone: "tard" };
     if (s <= 75) return { label: "MID", colorClass: "text-accent", glowClass: "glow-mid", zone: "mid" };
     return { label: "BASED", colorClass: "text-primary", glowClass: "glow-based", zone: "based" };
   };
@@ -95,7 +95,7 @@ const Gauge = ({ score, animated = true, showDemoBadge = false }: GaugeProps) =>
             />
           </div>
           <span className={`text-xs font-bold text-destructive hidden sm:block transition-opacity duration-500 ${scoreInfo.zone === "tard" ? "opacity-100" : "opacity-30"}`}>
-            TARD
+            TARDED
           </span>
         </div>
 

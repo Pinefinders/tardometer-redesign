@@ -225,7 +225,7 @@ const Index = () => {
           TARDOMETER
         </h1>
         <p className="mt-4 text-muted-foreground text-lg max-w-md mx-auto">
-          Find out if that tweet is <span className="text-destructive font-semibold">Tard</span>,{" "}
+          Find out if that tweet or account is <span className="text-destructive font-semibold">Tarded</span>,{" "}
           <span className="text-accent font-semibold">Mid</span>, or{" "}
           <span className="text-primary font-semibold">Based</span>
         </p>
