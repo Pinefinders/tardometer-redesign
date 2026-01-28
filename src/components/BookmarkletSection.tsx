@@ -28,7 +28,7 @@ const BookmarkletSection = () => {
               Quick Score Bookmarklet
             </h2>
             <p className="text-muted-foreground text-sm">
-              Score any tweet instantly while browsing Twitter/X
+              Score any tweet or profile instantly while browsing Twitter/X
             </p>
           </div>
 
