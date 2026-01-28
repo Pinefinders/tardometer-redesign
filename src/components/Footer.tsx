@@ -36,6 +36,12 @@ const Footer = () => {
               Algorithm
             </Link>
             <Link 
+              to="/account-health" 
+              className="text-sm text-muted-foreground hover:text-primary transition-colors"
+            >
+              Account Health
+            </Link>
+            <Link 
               to="/contact" 
               className="text-sm text-muted-foreground hover:text-primary transition-colors"
             >

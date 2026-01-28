@@ -316,6 +316,10 @@ const HowItWorks = () => {
               <Link to="/algorithm" className="text-primary hover:underline">
                 Algorithm page
               </Link>
+              . For audience authenticity metrics, see{" "}
+              <Link to="/account-health" className="text-primary hover:underline">
+                Account Health Explained
+              </Link>
               .
             </p>
           </div>

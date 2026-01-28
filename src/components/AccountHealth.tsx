@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { ChevronDown, ChevronUp, Info, AlertTriangle, CheckCircle, Star, TrendingUp, Users, Activity, Shield } from "lucide-react";
+import { Link } from "react-router-dom";
+import { ChevronDown, ChevronUp, Info, AlertTriangle, CheckCircle, Star, TrendingUp, Users, Activity, Shield, ExternalLink } from "lucide-react";
 import { AccountHealthMetrics } from "@/lib/twitter";
 import { Progress } from "@/components/ui/progress";
 import {
@@ -87,7 +88,12 @@ const AccountHealth = ({ health }: AccountHealthProps) => {
       <div className="flex items-center gap-2 mb-4">
         <Shield className="w-5 h-5 text-accent" />
         <h3 className="text-base font-semibold text-foreground">Account Health</h3>
-        <span className="text-xs text-muted-foreground ml-auto">(Audience quality, not content)</span>
+        <Link 
+          to="/account-health" 
+          className="text-xs text-muted-foreground hover:text-primary transition-colors ml-auto flex items-center gap-1"
+        >
+          Learn more <ExternalLink className="w-3 h-3" />
+        </Link>
       </div>
 
       {/* Overall Assessment */}
