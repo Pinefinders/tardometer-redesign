@@ -63,17 +63,21 @@ const HowItWorks = () => {
                       Paste a Twitter/X URL into the input field on the homepage:
                     </p>
                     <div className="space-y-2">
-                      <div className="flex items-center gap-2 p-2 rounded-lg bg-muted/30">
-                        <Badge variant="outline" className="text-xs">Tweet URL</Badge>
-                        <code className="text-xs text-muted-foreground">twitter.com/user/status/123456</code>
-                        <span className="text-muted-foreground/50 text-xs">or</span>
-                        <code className="text-xs text-muted-foreground">x.com/user/status/123456</code>
+                      <div className="p-2 rounded-lg bg-muted/30">
+                        <Badge variant="outline" className="text-xs mb-1">Tweet URL</Badge>
+                        <div className="flex flex-wrap items-center gap-1 text-xs text-muted-foreground">
+                          <code>twitter.com/user/status/123456</code>
+                          <span className="text-muted-foreground/50">or</span>
+                          <code>x.com/user/status/123456</code>
+                        </div>
                       </div>
-                      <div className="flex items-center gap-2 p-2 rounded-lg bg-muted/30">
-                        <Badge variant="outline" className="text-xs">User Profile</Badge>
-                        <code className="text-xs text-muted-foreground">twitter.com/username</code>
-                        <span className="text-muted-foreground/50 text-xs">or</span>
-                        <code className="text-xs text-muted-foreground">x.com/username</code>
+                      <div className="p-2 rounded-lg bg-muted/30">
+                        <Badge variant="outline" className="text-xs mb-1">User Profile</Badge>
+                        <div className="flex flex-wrap items-center gap-1 text-xs text-muted-foreground">
+                          <code>twitter.com/username</code>
+                          <span className="text-muted-foreground/50">or</span>
+                          <code>x.com/username</code>
+                        </div>
                       </div>
                     </div>
                     <p className="text-xs text-muted-foreground mt-3">
