@@ -1,5 +1,6 @@
 import { TweetMetrics, TardScore } from "@/lib/twitter";
-import { Heart, MessageCircle, Repeat2, Quote } from "lucide-react";
+import { Heart, MessageCircle, Repeat2, Quote, AlertTriangle } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 interface MetricsDisplayProps {
   metrics: TweetMetrics;
@@ -19,6 +20,19 @@ const formatNumber = (num: number): string => {
 const MetricsDisplay = ({ metrics, score }: MetricsDisplayProps) => {
   return (
     <div className="mt-6 space-y-4">
+      {/* Community Note Warning */}
+      {metrics.hasCommunityNote && (
+        <div className="flex items-center justify-center gap-2 p-3 rounded-xl bg-amber-500/20 border border-amber-500/50">
+          <AlertTriangle className="w-5 h-5 text-amber-400" />
+          <span className="text-amber-400 font-semibold text-sm">
+            ⚠️ Community Note
+          </span>
+          <Badge className="bg-amber-500/30 text-amber-300 border-amber-500/50 text-xs">
+            +50% Tard Penalty
+          </Badge>
+        </div>
+      )}
+
       {/* Raw Metrics */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <div className="flex flex-col items-center p-3 rounded-xl bg-secondary/50 border border-border/50">

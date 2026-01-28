@@ -55,7 +55,8 @@ const Index = () => {
         replyRatio: 19.822,
         quoteRatio: 1.950,
         engagementQuality: 0.05,
-        rawTardScore: 88.0
+        rawTardScore: 88.0,
+        hasCommunityNote: true,
       },
       metrics: {
         likes: 45,
@@ -64,6 +65,7 @@ const Index = () => {
         quoteRetweets: 156,
         tweetId: 'demo_tard',
         authorUsername: 'demo_user',
+        hasCommunityNote: true,
       },
       tweetUrl: 'https://x.com/demo/status/123',
     },
@@ -74,7 +76,8 @@ const Index = () => {
         replyRatio: 0.272,
         quoteRatio: 0.506,
         engagementQuality: 3.48,
-        rawTardScore: 48.0
+        rawTardScore: 48.0,
+        hasCommunityNote: false,
       },
       metrics: {
         likes: 1250,
@@ -83,6 +86,7 @@ const Index = () => {
         quoteRetweets: 45,
         tweetId: 'demo_mid',
         authorUsername: 'demo_user',
+        hasCommunityNote: false,
       },
       tweetUrl: 'https://x.com/demo/status/456',
     },
@@ -93,7 +97,8 @@ const Index = () => {
         replyRatio: 0.058,
         quoteRatio: 0.029,
         engagementQuality: 19.43,
-        rawTardScore: 11.0
+        rawTardScore: 11.0,
+        hasCommunityNote: false,
       },
       metrics: {
         likes: 15420,
@@ -102,6 +107,7 @@ const Index = () => {
         quoteRetweets: 120,
         tweetId: 'demo_chad',
         authorUsername: 'demo_user',
+        hasCommunityNote: false,
       },
       tweetUrl: 'https://x.com/demo/status/789',
     },

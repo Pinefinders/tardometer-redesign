@@ -1,13 +1,13 @@
 import { UserAnalysis } from "@/lib/twitter";
 import Gauge from "./Gauge";
-import { User } from "lucide-react";
+import { User, AlertTriangle } from "lucide-react";
 
 interface UserResultDisplayProps {
   analysis: UserAnalysis;
 }
 
 const UserResultDisplay = ({ analysis }: UserResultDisplayProps) => {
-  const { username, averageScore, tweetCount } = analysis;
+  const { username, averageScore, tweetCount, communityNotePercentage } = analysis;
 
   return (
     <div className="flex flex-col items-center gap-6">
@@ -28,6 +28,16 @@ const UserResultDisplay = ({ analysis }: UserResultDisplayProps) => {
 
       {/* Gauge */}
       <Gauge score={averageScore.score} showDemoBadge />
+
+      {/* Community Notes Warning */}
+      {communityNotePercentage > 0 && (
+        <div className="w-full flex items-center justify-center gap-2 p-3 rounded-xl bg-amber-500/20 border border-amber-500/50">
+          <AlertTriangle className="w-5 h-5 text-amber-400" />
+          <span className="text-amber-400 font-semibold text-sm">
+            {communityNotePercentage}% of tweets flagged with Community Notes
+          </span>
+        </div>
+      )}
 
       {/* Score Breakdown */}
       <div className="w-full p-4 rounded-xl bg-muted/30 border border-border/30">

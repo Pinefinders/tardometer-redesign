@@ -51,6 +51,7 @@ export interface TweetMetrics {
   quoteRetweets: number;
   tweetId: string;
   authorUsername: string;
+  hasCommunityNote: boolean;
 }
 
 // Mock function to simulate fetching tweet data
@@ -77,6 +78,9 @@ export const fetchTweetMetrics = async (tweetId: string): Promise<TweetMetrics> 
   const replies = Math.floor(likes * (random(2, 50) / 100));
   const quoteRetweets = Math.floor(retweets * (random(10, 60) / 100));
 
+  // 5-10% chance of having a community note
+  const hasCommunityNote = random(0, 100) < random(5, 10);
+
   return {
     likes,
     replies,
@@ -84,6 +88,7 @@ export const fetchTweetMetrics = async (tweetId: string): Promise<TweetMetrics> 
     quoteRetweets,
     tweetId,
     authorUsername: "mockuser",
+    hasCommunityNote,
   };
 };
 
@@ -94,11 +99,12 @@ export interface TardScore {
   quoteRatio: number;
   engagementQuality: number;
   rawTardScore: number;
+  hasCommunityNote?: boolean;
 }
 
 // Calculate the Tard score based on tweet metrics
 export const calculateTardScore = (metrics: TweetMetrics): TardScore => {
-  const { likes, replies, retweets, quoteRetweets } = metrics;
+  const { likes, replies, retweets, quoteRetweets, hasCommunityNote } = metrics;
 
   // Reply Ratio = replies / likes (high ratio = more controversial = more tard)
   const replyRatio = likes > 0 ? replies / likes : 0;
@@ -118,10 +124,16 @@ export const calculateTardScore = (metrics: TweetMetrics): TardScore => {
   // Higher reply ratio = more tard (weight: 40%)
   // Higher quote ratio = more tard (weight: 30%)
   // Lower engagement quality = more tard (weight: 30%)
-  const rawTardScore = 
+  let rawTardScore = 
     (Math.min(replyRatio, 2) / 2) * 40 + // Cap at 2 for normalization
     (Math.min(quoteRatio, 2) / 2) * 30 + // Cap at 2 for normalization
     (Math.min(1 / engagementQuality, 1)) * 30;
+
+  // Community Note penalty: 50% increase to raw tard score
+  // This is a strong signal that the tweet spread misinformation
+  if (hasCommunityNote) {
+    rawTardScore = Math.min(rawTardScore * 1.5, 100);
+  }
 
   // Invert and normalize to 0-100 scale
   // rawTardScore ranges roughly 0-100, where 100 = very tard
@@ -134,6 +146,7 @@ export const calculateTardScore = (metrics: TweetMetrics): TardScore => {
     quoteRatio: Math.round(quoteRatio * 1000) / 1000,
     engagementQuality: Math.round(engagementQuality * 100) / 100,
     rawTardScore: Math.round(rawTardScore * 100) / 100,
+    hasCommunityNote,
   };
 };
 
@@ -143,6 +156,7 @@ export interface UserAnalysis {
   averageScore: TardScore;
   tweetCount: number;
   individualScores: TardScore[];
+  communityNotePercentage: number;
 }
 
 // Mock function to fetch a user's recent tweets and calculate their average score
@@ -159,6 +173,9 @@ export const analyzeUserProfile = async (username: string): Promise<UserAnalysis
 
   for (let i = 0; i < tweetCount; i++) {
     // Generate mock metrics for each tweet
+    // 5-10% chance of having a community note
+    const hasCommunityNote = Math.abs(Math.sin(seed * (i + 5))) < 0.08;
+    
     const mockMetrics: TweetMetrics = {
       likes: Math.floor(Math.abs(Math.sin(seed * (i + 1)) * 50000)),
       replies: Math.floor(Math.abs(Math.sin(seed * (i + 2)) * 5000)),
@@ -166,6 +183,7 @@ export const analyzeUserProfile = async (username: string): Promise<UserAnalysis
       quoteRetweets: Math.floor(Math.abs(Math.sin(seed * (i + 4)) * 3000)),
       tweetId: `mock_${i}`,
       authorUsername: username,
+      hasCommunityNote,
     };
     
     const score = calculateTardScore(mockMetrics);
@@ -189,6 +207,10 @@ export const analyzeUserProfile = async (username: string): Promise<UserAnalysis
     (individualScores.reduce((sum, s) => sum + s.rawTardScore, 0) / individualScores.length) * 100
   ) / 100;
 
+  // Calculate community note percentage
+  const communityNoteCount = individualScores.filter(s => s.hasCommunityNote).length;
+  const communityNotePercentage = Math.round((communityNoteCount / tweetCount) * 100);
+
   return {
     username,
     averageScore: {
@@ -200,5 +222,6 @@ export const analyzeUserProfile = async (username: string): Promise<UserAnalysis
     },
     tweetCount,
     individualScores,
+    communityNotePercentage,
   };
 };
