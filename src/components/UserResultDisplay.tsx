@@ -1,5 +1,6 @@
 import { UserAnalysis } from "@/lib/twitter";
 import Gauge from "./Gauge";
+import AccountHealth from "./AccountHealth";
 import { User, AlertTriangle } from "lucide-react";
 
 interface UserResultDisplayProps {
@@ -7,7 +8,7 @@ interface UserResultDisplayProps {
 }
 
 const UserResultDisplay = ({ analysis }: UserResultDisplayProps) => {
-  const { username, averageScore, tweetCount, communityNotePercentage } = analysis;
+  const { username, averageScore, tweetCount, communityNotePercentage, accountHealth } = analysis;
 
   return (
     <div className="flex flex-col items-center gap-6">
@@ -28,6 +29,9 @@ const UserResultDisplay = ({ analysis }: UserResultDisplayProps) => {
 
       {/* Gauge */}
       <Gauge score={averageScore.score} showDemoBadge />
+
+      {/* Account Health Section */}
+      <AccountHealth health={accountHealth} />
 
       {/* Community Notes Warning */}
       {communityNotePercentage > 0 && (
