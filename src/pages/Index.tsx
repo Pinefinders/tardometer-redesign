@@ -279,13 +279,16 @@ const Index = () => {
                   </div>
                 </div>
               ) : result ? (
-                <div className="relative">
-                  <button
-                    onClick={handleReset}
-                    className="absolute -top-12 right-0 text-sm text-muted-foreground hover:text-foreground transition-colors px-4 py-2 rounded-full bg-muted/50 hover:bg-muted font-medium z-10"
-                  >
-                    ✕ Reset
-                  </button>
+              <div className="relative">
+                  {/* Reset button - positioned inside container on mobile, above on larger screens */}
+                  <div className="flex justify-end mb-4 sm:absolute sm:-top-12 sm:right-0 sm:mb-0">
+                    <button
+                      onClick={handleReset}
+                      className="text-sm text-muted-foreground hover:text-foreground transition-colors px-4 py-2 rounded-full bg-muted/50 hover:bg-muted font-medium"
+                    >
+                      ✕ Reset
+                    </button>
+                  </div>
                   
                   {/* Demo Mode Banner */}
                   <div className="mb-6 p-4 rounded-xl bg-amber-500 text-center">
