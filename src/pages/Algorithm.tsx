@@ -24,7 +24,7 @@ const Algorithm = () => {
           <Calculator className="w-4 h-4 text-primary" />
           <span className="text-primary font-bold text-xs uppercase tracking-wider">The Science</span>
         </div>
-        <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-gradient-title tracking-tight">
+        <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-gradient-title tracking-tight pb-1">
           The Algorithm
         </h1>
         <p className="mt-4 text-muted-foreground text-lg max-w-lg mx-auto">
