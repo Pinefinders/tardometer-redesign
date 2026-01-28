@@ -24,10 +24,16 @@ const Footer = () => {
           <div className="flex flex-col items-center gap-2">
             <h3 className="text-sm font-semibold text-foreground mb-1">Links</h3>
             <Link 
+              to="/how-it-works" 
+              className="text-sm text-muted-foreground hover:text-primary transition-colors"
+            >
+              How It Works
+            </Link>
+            <Link 
               to="/algorithm" 
               className="text-sm text-muted-foreground hover:text-primary transition-colors"
             >
-              About / How It Works
+              Algorithm
             </Link>
             <a 
               href="mailto:feedback@tardometer.com" 
@@ -35,12 +41,6 @@ const Footer = () => {
             >
               Contact / Feedback
             </a>
-            <Link 
-              to="/algorithm" 
-              className="text-sm text-muted-foreground hover:text-primary transition-colors"
-            >
-              Algorithm
-            </Link>
           </div>
 
           {/* Right - Open Source & Social */}
