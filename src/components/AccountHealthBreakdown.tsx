@@ -85,7 +85,7 @@ const AccountHealthBreakdown = ({ health }: AccountHealthBreakdownProps) => {
         <Shield className="w-5 h-5 text-accent" />
         <h3 className="text-base font-semibold text-foreground">Account Health</h3>
         <Link 
-          to="/account-health" 
+          to="/algorithm#account-health" 
           className="text-xs text-muted-foreground hover:text-primary transition-colors ml-auto flex items-center gap-1"
         >
           Learn more <ExternalLink className="w-3 h-3" />

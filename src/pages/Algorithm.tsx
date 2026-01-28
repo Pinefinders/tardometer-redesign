@@ -10,7 +10,15 @@ import {
   Calculator,
   TrendingDown,
   TrendingUp,
-  Scale
+  Scale,
+  Shield,
+  Users,
+  Activity,
+  CheckCircle,
+  Bot,
+  Zap,
+  Eye,
+  Target
 } from "lucide-react";
 
 const Algorithm = () => {
@@ -50,6 +58,15 @@ const Algorithm = () => {
               tweets, we look at engagement ratios. For users, we analyze their recent tweet history 
               to find patterns.
             </p>
+          </div>
+
+          {/* ============================================= */}
+          {/* SECTION 1: TARD SCORE */}
+          {/* ============================================= */}
+          
+          <div className="text-center">
+            <h2 className="text-3xl font-display font-bold text-gradient-title">Section 1: Tard Score</h2>
+            <p className="text-muted-foreground mt-2">Measuring content quality</p>
           </div>
 
           {/* The Three Pillars */}
@@ -307,6 +324,317 @@ const Algorithm = () => {
                 % of tweets with Community Notes
               </li>
             </ul>
+          </div>
+
+          {/* ============================================= */}
+          {/* SECTION 2: ACCOUNT HEALTH */}
+          {/* ============================================= */}
+          
+          <div id="account-health" className="text-center pt-8">
+            <h2 className="text-3xl font-display font-bold text-gradient-title">Section 2: Account Health</h2>
+            <p className="text-muted-foreground mt-2">Measuring audience authenticity</p>
+          </div>
+
+          {/* What Is Account Health */}
+          <div className="glass-card p-6 sm:p-8">
+            <div className="flex items-center gap-3 mb-4">
+              <Shield className="w-6 h-6 text-accent" />
+              <h2 className="text-2xl font-display font-bold text-foreground">
+                What Is Account Health?
+              </h2>
+            </div>
+            <p className="text-muted-foreground mb-4">
+              Account Health measures the <strong className="text-foreground">authenticity and quality of a Twitter user's audience</strong>, not the quality of their content.
+            </p>
+            <p className="text-muted-foreground mb-4">
+              A user can have excellent account health (real, engaged followers) but still post Tarded content, or vice versa - they might post Based takes but have a bot-filled audience.
+            </p>
+            <div className="p-4 rounded-xl bg-accent/20 border border-accent/50">
+              <p className="text-accent font-semibold text-sm">
+                ⚠️ This is separate from the Tard ↔ Based score, which measures content quality.
+              </p>
+            </div>
+          </div>
+
+          {/* Why Account Health Matters */}
+          <div className="glass-card p-6 sm:p-8">
+            <h2 className="text-2xl font-display font-bold text-foreground mb-4">
+              Why Account Health Matters
+            </h2>
+            <p className="text-muted-foreground mb-6">
+              Account health helps you identify:
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+              <div className="flex items-start gap-3 p-3 rounded-lg bg-muted/30">
+                <Bot className="w-5 h-5 text-destructive mt-0.5" />
+                <div>
+                  <p className="font-semibold text-foreground">Bot accounts</p>
+                  <p className="text-sm text-muted-foreground">With fake followers</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3 p-3 rounded-lg bg-muted/30">
+                <Users className="w-5 h-5 text-destructive mt-0.5" />
+                <div>
+                  <p className="font-semibold text-foreground">Bought followers</p>
+                  <p className="text-sm text-muted-foreground">High count, low engagement</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3 p-3 rounded-lg bg-muted/30">
+                <AlertTriangle className="w-5 h-5 text-accent mt-0.5" />
+                <div>
+                  <p className="font-semibold text-foreground">Spam accounts</p>
+                  <p className="text-sm text-muted-foreground">Suspicious activity patterns</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3 p-3 rounded-lg bg-muted/30">
+                <CheckCircle className="w-5 h-5 text-primary mt-0.5" />
+                <div>
+                  <p className="font-semibold text-foreground">Authentic influencers</p>
+                  <p className="text-sm text-muted-foreground">Real, engaged audiences</p>
+                </div>
+              </div>
+            </div>
+            <div className="p-4 rounded-xl bg-primary/20 border border-primary/50">
+              <p className="text-primary font-medium text-sm">
+                💡 A user with 10K real, engaged followers has more impact than someone with 1M fake followers.
+              </p>
+            </div>
+          </div>
+
+          {/* How We Calculate Account Health */}
+          <div className="glass-card p-6 sm:p-8">
+            <h2 className="text-2xl font-display font-bold text-foreground mb-6">
+              How We Calculate Account Health
+            </h2>
+            <p className="text-muted-foreground mb-6">
+              We analyze multiple signals to assess account authenticity:
+            </p>
+
+            {/* Engagement Rate */}
+            <div className="mb-8 p-4 rounded-xl bg-muted/20 border border-border/30">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
+                  <TrendingUp className="w-5 h-5 text-primary" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-foreground">1. Engagement Rate</h3>
+                  <Badge variant="secondary">40% weight</Badge>
+                </div>
+              </div>
+              <div className="mb-4 p-3 rounded-lg bg-muted/30 font-mono text-sm">
+                <p className="text-muted-foreground">Engagement Rate = (Likes + Replies + Retweets + Quotes) ÷ (Follower Count × 0.1) × 100</p>
+              </div>
+              <p className="text-muted-foreground mb-4">
+                Measures how much your audience actually interacts with your content. High follower counts with low engagement suggest fake or inactive followers.
+              </p>
+              <div className="space-y-2 text-sm">
+                <div className="flex items-center gap-2">
+                  <span className="text-destructive">🚩</span>
+                  <span className="text-muted-foreground">&lt;1% = Low - Disengaged or bot audience</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-primary">✓</span>
+                  <span className="text-muted-foreground">1-3% = Normal - Healthy engagement</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-primary">✓✓</span>
+                  <span className="text-muted-foreground">3-5% = Good - Active audience</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-primary">🌟</span>
+                  <span className="text-muted-foreground">&gt;5% = Excellent - Highly engaged</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Follower Ratio */}
+            <div className="mb-8 p-4 rounded-xl bg-muted/20 border border-border/30">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center">
+                  <Users className="w-5 h-5 text-accent" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-foreground">2. Follower-to-Following Ratio</h3>
+                  <Badge variant="secondary">25% weight</Badge>
+                </div>
+              </div>
+              <div className="mb-4 p-3 rounded-lg bg-muted/30 font-mono text-sm">
+                <p className="text-muted-foreground">Follower Ratio = Followers ÷ Following</p>
+              </div>
+              <p className="text-muted-foreground mb-4">
+                Indicates organic growth vs. follow-for-follow schemes. Accounts following thousands but with few followers are often spam or bots.
+              </p>
+              <div className="space-y-2 text-sm">
+                <div className="flex items-center gap-2">
+                  <span className="text-primary">✓</span>
+                  <span className="text-muted-foreground">&gt;10:1 = Strong influence (leader, not follower)</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-primary">✓</span>
+                  <span className="text-muted-foreground">3-10:1 = Normal ratio (healthy account)</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-accent">⚠️</span>
+                  <span className="text-muted-foreground">1-3:1 = Reciprocal following (follow-back patterns)</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-destructive">🚩</span>
+                  <span className="text-muted-foreground">&lt;1:1 or &gt;5000 following = Spam/bot pattern</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Activity Level */}
+            <div className="mb-8 p-4 rounded-xl bg-muted/20 border border-border/30">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
+                  <Activity className="w-5 h-5 text-primary" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-foreground">3. Activity Consistency</h3>
+                  <Badge variant="secondary">20% weight</Badge>
+                </div>
+              </div>
+              <p className="text-muted-foreground mb-4">
+                Analyzes posting patterns over time. Authentic accounts have relatively consistent activity, while compromised or coordinated accounts show suspicious patterns.
+              </p>
+              <div className="space-y-2 text-sm">
+                <div className="flex items-center gap-2">
+                  <span className="text-primary">✓</span>
+                  <span className="text-muted-foreground"><strong>Consistent</strong> - Regular posting schedule (authentic)</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-accent">⚠️</span>
+                  <span className="text-muted-foreground"><strong>Sporadic</strong> - Irregular activity (casual user or semi-active)</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-destructive">🚩</span>
+                  <span className="text-muted-foreground"><strong>Burst Pattern</strong> - Suspicious activity spikes (possible automation)</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Red Flags */}
+            <div className="p-4 rounded-xl bg-muted/20 border border-border/30">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-full bg-destructive/20 flex items-center justify-center">
+                  <AlertTriangle className="w-5 h-5 text-destructive" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-foreground">4. Red Flag Detection</h3>
+                  <Badge variant="secondary">15% weight + triggers</Badge>
+                </div>
+              </div>
+              <p className="text-muted-foreground mb-4">
+                We automatically detect and flag suspicious patterns:
+              </p>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li className="flex items-start gap-2">
+                  <span className="text-destructive">🚩</span>
+                  <span>High following-to-follower ratio (e.g., 5000:50)</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-destructive">🚩</span>
+                  <span>Very low engagement rate (&lt;1%) despite high follower count</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-destructive">🚩</span>
+                  <span>Burst activity patterns suggesting automation</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-destructive">🚩</span>
+                  <span>Unusually high following count (&gt;4000)</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-destructive">🚩</span>
+                  <span>High follower count + very low engagement (likely purchased followers)</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Health Score Zones */}
+          <div className="glass-card p-6 sm:p-8">
+            <h2 className="text-2xl font-display font-bold text-foreground mb-6">
+              Health Score Zones
+            </h2>
+            <p className="text-muted-foreground mb-6">
+              Based on all signals, we assign an overall health rating (0-100):
+            </p>
+            
+            <div className="grid sm:grid-cols-4 gap-4">
+              <div className="p-4 rounded-xl bg-[hsl(0,50%,25%)]/20 border border-[hsl(0,50%,30%)]/50 text-center">
+                <div className="text-3xl mb-2">☠️</div>
+                <h3 className="text-lg font-bold text-[hsl(0,50%,40%)] mb-1">DYING</h3>
+                <p className="font-mono text-sm text-[hsl(0,50%,40%)]/80">0 - 25</p>
+                <p className="text-xs text-muted-foreground mt-2">
+                  Multiple red flags, likely fake
+                </p>
+              </div>
+              
+              <div className="p-4 rounded-xl bg-[hsl(30,90%,50%)]/20 border border-[hsl(30,90%,50%)]/50 text-center">
+                <div className="text-3xl mb-2">🤢</div>
+                <h3 className="text-lg font-bold text-[hsl(30,90%,50%)] mb-1">SICKLY</h3>
+                <p className="font-mono text-sm text-[hsl(30,90%,50%)]/80">25 - 50</p>
+                <p className="text-xs text-muted-foreground mt-2">
+                  Some concerning patterns
+                </p>
+              </div>
+              
+              <div className="p-4 rounded-xl bg-[hsl(100,60%,45%)]/20 border border-[hsl(100,60%,45%)]/50 text-center">
+                <div className="text-3xl mb-2">😊</div>
+                <h3 className="text-lg font-bold text-[hsl(100,60%,45%)] mb-1">HEALTHY</h3>
+                <p className="font-mono text-sm text-[hsl(100,60%,45%)]/80">50 - 75</p>
+                <p className="text-xs text-muted-foreground mt-2">
+                  Normal, authentic account
+                </p>
+              </div>
+              
+              <div className="p-4 rounded-xl bg-[hsl(50,100%,50%)]/20 border border-[hsl(50,100%,50%)]/50 text-center">
+                <div className="text-3xl mb-2">🗿</div>
+                <h3 className="text-lg font-bold text-[hsl(50,100%,50%)] mb-1">GIGACHAD</h3>
+                <p className="font-mono text-sm text-[hsl(50,100%,50%)]/80">75 - 100</p>
+                <p className="text-xs text-muted-foreground mt-2">
+                  Excellent, highly engaged
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Important Notes */}
+          <div className="glass-card p-6 sm:p-8">
+            <h2 className="text-2xl font-display font-bold text-foreground mb-4">
+              Important Notes
+            </h2>
+            <div className="space-y-4">
+              <div className="flex items-start gap-3">
+                <Eye className="w-5 h-5 text-accent mt-1" />
+                <div>
+                  <p className="font-semibold text-foreground">Currently Using Mock Data</p>
+                  <p className="text-sm text-muted-foreground">
+                    Account health metrics are simulated until we integrate with the Twitter API. Results are for demonstration only.
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <Target className="w-5 h-5 text-primary mt-1" />
+                <div>
+                  <p className="font-semibold text-foreground">Not a Perfect Science</p>
+                  <p className="text-sm text-muted-foreground">
+                    Account health is an estimate based on public signals. Some legitimate accounts may score poorly, and some inauthentic accounts may game the metrics.
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <Zap className="w-5 h-5 text-accent mt-1" />
+                <div>
+                  <p className="font-semibold text-foreground">Context Matters</p>
+                  <p className="text-sm text-muted-foreground">
+                    New accounts, niche topics, and different user types will naturally have different patterns. Use health scores as one signal among many.
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
 
         </div>
