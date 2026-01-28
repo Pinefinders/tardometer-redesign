@@ -104,6 +104,7 @@ const AccountHealth = ({ health }: AccountHealthProps) => {
       </div>
 
       {/* Expand Details Button */}
+      <h4 className="text-sm font-semibold text-muted-foreground mb-3 text-center">Account Health Breakdown</h4>
       <Collapsible open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>
         <CollapsibleTrigger className="w-full flex items-center justify-center gap-2 p-2 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors mb-4">
           <span className="text-sm text-muted-foreground">
