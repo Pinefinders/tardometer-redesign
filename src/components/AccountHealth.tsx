@@ -15,6 +15,7 @@ interface AccountHealthProps {
 }
 
 const AccountHealth = ({ health }: AccountHealthProps) => {
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [isInfoOpen, setIsInfoOpen] = useState(false);
   const [isRedFlagsOpen, setIsRedFlagsOpen] = useState(health.redFlags.length > 0);
 
@@ -102,137 +103,153 @@ const AccountHealth = ({ health }: AccountHealthProps) => {
         <HealthGauge score={health.healthScore} />
       </div>
 
-      {/* Metrics Grid */}
-      <div className="space-y-4">
-        {/* Engagement Rate */}
-        <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <TrendingUp className="w-4 h-4 text-muted-foreground" />
-              <span className="text-sm text-muted-foreground">Engagement Rate</span>
-            </div>
-            <div className="flex items-center gap-2">
-              {getEngagementIcon()}
-              <span className={`text-sm font-bold ${getEngagementColor()}`}>
-                {health.engagementRate.toFixed(1)}%
-              </span>
-            </div>
-          </div>
-          <Progress value={engagementProgress} className="h-2" />
-          <p className="text-xs text-muted-foreground">{health.engagementLabel}</p>
-        </div>
-
-        {/* Follower Ratio */}
-        <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Users className="w-4 h-4 text-muted-foreground" />
-              <span className="text-sm text-muted-foreground">Follower Ratio</span>
-            </div>
-            <div className="flex items-center gap-2">
-              {getRatioIcon()}
-              <span className={`text-sm font-bold ${getRatioColor()}`}>
-                {health.followerRatio.toFixed(1)}:1
-              </span>
-            </div>
-          </div>
-          <Progress value={ratioProgress} className="h-2" />
-          <p className="text-xs text-muted-foreground">
-            {health.followers.toLocaleString()} followers / {health.following.toLocaleString()} following • {health.ratioLabel}
-          </p>
-        </div>
-
-        {/* Activity Level */}
-        <div className="flex items-center justify-between p-3 rounded-lg bg-muted/30">
-          <div className="flex items-center gap-2">
-            <Activity className="w-4 h-4 text-muted-foreground" />
-            <span className="text-sm text-muted-foreground">Activity Level</span>
-          </div>
-          <div className="flex items-center gap-2">
-            {getActivityIcon()}
-            <span className={`text-sm font-bold ${getActivityColor()}`}>
-              {health.activityLevel}
-            </span>
-          </div>
-        </div>
-        <p className="text-xs text-muted-foreground -mt-2 ml-6">{health.activityLabel}</p>
-      </div>
-
-      {/* Red Flags Section */}
-      {health.redFlags.length > 0 ? (
-        <Collapsible open={isRedFlagsOpen} onOpenChange={setIsRedFlagsOpen} className="mt-4">
-          <CollapsibleTrigger className="w-full flex items-center justify-between p-3 rounded-lg bg-destructive/20 border border-destructive/50 hover:bg-destructive/30 transition-colors">
-            <div className="flex items-center gap-2">
-              <AlertTriangle className="w-4 h-4 text-destructive" />
-              <span className="text-sm font-semibold text-destructive">
-                🚩 Red Flags ({health.redFlags.length})
-              </span>
-            </div>
-            {isRedFlagsOpen ? (
-              <ChevronUp className="w-4 h-4 text-destructive" />
-            ) : (
-              <ChevronDown className="w-4 h-4 text-destructive" />
-            )}
-          </CollapsibleTrigger>
-          <CollapsibleContent className="mt-2 p-3 rounded-lg bg-destructive/10 border border-destructive/30">
-            <ul className="space-y-2">
-              {health.redFlags.map((flag, index) => (
-                <li key={index} className="flex items-start gap-2 text-sm text-destructive">
-                  <span>🚩</span>
-                  <span>{flag}</span>
-                </li>
-              ))}
-            </ul>
-          </CollapsibleContent>
-        </Collapsible>
-      ) : (
-        <div className="mt-4 p-3 rounded-lg bg-primary/20 border border-primary/50">
-          <div className="flex items-center gap-2">
-            <CheckCircle className="w-4 h-4 text-primary" />
-            <span className="text-sm font-semibold text-primary">
-              ✅ No major red flags detected
-            </span>
-          </div>
-        </div>
-      )}
-
-      {/* Info Panel */}
-      <Collapsible open={isInfoOpen} onOpenChange={setIsInfoOpen} className="mt-4">
-        <CollapsibleTrigger className="w-full flex items-center justify-between p-3 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors">
-          <div className="flex items-center gap-2">
-            <Info className="w-4 h-4 text-muted-foreground" />
-            <span className="text-sm text-muted-foreground">ℹ️ What is Account Health?</span>
-          </div>
-          {isInfoOpen ? (
+      {/* Expand Details Button */}
+      <Collapsible open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>
+        <CollapsibleTrigger className="w-full flex items-center justify-center gap-2 p-2 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors mb-4">
+          <span className="text-sm text-muted-foreground">
+            {isDetailsOpen ? "Hide Details" : "Show Details"}
+          </span>
+          {isDetailsOpen ? (
             <ChevronUp className="w-4 h-4 text-muted-foreground" />
           ) : (
             <ChevronDown className="w-4 h-4 text-muted-foreground" />
           )}
         </CollapsibleTrigger>
-        <CollapsibleContent className="mt-2 p-4 rounded-lg bg-muted/20 border border-border/30">
-          <p className="text-sm text-muted-foreground mb-3">
-            Account health measures <strong>audience authenticity and engagement quality</strong>, not content quality.
-          </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-            <div>
-              <p className="font-semibold text-primary mb-2">✓ Healthy accounts have:</p>
-              <ul className="space-y-1 text-muted-foreground">
-                <li>• Organic follower growth</li>
-                <li>• High engagement rates</li>
-                <li>• Consistent, authentic activity</li>
-                <li>• Genuine conversations</li>
-              </ul>
+        
+        <CollapsibleContent>
+          {/* Metrics Grid */}
+          <div className="space-y-4">
+            {/* Engagement Rate */}
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <TrendingUp className="w-4 h-4 text-muted-foreground" />
+                  <span className="text-sm text-muted-foreground">Engagement Rate</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  {getEngagementIcon()}
+                  <span className={`text-sm font-bold ${getEngagementColor()}`}>
+                    {health.engagementRate.toFixed(1)}%
+                  </span>
+                </div>
+              </div>
+              <Progress value={engagementProgress} className="h-2" />
+              <p className="text-xs text-muted-foreground">{health.engagementLabel}</p>
             </div>
-            <div>
-              <p className="font-semibold text-destructive mb-2">✗ Unhealthy accounts show:</p>
-              <ul className="space-y-1 text-muted-foreground">
-                <li>• Sudden follower spikes (bought)</li>
-                <li>• High views, low engagement</li>
-                <li>• Spam patterns</li>
-                <li>• Generic, repetitive content</li>
-              </ul>
+
+            {/* Follower Ratio */}
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Users className="w-4 h-4 text-muted-foreground" />
+                  <span className="text-sm text-muted-foreground">Follower Ratio</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  {getRatioIcon()}
+                  <span className={`text-sm font-bold ${getRatioColor()}`}>
+                    {health.followerRatio.toFixed(1)}:1
+                  </span>
+                </div>
+              </div>
+              <Progress value={ratioProgress} className="h-2" />
+              <p className="text-xs text-muted-foreground">
+                {health.followers.toLocaleString()} followers / {health.following.toLocaleString()} following • {health.ratioLabel}
+              </p>
             </div>
+
+            {/* Activity Level */}
+            <div className="flex items-center justify-between p-3 rounded-lg bg-muted/30">
+              <div className="flex items-center gap-2">
+                <Activity className="w-4 h-4 text-muted-foreground" />
+                <span className="text-sm text-muted-foreground">Activity Level</span>
+              </div>
+              <div className="flex items-center gap-2">
+                {getActivityIcon()}
+                <span className={`text-sm font-bold ${getActivityColor()}`}>
+                  {health.activityLevel}
+                </span>
+              </div>
+            </div>
+            <p className="text-xs text-muted-foreground -mt-2 ml-6">{health.activityLabel}</p>
           </div>
+
+          {/* Red Flags Section */}
+          {health.redFlags.length > 0 ? (
+            <Collapsible open={isRedFlagsOpen} onOpenChange={setIsRedFlagsOpen} className="mt-4">
+              <CollapsibleTrigger className="w-full flex items-center justify-between p-3 rounded-lg bg-destructive/20 border border-destructive/50 hover:bg-destructive/30 transition-colors">
+                <div className="flex items-center gap-2">
+                  <AlertTriangle className="w-4 h-4 text-destructive" />
+                  <span className="text-sm font-semibold text-destructive">
+                    🚩 Red Flags ({health.redFlags.length})
+                  </span>
+                </div>
+                {isRedFlagsOpen ? (
+                  <ChevronUp className="w-4 h-4 text-destructive" />
+                ) : (
+                  <ChevronDown className="w-4 h-4 text-destructive" />
+                )}
+              </CollapsibleTrigger>
+              <CollapsibleContent className="mt-2 p-3 rounded-lg bg-destructive/10 border border-destructive/30">
+                <ul className="space-y-2">
+                  {health.redFlags.map((flag, index) => (
+                    <li key={index} className="flex items-start gap-2 text-sm text-destructive">
+                      <span>🚩</span>
+                      <span>{flag}</span>
+                    </li>
+                  ))}
+                </ul>
+              </CollapsibleContent>
+            </Collapsible>
+          ) : (
+            <div className="mt-4 p-3 rounded-lg bg-primary/20 border border-primary/50">
+              <div className="flex items-center gap-2">
+                <CheckCircle className="w-4 h-4 text-primary" />
+                <span className="text-sm font-semibold text-primary">
+                  ✅ No major red flags detected
+                </span>
+              </div>
+            </div>
+          )}
+
+          {/* Info Panel */}
+          <Collapsible open={isInfoOpen} onOpenChange={setIsInfoOpen} className="mt-4">
+            <CollapsibleTrigger className="w-full flex items-center justify-between p-3 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors">
+              <div className="flex items-center gap-2">
+                <Info className="w-4 h-4 text-muted-foreground" />
+                <span className="text-sm text-muted-foreground">ℹ️ What is Account Health?</span>
+              </div>
+              {isInfoOpen ? (
+                <ChevronUp className="w-4 h-4 text-muted-foreground" />
+              ) : (
+                <ChevronDown className="w-4 h-4 text-muted-foreground" />
+              )}
+            </CollapsibleTrigger>
+            <CollapsibleContent className="mt-2 p-4 rounded-lg bg-muted/20 border border-border/30">
+              <p className="text-sm text-muted-foreground mb-3">
+                Account health measures <strong>audience authenticity and engagement quality</strong>, not content quality.
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                <div>
+                  <p className="font-semibold text-primary mb-2">✓ Healthy accounts have:</p>
+                  <ul className="space-y-1 text-muted-foreground">
+                    <li>• Organic follower growth</li>
+                    <li>• High engagement rates</li>
+                    <li>• Consistent, authentic activity</li>
+                    <li>• Genuine conversations</li>
+                  </ul>
+                </div>
+                <div>
+                  <p className="font-semibold text-destructive mb-2">✗ Unhealthy accounts show:</p>
+                  <ul className="space-y-1 text-muted-foreground">
+                    <li>• Sudden follower spikes (bought)</li>
+                    <li>• High views, low engagement</li>
+                    <li>• Spam patterns</li>
+                    <li>• Generic, repetitive content</li>
+                  </ul>
+                </div>
+              </div>
+            </CollapsibleContent>
+          </Collapsible>
         </CollapsibleContent>
       </Collapsible>
     </div>
