@@ -19,6 +19,16 @@ import {
 const AccountHealthExplained = () => {
   const navigate = useNavigate();
 
+  const handleGoBack = () => {
+    // Check if there's history to go back to (length > 1 means there's a previous page)
+    if (window.history.length > 1) {
+      navigate(-1);
+    } else {
+      // Fallback to home if no history
+      navigate('/');
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Header />
@@ -26,7 +36,7 @@ const AccountHealthExplained = () => {
       <main className="flex-1 px-4 py-8 max-w-4xl mx-auto w-full">
         {/* Back Link */}
         <button 
-          onClick={() => navigate(-1)}
+          onClick={handleGoBack}
           className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-6"
         >
           <ArrowLeft className="w-4 h-4" />
