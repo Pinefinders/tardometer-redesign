@@ -45,13 +45,13 @@ const Footer = () => {
 
           {/* Right - Open Source & Social */}
           <div className="flex flex-col items-center md:items-end gap-3">
-            <a 
-              href="#" 
+            <Link 
+              to="/open-source"
               className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 border border-primary/30 text-xs font-medium text-primary hover:bg-primary/20 transition-colors"
             >
               <ExternalLink className="w-3 h-3" />
               Open Source
-            </a>
+            </Link>
             <div className="flex items-center gap-3">
               <a 
                 href="https://twitter.com" 

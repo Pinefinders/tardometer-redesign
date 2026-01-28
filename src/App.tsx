@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import Leaderboards from "./pages/Leaderboards";
 import Algorithm from "./pages/Algorithm";
 import HowItWorks from "./pages/HowItWorks";
+import OpenSource from "./pages/OpenSource";
 import Archives from "./pages/Archives";
 import NotFound from "./pages/NotFound";
 
@@ -25,6 +26,7 @@ const App = () => (
             <Route path="/leaderboards" element={<Leaderboards />} />
             <Route path="/algorithm" element={<Algorithm />} />
             <Route path="/how-it-works" element={<HowItWorks />} />
+            <Route path="/open-source" element={<OpenSource />} />
             <Route path="/archives" element={<Archives />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
