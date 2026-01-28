@@ -24,7 +24,7 @@ const Footer = () => {
           <div className="flex flex-col items-center gap-2">
             <h3 className="text-sm font-semibold text-foreground mb-1">Links</h3>
             <Link 
-              to="/about" 
+              to="/algorithm" 
               className="text-sm text-muted-foreground hover:text-primary transition-colors"
             >
               About / How It Works
@@ -36,7 +36,7 @@ const Footer = () => {
               Contact / Feedback
             </a>
             <Link 
-              to="/about" 
+              to="/algorithm" 
               className="text-sm text-muted-foreground hover:text-primary transition-colors"
             >
               Algorithm
