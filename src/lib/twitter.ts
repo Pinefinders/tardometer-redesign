@@ -102,6 +102,18 @@ export interface TardScore {
   hasCommunityNote?: boolean;
 }
 
+// Extended user score with raw metrics for detailed breakdown
+export interface UserTardScoreDetails extends TardScore {
+  avgLikes: number;
+  avgReplies: number;
+  avgRetweets: number;
+  avgQuoteRetweets: number;
+  replyRatioImpact: number; // points added/subtracted
+  quoteRatioImpact: number;
+  engagementQualityImpact: number;
+  communityNotePenalty: number; // percentage penalty applied
+}
+
 // Calculate the Tard score based on tweet metrics
 export const calculateTardScore = (metrics: TweetMetrics): TardScore => {
   const { likes, replies, retweets, quoteRetweets, hasCommunityNote } = metrics;
@@ -163,12 +175,17 @@ export interface AccountHealthMetrics {
   redFlags: string[];
   overallHealth: "Excellent" | "Good" | "Fair" | "Poor" | "Suspicious";
   healthScore: number; // 0-100 numeric score for the gauge
+  // Score component breakdown
+  engagementPoints: number; // out of 40
+  ratioPoints: number; // out of 25
+  activityPoints: number; // out of 20
+  profilePoints: number; // out of 15
 }
 
 // User analysis result
 export interface UserAnalysis {
   username: string;
-  averageScore: TardScore;
+  averageScore: UserTardScoreDetails;
   tweetCount: number;
   individualScores: TardScore[];
   communityNotePercentage: number;
@@ -286,6 +303,12 @@ const generateAccountHealth = (username: string): AccountHealthMetrics => {
   let overallHealth: "Excellent" | "Good" | "Fair" | "Poor" | "Suspicious";
   let healthScore: number;
   
+  // Track individual score components
+  let engagementPoints = 0;
+  let ratioPoints = 0;
+  let activityPoints = 0;
+  const profilePoints = 15; // Assume complete profile for mock data
+  
   // Calculate health score based on metrics
   // Most accounts should be HEALTHY (50-75), occasionally SICKLY (25-50) or DYING (0-25)
   // Rarely GIGACHAD (75-100)
@@ -293,34 +316,45 @@ const generateAccountHealth = (username: string): AccountHealthMetrics => {
   // Base score components (each contributes to total)
   let baseScore = 50; // Start at middle
   
-  // Engagement rate contribution (0-25 points)
+  // Engagement rate contribution (0-40 points max)
   if (engagementRate >= 5) {
+    engagementPoints = 35 + Math.round(seededRandom(0, 5, 10));
     baseScore += 20 + seededRandom(0, 5, 10);
   } else if (engagementRate >= 3) {
+    engagementPoints = 25 + Math.round(seededRandom(0, 10, 10));
     baseScore += 10 + seededRandom(0, 10, 10);
   } else if (engagementRate >= 1) {
+    engagementPoints = 15 + Math.round(seededRandom(0, 10, 10));
     baseScore += seededRandom(-5, 10, 10);
   } else {
+    engagementPoints = Math.max(0, Math.round(10 - seededRandom(0, 10, 10)));
     baseScore -= 15 + seededRandom(0, 15, 10);
   }
   
-  // Follower ratio contribution (0-20 points)
+  // Follower ratio contribution (0-25 points max)
   if (followerRatio >= 10) {
+    ratioPoints = 20 + Math.round(seededRandom(0, 5, 11));
     baseScore += 15 + seededRandom(0, 5, 11);
   } else if (followerRatio >= 3) {
+    ratioPoints = 15 + Math.round(seededRandom(0, 7, 11));
     baseScore += 5 + seededRandom(0, 10, 11);
   } else if (followerRatio >= 1) {
+    ratioPoints = 10 + Math.round(seededRandom(0, 5, 11));
     baseScore += seededRandom(-5, 5, 11);
   } else {
+    ratioPoints = Math.max(0, Math.round(5 - seededRandom(0, 5, 11)));
     baseScore -= 10 + seededRandom(0, 15, 11);
   }
   
-  // Activity level contribution
+  // Activity level contribution (0-20 points max)
   if (activityLevel === "Consistent") {
+    activityPoints = 15 + Math.round(seededRandom(0, 5, 12));
     baseScore += 5 + seededRandom(0, 5, 12);
   } else if (activityLevel === "Sporadic") {
+    activityPoints = 8 + Math.round(seededRandom(0, 5, 12));
     baseScore += seededRandom(-5, 3, 12);
   } else {
+    activityPoints = Math.max(0, Math.round(3 - seededRandom(0, 3, 12)));
     baseScore -= 10 + seededRandom(0, 10, 12);
   }
   
@@ -372,6 +406,10 @@ const generateAccountHealth = (username: string): AccountHealthMetrics => {
     redFlags,
     overallHealth,
     healthScore,
+    engagementPoints: Math.min(40, engagementPoints),
+    ratioPoints: Math.min(25, ratioPoints),
+    activityPoints: Math.min(20, activityPoints),
+    profilePoints,
   };
 };
 
@@ -383,6 +421,12 @@ export const analyzeUserProfile = async (username: string): Promise<UserAnalysis
   // Generate 10-20 mock tweets for this user
   const tweetCount = 10 + Math.floor(Math.random() * 11); // 10-20 tweets
   const individualScores: TardScore[] = [];
+  
+  // Track raw metrics for averages
+  let totalLikes = 0;
+  let totalReplies = 0;
+  let totalRetweets = 0;
+  let totalQuoteRetweets = 0;
 
   // Use username as seed for consistent results per user
   const seed = username.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
@@ -392,11 +436,21 @@ export const analyzeUserProfile = async (username: string): Promise<UserAnalysis
     // 5-10% chance of having a community note
     const hasCommunityNote = Math.abs(Math.sin(seed * (i + 5))) < 0.08;
     
+    const likes = Math.floor(Math.abs(Math.sin(seed * (i + 1)) * 50000));
+    const replies = Math.floor(Math.abs(Math.sin(seed * (i + 2)) * 5000));
+    const retweets = Math.floor(Math.abs(Math.sin(seed * (i + 3)) * 10000));
+    const quoteRetweets = Math.floor(Math.abs(Math.sin(seed * (i + 4)) * 3000));
+    
+    totalLikes += likes;
+    totalReplies += replies;
+    totalRetweets += retweets;
+    totalQuoteRetweets += quoteRetweets;
+    
     const mockMetrics: TweetMetrics = {
-      likes: Math.floor(Math.abs(Math.sin(seed * (i + 1)) * 50000)),
-      replies: Math.floor(Math.abs(Math.sin(seed * (i + 2)) * 5000)),
-      retweets: Math.floor(Math.abs(Math.sin(seed * (i + 3)) * 10000)),
-      quoteRetweets: Math.floor(Math.abs(Math.sin(seed * (i + 4)) * 3000)),
+      likes,
+      replies,
+      retweets,
+      quoteRetweets,
       tweetId: `mock_${i}`,
       authorUsername: username,
       hasCommunityNote,
@@ -440,6 +494,20 @@ export const analyzeUserProfile = async (username: string): Promise<UserAnalysis
     (individualScores.reduce((sum, s) => sum + s.engagementQuality, 0) / individualScores.length) * 100
   ) / 100;
 
+  // Calculate average raw metrics
+  const avgLikes = Math.round(totalLikes / tweetCount);
+  const avgReplies = Math.round(totalReplies / tweetCount);
+  const avgRetweets = Math.round(totalRetweets / tweetCount);
+  const avgQuoteRetweets = Math.round(totalQuoteRetweets / tweetCount);
+
+  // Calculate score impact for each metric
+  // Reply ratio impact: higher = more tard points (max 40 points to score)
+  const replyRatioImpact = -Math.round((Math.min(avgReplyRatio, 2) / 2) * 40);
+  // Quote ratio impact: higher = more tard points (max 30 points to score)
+  const quoteRatioImpact = -Math.round((Math.min(avgQuoteRatio, 2) / 2) * 30);
+  // Engagement quality impact: higher = more based points
+  const engagementQualityImpact = Math.round((1 - Math.min(1 / avgEngagementQuality, 1)) * 30);
+
   // Generate account health metrics
   const accountHealth = generateAccountHealth(username);
 
@@ -451,6 +519,14 @@ export const analyzeUserProfile = async (username: string): Promise<UserAnalysis
       quoteRatio: avgQuoteRatio,
       engagementQuality: avgEngagementQuality,
       rawTardScore: Math.round(penalizedRawTardScore * 100) / 100,
+      avgLikes,
+      avgReplies,
+      avgRetweets,
+      avgQuoteRetweets,
+      replyRatioImpact,
+      quoteRatioImpact,
+      engagementQualityImpact,
+      communityNotePenalty: Math.round(communityNotePenalty * 100),
     },
     tweetCount,
     individualScores,
