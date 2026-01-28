@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import PasswordGate from "./components/PasswordGate";
 import Index from "./pages/Index";
 import Leaderboards from "./pages/Leaderboards";
+import Algorithm from "./pages/Algorithm";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -20,6 +21,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/leaderboards" element={<Leaderboards />} />
+            <Route path="/algorithm" element={<Algorithm />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
