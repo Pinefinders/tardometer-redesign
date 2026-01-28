@@ -154,68 +154,62 @@ const Algorithm = () => {
 
           {/* Community Notes Penalty */}
           <div className="glass-card p-6 sm:p-8 border-amber-500/30">
-            <div className="flex items-start gap-4">
+            <div className="flex items-center gap-3 mb-6">
               <div className="p-3 rounded-lg bg-amber-500/20 border border-amber-500/30">
                 <AlertTriangle className="w-6 h-6 text-amber-400" />
               </div>
-              <div className="flex-1">
-                <div className="flex items-center gap-2 mb-2">
-                  <h2 className="text-xl font-display font-bold text-foreground">Community Notes Penalty</h2>
+              <h2 className="text-2xl font-display font-bold text-foreground">Community Notes Penalty</h2>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-6">
+              {/* For Individual Tweets */}
+              <div className="p-5 rounded-xl bg-secondary/30 border border-amber-500/20">
+                <div className="flex items-center gap-2 mb-3">
+                  <h3 className="text-lg font-bold text-foreground">For Individual Tweets</h3>
                   <Badge className="bg-amber-500/20 text-amber-400 border-amber-500/50">+50% Tard</Badge>
                 </div>
-                <p className="text-muted-foreground leading-relaxed mb-4">
-                  If your tweet has been flagged with a <strong className="text-amber-400">Community Note</strong>, 
-                  we apply a <strong>50% penalty</strong> to your raw Tard score. This is a strong signal that 
-                  the community fact-checked your content as misleading.
+                <p className="text-muted-foreground text-sm leading-relaxed mb-4">
+                  If a specific tweet has been flagged with a <strong className="text-amber-400">Community Note</strong>, 
+                  that tweet's Tard score increases by 50%. This is a strong signal the content was misleading.
                 </p>
                 <div className="font-mono text-sm text-muted-foreground bg-muted/50 px-3 py-2 rounded inline-block">
                   raw_tard_score × 1.5 (capped at 100)
                 </div>
               </div>
-            </div>
-          </div>
 
-          {/* Community Notes - User Profiles */}
-          <div className="glass-card p-6 sm:p-8 border-amber-500/30">
-            <div className="flex items-start gap-4">
-              <div className="p-3 rounded-lg bg-amber-500/20 border border-amber-500/30">
-                <AlertTriangle className="w-6 h-6 text-amber-400" />
-              </div>
-              <div className="flex-1">
-                <div className="flex items-center gap-2 mb-2">
-                  <h2 className="text-xl font-display font-bold text-foreground">Applied to User Profiles</h2>
+              {/* For User Profiles */}
+              <div className="p-5 rounded-xl bg-secondary/30 border border-amber-500/20">
+                <div className="flex items-center gap-2 mb-3">
+                  <h3 className="text-lg font-bold text-foreground">For User Profiles</h3>
                   <Badge className="bg-amber-500/20 text-amber-400 border-amber-500/50">Scaling Penalty</Badge>
                 </div>
-                <p className="text-muted-foreground leading-relaxed mb-4">
-                  When analyzing a user profile, we check what percentage of their recent tweets have been 
-                  flagged with Community Notes. A high percentage indicates a <strong className="text-amber-400">pattern 
-                  of spreading misinformation</strong>, not just a one-off bad take.
-                </p>
-                <p className="text-sm text-muted-foreground mb-4">
-                  The penalty scales with how often they get fact-checked:
+                <p className="text-muted-foreground text-sm leading-relaxed mb-4">
+                  When analyzing a user's overall profile, we check what percentage of their recent tweets 
+                  have Community Notes. The penalty scales with frequency:
                 </p>
                 <div className="space-y-2">
                   <div className="flex items-center gap-3 p-2 rounded-lg bg-muted/30">
-                    <span className="font-mono text-sm text-amber-400/80">10%</span>
-                    <span className="text-muted-foreground text-sm">of tweets flagged</span>
-                    <span className="ml-auto font-mono text-sm text-amber-400">+5% Tard penalty</span>
+                    <span className="font-mono text-xs text-amber-400/80">10%</span>
+                    <span className="text-muted-foreground text-xs">flagged</span>
+                    <span className="ml-auto font-mono text-xs text-amber-400">+5%</span>
                   </div>
                   <div className="flex items-center gap-3 p-2 rounded-lg bg-muted/30">
-                    <span className="font-mono text-sm text-amber-400/80">20%</span>
-                    <span className="text-muted-foreground text-sm">of tweets flagged</span>
-                    <span className="ml-auto font-mono text-sm text-amber-400">+10% Tard penalty</span>
+                    <span className="font-mono text-xs text-amber-400/80">20%</span>
+                    <span className="text-muted-foreground text-xs">flagged</span>
+                    <span className="ml-auto font-mono text-xs text-amber-400">+10%</span>
                   </div>
                   <div className="flex items-center gap-3 p-2 rounded-lg bg-muted/50 border border-amber-500/30">
-                    <span className="font-mono text-sm text-amber-400">50%+</span>
-                    <span className="text-muted-foreground text-sm">of tweets flagged</span>
-                    <span className="ml-auto font-mono text-sm text-amber-400 font-bold">+25% Tard penalty (capped)</span>
+                    <span className="font-mono text-xs text-amber-400">50%+</span>
+                    <span className="text-muted-foreground text-xs">flagged</span>
+                    <span className="ml-auto font-mono text-xs text-amber-400 font-bold">+25% (max)</span>
                   </div>
                 </div>
-                <p className="text-xs text-muted-foreground mt-4">
-                  This heavily weighs serial misinformation spreaders in the final score.
-                </p>
               </div>
             </div>
+
+            <p className="text-xs text-muted-foreground mt-4 text-center">
+              Community Notes heavily weigh serial misinformation spreaders in the final score.
+            </p>
           </div>
 
           {/* The Formula */}
