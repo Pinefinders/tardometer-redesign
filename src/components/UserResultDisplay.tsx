@@ -20,7 +20,7 @@ const UserResultDisplay = ({ analysis }: UserResultDisplayProps) => {
   return (
     <div className="flex flex-col items-center gap-6">
       {/* User Header */}
-      <div className="flex items-center gap-3 text-center">
+      <div className="flex items-center gap-3 text-center mb-16 sm:mb-24 md:mb-28">
         <div className="w-12 h-12 rounded-full bg-primary/20 border-2 border-primary/50 flex items-center justify-center">
           <User className="w-6 h-6 text-primary" />
         </div>
