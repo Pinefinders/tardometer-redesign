@@ -90,8 +90,6 @@ const AccountHealth = ({ health }: AccountHealthProps) => {
         <h3 className="text-base font-semibold text-foreground">Account Health</h3>
         <Link 
           to="/account-health" 
-          target="_blank"
-          rel="noopener noreferrer"
           className="text-xs text-muted-foreground hover:text-primary transition-colors ml-auto flex items-center gap-1"
         >
           Learn more <ExternalLink className="w-3 h-3" />

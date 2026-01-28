@@ -40,11 +40,24 @@ interface UserResult {
 
 type Result = TweetResult | UserResult;
 
+const RESULT_STORAGE_KEY = 'tardometer_last_result';
+
 const Index = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState("");
-  const [result, setResult] = useState<Result | null>(null);
+  const [result, setResult] = useState<Result | null>(() => {
+    // Restore result from localStorage on initial load
+    try {
+      const saved = localStorage.getItem(RESULT_STORAGE_KEY);
+      if (saved) {
+        return JSON.parse(saved);
+      }
+    } catch (e) {
+      console.error('Failed to restore result:', e);
+    }
+    return null;
+  });
   const [isDemo, setIsDemo] = useState(false);
 
   // Demo data for example results
@@ -161,7 +174,9 @@ const Index = () => {
           metrics,
         });
         
-        setResult({ type: 'tweet', score, metrics, tweetUrl: url });
+        const tweetResult: TweetResult = { type: 'tweet', score, metrics, tweetUrl: url };
+        setResult(tweetResult);
+        localStorage.setItem(RESULT_STORAGE_KEY, JSON.stringify(tweetResult));
       } else {
         // Handle user profile analysis
         setLoadingMessage(`Analyzing @${parsed.username}'s recent tweets...`);
@@ -175,7 +190,9 @@ const Index = () => {
           tweetCount: analysis.tweetCount,
         });
         
-        setResult({ type: 'user', analysis });
+        const userResult: UserResult = { type: 'user', analysis };
+        setResult(userResult);
+        localStorage.setItem(RESULT_STORAGE_KEY, JSON.stringify(userResult));
       }
     } catch (error) {
       console.error("Error analyzing:", error);
@@ -191,6 +208,7 @@ const Index = () => {
   const handleReset = () => {
     setResult(null);
     setIsDemo(false);
+    localStorage.removeItem(RESULT_STORAGE_KEY);
   };
 
   return (
