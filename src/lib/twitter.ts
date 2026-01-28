@@ -190,10 +190,30 @@ export const analyzeUserProfile = async (username: string): Promise<UserAnalysis
     individualScores.push(score);
   }
 
-  // Calculate average score
-  const avgScore = Math.round(
-    individualScores.reduce((sum, s) => sum + s.score, 0) / individualScores.length
-  );
+  // Calculate community note percentage first (needed for penalty calculation)
+  const communityNoteCount = individualScores.filter(s => s.hasCommunityNote).length;
+  const communityNotePercentage = Math.round((communityNoteCount / tweetCount) * 100);
+
+  // Calculate community note penalty based on percentage
+  // 10% flagged = +5% penalty, 20% = +10%, 50%+ = +25% (capped)
+  const getCommunityNotePenalty = (percentage: number): number => {
+    if (percentage >= 50) return 0.25;
+    if (percentage >= 20) return 0.10;
+    if (percentage >= 10) return 0.05;
+    return 0;
+  };
+  const communityNotePenalty = getCommunityNotePenalty(communityNotePercentage);
+
+  // Calculate base average raw tard score
+  const baseAvgRawTardScore = 
+    individualScores.reduce((sum, s) => sum + s.rawTardScore, 0) / individualScores.length;
+  
+  // Apply community note penalty to raw tard score
+  const penalizedRawTardScore = Math.min(baseAvgRawTardScore * (1 + communityNotePenalty), 100);
+  
+  // Recalculate final score with penalty applied
+  const penalizedScore = Math.max(0, Math.min(100, 100 - penalizedRawTardScore));
+
   const avgReplyRatio = Math.round(
     (individualScores.reduce((sum, s) => sum + s.replyRatio, 0) / individualScores.length) * 1000
   ) / 1000;
@@ -203,22 +223,15 @@ export const analyzeUserProfile = async (username: string): Promise<UserAnalysis
   const avgEngagementQuality = Math.round(
     (individualScores.reduce((sum, s) => sum + s.engagementQuality, 0) / individualScores.length) * 100
   ) / 100;
-  const avgRawTardScore = Math.round(
-    (individualScores.reduce((sum, s) => sum + s.rawTardScore, 0) / individualScores.length) * 100
-  ) / 100;
-
-  // Calculate community note percentage
-  const communityNoteCount = individualScores.filter(s => s.hasCommunityNote).length;
-  const communityNotePercentage = Math.round((communityNoteCount / tweetCount) * 100);
 
   return {
     username,
     averageScore: {
-      score: avgScore,
+      score: Math.round(penalizedScore),
       replyRatio: avgReplyRatio,
       quoteRatio: avgQuoteRatio,
       engagementQuality: avgEngagementQuality,
-      rawTardScore: avgRawTardScore,
+      rawTardScore: Math.round(penalizedRawTardScore * 100) / 100,
     },
     tweetCount,
     individualScores,
