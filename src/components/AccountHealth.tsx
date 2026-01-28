@@ -8,6 +8,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import HealthGauge from "./HealthGauge";
 
 interface AccountHealthProps {
   health: AccountHealthMetrics;
@@ -96,14 +97,9 @@ const AccountHealth = ({ health }: AccountHealthProps) => {
         </Link>
       </div>
 
-      {/* Overall Assessment */}
-      <div className={`p-3 rounded-lg border mb-4 ${getOverallBg()}`}>
-        <div className="flex items-center justify-between">
-          <span className="text-sm font-medium text-muted-foreground">Overall Health:</span>
-          <span className={`text-lg font-bold ${getOverallColor()}`}>
-            {health.overallHealth}
-          </span>
-        </div>
+      {/* Health Gauge - Prominent at top */}
+      <div className="flex justify-center mb-6 pt-2">
+        <HealthGauge score={health.healthScore} />
       </div>
 
       {/* Metrics Grid */}

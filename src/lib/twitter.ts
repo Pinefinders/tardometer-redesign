@@ -162,6 +162,7 @@ export interface AccountHealthMetrics {
   activityLabel: string;
   redFlags: string[];
   overallHealth: "Excellent" | "Good" | "Fair" | "Poor" | "Suspicious";
+  healthScore: number; // 0-100 numeric score for the gauge
 }
 
 // User analysis result
@@ -281,21 +282,82 @@ const generateAccountHealth = (username: string): AccountHealthMetrics => {
     redFlags.push("Unusually high following count");
   }
   
-  // Determine overall health
+  // Determine overall health and calculate numeric health score
   let overallHealth: "Excellent" | "Good" | "Fair" | "Poor" | "Suspicious";
+  let healthScore: number;
   
-  if (redFlags.length >= 3) {
-    overallHealth = "Suspicious";
-  } else if (redFlags.length >= 2) {
-    overallHealth = "Poor";
-  } else if (engagementRate >= 5 && followerRatio >= 3 && activityLevel === "Consistent") {
-    overallHealth = "Excellent";
-  } else if (engagementRate >= 3 && followerRatio >= 1 && activityLevel !== "Burst Pattern") {
-    overallHealth = "Good";
-  } else if (engagementRate >= 1 || redFlags.length === 0) {
-    overallHealth = "Fair";
+  // Calculate health score based on metrics
+  // Most accounts should be HEALTHY (50-75), occasionally SICKLY (25-50) or DYING (0-25)
+  // Rarely GIGACHAD (75-100)
+  
+  // Base score components (each contributes to total)
+  let baseScore = 50; // Start at middle
+  
+  // Engagement rate contribution (0-25 points)
+  if (engagementRate >= 5) {
+    baseScore += 20 + seededRandom(0, 5, 10);
+  } else if (engagementRate >= 3) {
+    baseScore += 10 + seededRandom(0, 10, 10);
+  } else if (engagementRate >= 1) {
+    baseScore += seededRandom(-5, 10, 10);
   } else {
+    baseScore -= 15 + seededRandom(0, 15, 10);
+  }
+  
+  // Follower ratio contribution (0-20 points)
+  if (followerRatio >= 10) {
+    baseScore += 15 + seededRandom(0, 5, 11);
+  } else if (followerRatio >= 3) {
+    baseScore += 5 + seededRandom(0, 10, 11);
+  } else if (followerRatio >= 1) {
+    baseScore += seededRandom(-5, 5, 11);
+  } else {
+    baseScore -= 10 + seededRandom(0, 15, 11);
+  }
+  
+  // Activity level contribution
+  if (activityLevel === "Consistent") {
+    baseScore += 5 + seededRandom(0, 5, 12);
+  } else if (activityLevel === "Sporadic") {
+    baseScore += seededRandom(-5, 3, 12);
+  } else {
+    baseScore -= 10 + seededRandom(0, 10, 12);
+  }
+  
+  // Red flags penalty
+  baseScore -= redFlags.length * 8;
+  
+  // Apply distribution bias: most accounts should be HEALTHY (50-75)
+  // Use seeded random to occasionally push to extremes
+  const distributionRoll = seededRandom(0, 100, 13);
+  
+  if (distributionRoll > 95) {
+    // 5% chance: GIGACHAD territory (75-100)
+    baseScore = Math.max(baseScore, 75 + seededRandom(0, 20, 14));
+  } else if (distributionRoll < 10) {
+    // 10% chance: DYING territory (0-25)
+    baseScore = Math.min(baseScore, seededRandom(5, 25, 14));
+  } else if (distributionRoll < 25) {
+    // 15% chance: SICKLY territory (25-50)
+    baseScore = Math.min(Math.max(baseScore, 25), 50);
+  }
+  
+  // Clamp final score
+  healthScore = Math.max(0, Math.min(100, Math.round(baseScore)));
+  
+  // Determine label based on score
+  if (healthScore <= 25) {
+    overallHealth = "Suspicious";
+  } else if (healthScore <= 50) {
     overallHealth = "Poor";
+  } else if (healthScore <= 75) {
+    if (healthScore >= 65) {
+      overallHealth = "Good";
+    } else {
+      overallHealth = "Fair";
+    }
+  } else {
+    overallHealth = "Excellent";
   }
   
   return {
@@ -309,6 +371,7 @@ const generateAccountHealth = (username: string): AccountHealthMetrics => {
     activityLabel,
     redFlags,
     overallHealth,
+    healthScore,
   };
 };
 
