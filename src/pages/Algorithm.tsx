@@ -28,7 +28,7 @@ const Algorithm = () => {
           The Algorithm
         </h1>
         <p className="mt-4 text-muted-foreground text-lg max-w-lg mx-auto">
-          How we calculate if your tweet is <span className="text-destructive font-semibold">Tard</span> or{" "}
+          How we calculate if that tweet (or tweeter) is <span className="text-destructive font-semibold">Tard</span> or{" "}
           <span className="text-primary font-semibold">Based</span>
         </p>
       </section>
@@ -46,8 +46,9 @@ const Algorithm = () => {
             <p className="text-muted-foreground leading-relaxed">
               The Tardometer analyzes tweet engagement patterns to determine if content is genuinely 
               appreciated (<span className="text-primary font-semibold">Based</span>) or getting 
-              dunked on (<span className="text-destructive font-semibold">Tard</span>). We look at 
-              the <em>ratio</em> between positive and negative engagement signals.
+              dunked on (<span className="text-destructive font-semibold">Tard</span>). For individual 
+              tweets, we look at engagement ratios. For users, we analyze their recent tweet history 
+              to find patterns.
             </p>
           </div>
 
