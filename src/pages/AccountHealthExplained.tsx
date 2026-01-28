@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Badge } from "@/components/ui/badge";
@@ -17,19 +17,21 @@ import {
 } from "lucide-react";
 
 const AccountHealthExplained = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Header />
       
       <main className="flex-1 px-4 py-8 max-w-4xl mx-auto w-full">
         {/* Back Link */}
-        <Link 
-          to="/how-it-works" 
+        <button 
+          onClick={() => navigate(-1)}
           className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-6"
         >
           <ArrowLeft className="w-4 h-4" />
-          Back to How It Works
-        </Link>
+          Go Back
+        </button>
 
         {/* Hero */}
         <div className="text-center mb-12">
