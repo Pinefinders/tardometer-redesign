@@ -48,9 +48,9 @@ const TardScoreBreakdown = ({ score, tweetCount, communityNotePercentage }: Tard
   const quoteLevel = getQuoteRatioLevel(score.quoteRatio);
   const engagementLevel = getEngagementQualityLevel(score.engagementQuality);
 
-  const replyImpact = getImpactDisplay(score.replyRatioImpact);
-  const quoteImpact = getImpactDisplay(score.quoteRatioImpact);
-  const engagementImpact = getImpactDisplay(score.engagementQualityImpact);
+  const replyImpact = getImpactDisplay(score.replyRatioImpact ?? 0);
+  const quoteImpact = getImpactDisplay(score.quoteRatioImpact ?? 0);
+  const engagementImpact = getImpactDisplay(score.engagementQualityImpact ?? 0);
 
   // Overall interpretation
   const getOverallInterpretation = () => {
@@ -90,27 +90,29 @@ const TardScoreBreakdown = ({ score, tweetCount, communityNotePercentage }: Tard
           </p>
 
           {/* Raw Metrics */}
-          <div className="p-3 rounded-lg bg-muted/20 border border-border/20">
-            <h5 className="text-xs font-semibold text-muted-foreground mb-2">📊 Raw Metrics (Average per tweet)</h5>
-            <div className="grid grid-cols-2 gap-2 text-xs">
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Average Likes:</span>
-                <span className="font-mono font-bold text-foreground">{score.avgLikes.toLocaleString()}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Average Replies:</span>
-                <span className="font-mono font-bold text-foreground">{score.avgReplies.toLocaleString()}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Average Retweets:</span>
-                <span className="font-mono font-bold text-foreground">{score.avgRetweets.toLocaleString()}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Average Quote Tweets:</span>
-                <span className="font-mono font-bold text-foreground">{score.avgQuoteRetweets.toLocaleString()}</span>
+          {score.avgLikes !== undefined && (
+            <div className="p-3 rounded-lg bg-muted/20 border border-border/20">
+              <h5 className="text-xs font-semibold text-muted-foreground mb-2">📊 Raw Metrics (Average per tweet)</h5>
+              <div className="grid grid-cols-2 gap-2 text-xs">
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Average Likes:</span>
+                  <span className="font-mono font-bold text-foreground">{score.avgLikes.toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Average Replies:</span>
+                  <span className="font-mono font-bold text-foreground">{(score.avgReplies ?? 0).toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Average Retweets:</span>
+                  <span className="font-mono font-bold text-foreground">{(score.avgRetweets ?? 0).toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Average Quote Tweets:</span>
+                  <span className="font-mono font-bold text-foreground">{(score.avgQuoteRetweets ?? 0).toLocaleString()}</span>
+                </div>
               </div>
             </div>
-          </div>
+          )}
 
           {/* Ratio Explanations */}
           <div className="space-y-3">
