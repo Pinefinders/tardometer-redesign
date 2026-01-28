@@ -317,8 +317,8 @@ const HowItWorks = () => {
                 Algorithm page
               </Link>
               . For audience authenticity metrics, see{" "}
-              <Link to="/account-health" className="text-primary hover:underline">
-                Account Health Explained
+              <Link to="/algorithm#account-health" className="text-primary hover:underline">
+                Account Health
               </Link>
               .
             </p>

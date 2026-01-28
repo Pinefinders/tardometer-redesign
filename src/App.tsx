@@ -12,7 +12,6 @@ import HowItWorks from "./pages/HowItWorks";
 import OpenSource from "./pages/OpenSource";
 import Archives from "./pages/Archives";
 import Contact from "./pages/Contact";
-import AccountHealthExplained from "./pages/AccountHealthExplained";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -33,7 +32,6 @@ const App = () => (
             <Route path="/open-source" element={<OpenSource />} />
             <Route path="/archives" element={<Archives />} />
             <Route path="/contact" element={<Contact />} />
-            <Route path="/account-health" element={<AccountHealthExplained />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
