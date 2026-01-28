@@ -9,6 +9,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ShareButton from "@/components/ShareButton";
 import NotesSection from "@/components/NotesSection";
+import ArchiveButton from "@/components/ArchiveButton";
 import { Trophy } from "lucide-react";
 
 import { 
@@ -304,11 +305,18 @@ const Index = () => {
                     <>
                       <Gauge score={result.score.score} showDemoBadge />
                       <MetricsDisplay metrics={result.metrics} score={result.score} />
-                      <div className="flex justify-center mt-6">
+                      <div className="flex flex-wrap justify-center gap-3 mt-6">
                         <ShareButton 
                           score={result.score.score} 
                           type="tweet" 
                           tweetUrl={result.tweetUrl} 
+                        />
+                        <ArchiveButton
+                          tweetId={result.metrics.tweetId}
+                          tweetUrl={result.tweetUrl}
+                          authorUsername={result.metrics.authorUsername}
+                          metrics={result.metrics}
+                          score={result.score}
                         />
                       </div>
                       <NotesSection type="tweet" identifier={result.metrics.tweetId} />
