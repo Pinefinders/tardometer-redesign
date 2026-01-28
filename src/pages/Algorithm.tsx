@@ -28,7 +28,7 @@ const Algorithm = () => {
           The Algorithm
         </h1>
         <p className="mt-4 text-muted-foreground text-lg max-w-lg mx-auto">
-          How we calculate if that tweet (or tweeter) is <span className="text-destructive font-semibold">Tard</span> or{" "}
+          How we calculate if that tweet (or tweeter) is <span className="text-destructive font-semibold">Tarded</span> or{" "}
           <span className="text-primary font-semibold">Based</span>
         </p>
       </section>
@@ -46,7 +46,7 @@ const Algorithm = () => {
             <p className="text-muted-foreground leading-relaxed">
               The Tardometer analyzes tweet engagement patterns to determine if content is genuinely 
               appreciated (<span className="text-primary font-semibold">Based</span>) or getting 
-              dunked on (<span className="text-destructive font-semibold">Tard</span>). For individual 
+              dunked on (<span className="text-destructive font-semibold">Tarded</span>). For individual 
               tweets, we look at engagement ratios. For users, we analyze their recent tweet history 
               to find patterns.
             </p>
@@ -82,7 +82,7 @@ const Algorithm = () => {
                         <TrendingDown className="w-3 h-3" /> Low ratio = Based
                       </span>
                       <span className="flex items-center gap-1 text-destructive">
-                        <TrendingUp className="w-3 h-3" /> High ratio = Tard
+                        <TrendingUp className="w-3 h-3" /> High ratio = Tarded
                       </span>
                     </div>
                   </div>
@@ -113,7 +113,7 @@ const Algorithm = () => {
                         <TrendingDown className="w-3 h-3" /> Low ratio = Based
                       </span>
                       <span className="flex items-center gap-1 text-destructive">
-                        <TrendingUp className="w-3 h-3" /> High ratio = Tard
+                        <TrendingUp className="w-3 h-3" /> High ratio = Tarded
                       </span>
                     </div>
                   </div>
@@ -144,7 +144,7 @@ const Algorithm = () => {
                         <TrendingUp className="w-3 h-3" /> High quality = Based
                       </span>
                       <span className="flex items-center gap-1 text-destructive">
-                        <TrendingDown className="w-3 h-3" /> Low quality = Tard
+                        <TrendingDown className="w-3 h-3" /> Low quality = Tarded
                       </span>
                     </div>
                   </div>
@@ -167,11 +167,11 @@ const Algorithm = () => {
               <div className="p-5 rounded-xl bg-secondary/30 border border-amber-500/20">
                 <div className="flex items-center gap-2 mb-3">
                   <h3 className="text-lg font-bold text-foreground">For Individual Tweets</h3>
-                  <Badge className="bg-amber-500/20 text-amber-400 border-amber-500/50">+50% Tard</Badge>
+                  <Badge className="bg-amber-500/20 text-amber-400 border-amber-500/50">+50% More Tarded</Badge>
                 </div>
                 <p className="text-muted-foreground text-sm leading-relaxed mb-4">
                   If a specific tweet has been flagged with a <strong className="text-amber-400">Community Note</strong>, 
-                  that tweet's Tard score increases by 50%. This is a strong signal the content was misleading.
+                  the raw Tard score increases by 50%. This is a strong signal the content was misleading.
                 </p>
                 <div className="font-mono text-sm text-muted-foreground bg-muted/50 px-3 py-2 rounded inline-block">
                   raw_tard_score × 1.5 (capped at 100)
@@ -241,7 +241,7 @@ const Algorithm = () => {
                   final_score = 100 - raw_score
                 </div>
                 <p className="text-xs text-muted-foreground mt-2">
-                  (0 = Maximum Tard, 100 = Maximum Based)
+                  (0 = Maximum Tarded, 100 = Maximum Based)
                 </p>
               </div>
             </div>
@@ -252,10 +252,10 @@ const Algorithm = () => {
             <h2 className="text-2xl font-display font-bold text-foreground mb-6">Score Zones</h2>
             
             <div className="grid sm:grid-cols-3 gap-4">
-              {/* Tard Zone */}
+              {/* Tarded Zone */}
               <div className="p-5 rounded-xl bg-destructive/10 border border-destructive/30 text-center">
                 <div className="text-4xl mb-2">😭</div>
-                <h3 className="text-xl font-bold text-destructive mb-1">TARD</h3>
+                <h3 className="text-xl font-bold text-destructive mb-1">TARDED</h3>
                 <p className="font-mono text-lg text-destructive/80">0 - 24</p>
                 <p className="text-xs text-muted-foreground mt-2">
                   Getting ratioed into oblivion

@@ -7,7 +7,7 @@ import { getAllArchivedTweets, deleteArchivedTweet, ArchivedTweet } from "@/lib/
 import { toast } from "sonner";
 
 const getScoreInfo = (score: number) => {
-  if (score <= 24) return { label: "TARD", colorClass: "bg-destructive text-destructive-foreground" };
+  if (score <= 24) return { label: "TARDED", colorClass: "bg-destructive text-destructive-foreground" };
   if (score <= 75) return { label: "MID", colorClass: "bg-accent text-accent-foreground" };
   return { label: "BASED", colorClass: "bg-primary text-primary-foreground" };
 };
@@ -159,7 +159,7 @@ const Archives = () => {
           </h1>
         </div>
         <p className="text-muted-foreground max-w-md mx-auto">
-          Preserved Tard moments. Saved locally, persists even if the original tweet is deleted.
+          Preserved Tarded moments. Saved locally, persists even if the original tweet is deleted.
         </p>
       </section>
 
