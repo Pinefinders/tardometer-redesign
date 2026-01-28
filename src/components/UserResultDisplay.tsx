@@ -1,7 +1,9 @@
 import { UserAnalysis } from "@/lib/twitter";
+import { getIfindRetardsStatus } from "@/lib/ifindretards";
 import Gauge from "./Gauge";
 import TardScoreBreakdown from "./TardScoreBreakdown";
 import AccountHealthBreakdown from "./AccountHealthBreakdown";
+import IfindRetardsSignal from "./IfindRetardsSignal";
 import { User, AlertTriangle } from "lucide-react";
 
 interface UserResultDisplayProps {
@@ -10,6 +12,9 @@ interface UserResultDisplayProps {
 
 const UserResultDisplay = ({ analysis }: UserResultDisplayProps) => {
   const { username, averageScore, tweetCount, communityNotePercentage, accountHealth } = analysis;
+  
+  // Get @IfindRetards community signal
+  const ifindRetardsStatus = getIfindRetardsStatus(username);
 
   return (
     <div className="flex flex-col items-center gap-6">
@@ -50,6 +55,9 @@ const UserResultDisplay = ({ analysis }: UserResultDisplayProps) => {
 
       {/* Account Health Section */}
       <AccountHealthBreakdown health={accountHealth} />
+
+      {/* @IfindRetards Community Signal */}
+      <IfindRetardsSignal status={ifindRetardsStatus} username={username} />
     </div>
   );
 };
