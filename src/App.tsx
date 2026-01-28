@@ -11,6 +11,7 @@ import Algorithm from "./pages/Algorithm";
 import HowItWorks from "./pages/HowItWorks";
 import OpenSource from "./pages/OpenSource";
 import Archives from "./pages/Archives";
+import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -30,6 +31,7 @@ const App = () => (
             <Route path="/how-it-works" element={<HowItWorks />} />
             <Route path="/open-source" element={<OpenSource />} />
             <Route path="/archives" element={<Archives />} />
+            <Route path="/contact" element={<Contact />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

@@ -35,12 +35,12 @@ const Footer = () => {
             >
               Algorithm
             </Link>
-            <a 
-              href="mailto:feedback@tardometer.com" 
+            <Link 
+              to="/contact" 
               className="text-sm text-muted-foreground hover:text-primary transition-colors"
             >
               Contact / Feedback
-            </a>
+            </Link>
           </div>
 
           {/* Right - Open Source & Social */}
