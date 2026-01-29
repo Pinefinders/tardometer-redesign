@@ -197,7 +197,7 @@ const Index = () => {
           TARDOMETER
         </h1>
         <p className="mt-4 text-muted-foreground text-lg">
-          🤖 Algorithmic Tweet Analysis
+          🤖 Algorithmic Tweet & Profile Analysis
         </p>
         <div className="mt-3 flex flex-wrap justify-center gap-4 text-sm text-muted-foreground">
           <span className="flex items-center gap-1">
