@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { Badge } from "@/components/ui/badge";
 import { 
   MessageCircle, 
   Heart, 
@@ -12,8 +11,21 @@ import {
   TrendingUp,
   Scale,
   Code2,
-  ArrowLeft
+  ArrowLeft,
+  Shield,
+  Eye,
+  HelpCircle,
+  Users,
+  Bot
 } from "lucide-react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 const About = () => {
   return (
@@ -29,9 +41,8 @@ const About = () => {
         <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-gradient-title tracking-tight pb-1">
           The Algorithm
         </h1>
-        <p className="mt-4 text-muted-foreground text-lg max-w-lg mx-auto">
-          How we calculate if that tweet (or tweeter) is <span className="text-destructive font-semibold">Tarded</span> or{" "}
-          <span className="text-primary font-semibold">Based</span>
+        <p className="mt-4 text-muted-foreground text-lg max-w-xl mx-auto">
+          The Internet is noisy. Tardometer acts as a "noise-canceling" filter for your feed, using real-time engagement data to tell you if a tweet is a solid take or getting ratio'd.
         </p>
       </section>
 
@@ -39,282 +50,220 @@ const About = () => {
       <main className="flex-1 px-4 pb-16 max-w-4xl mx-auto w-full">
         <div className="space-y-8">
           
-          {/* Overview Card */}
+          {/* Social Sentiment Section */}
           <div className="glass-card p-6 sm:p-8">
-            <h2 className="text-2xl font-display font-bold text-foreground mb-4 flex items-center gap-2">
-              <Scale className="w-6 h-6 text-accent" />
-              How It Works
-            </h2>
-            <p className="text-muted-foreground leading-relaxed mb-4">
-              The Tardometer analyzes tweet engagement patterns to determine if content is genuinely 
-              appreciated (<span className="text-primary font-semibold">Based</span>) or getting 
-              dunked on (<span className="text-destructive font-semibold">Tarded</span>). We use 
-              algorithmic analysis of engagement ratios—not subjective voting.
-            </p>
-          </div>
-
-          {/* Why Recent Tweets Only */}
-          <div className="glass-card p-6 sm:p-8 border-primary/30">
-            <h2 className="text-2xl font-display font-bold text-foreground mb-4">
-              Why Recent Tweets Only?
-            </h2>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="p-3 rounded-lg bg-accent/20 border border-accent/30">
+                <Users className="w-6 h-6 text-accent" />
+              </div>
+              <h2 className="text-2xl font-display font-bold text-foreground">
+                Social Sentiment, Not "Truth"
+              </h2>
+            </div>
             <p className="text-muted-foreground leading-relaxed mb-6">
-              We analyze your <strong className="text-foreground">10-20 most recent tweets</strong> because 
-              recent behavior is the best indicator of current posting quality.
+              We don't play "Fact-Check Police." Instead, we measure <strong className="text-foreground">social sentiment</strong>. If 10,000 people are arguing with a post, the crowd has already done the fact-checking for you. We just turn that chaos into a number.
             </p>
             
             <div className="space-y-3">
-              <div className="flex items-start gap-3">
-                <span className="text-primary font-bold">✓</span>
+              <div className="flex items-start gap-3 p-3 rounded-lg bg-primary/10 border border-primary/20">
+                <TrendingUp className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
                 <p className="text-muted-foreground">
-                  <strong className="text-foreground">People evolve</strong> — What you posted years ago doesn't define you today
+                  <strong className="text-primary">High Score:</strong> People are amplifying the message because they find it valuable.
                 </p>
               </div>
-              <div className="flex items-start gap-3">
-                <span className="text-primary font-bold">✓</span>
+              <div className="flex items-start gap-3 p-3 rounded-lg bg-destructive/10 border border-destructive/20">
+                <TrendingDown className="w-5 h-5 text-destructive mt-0.5 flex-shrink-0" />
                 <p className="text-muted-foreground">
-                  <strong className="text-foreground">Current relevance</strong> — Recent posts reflect your current takes
-                </p>
-              </div>
-              <div className="flex items-start gap-3">
-                <span className="text-primary font-bold">✓</span>
-                <p className="text-muted-foreground">
-                  <strong className="text-foreground">Fair assessment</strong> — Everyone deserves a fresh evaluation based on recent behavior
+                  <strong className="text-destructive">Low Score:</strong> People are quote-tweeting to "dunk" on it or arguing in the replies.
                 </p>
               </div>
             </div>
-            
-            <p className="mt-6 text-sm text-muted-foreground italic">
-              The algorithm doesn't hold grudges from 2015. We measure who you are now, not who you were.
-            </p>
           </div>
 
-          {/* Why Algorithmic */}
+          {/* The Science of the Ratio */}
+          <div className="glass-card p-6 sm:p-8">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="p-3 rounded-lg bg-destructive/20 border border-destructive/30">
+                <Scale className="w-6 h-6 text-destructive" />
+              </div>
+              <h2 className="text-2xl font-display font-bold text-foreground">
+                The Science of the Ratio
+              </h2>
+            </div>
+            <p className="text-muted-foreground leading-relaxed mb-6">
+              In 2026, a healthy tweet usually has 300 likes for every 1 reply. If that balance flips, something is wrong.
+            </p>
+            
+            <div className="grid sm:grid-cols-2 gap-4">
+              <div className="p-4 rounded-xl bg-destructive/10 border border-destructive/30">
+                <div className="flex items-center gap-2 mb-2">
+                  <MessageCircle className="w-5 h-5 text-destructive" />
+                  <h3 className="font-bold text-foreground">The 1:1 Disaster</h3>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  If a tweet has as many replies as likes, it's a red flag. The crowd is arguing, not agreeing.
+                </p>
+              </div>
+              
+              <div className="p-4 rounded-xl bg-accent/10 border border-accent/30">
+                <div className="flex items-center gap-2 mb-2">
+                  <Quote className="w-5 h-5 text-accent" />
+                  <h3 className="font-bold text-foreground">The Quote-Tweet Dunk</h3>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  We weigh Quote Tweets heavily. If a post has more Quotes than Retweets, the poster is being mocked, not supported.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* The Zones - Table */}
+          <div className="glass-card p-6 sm:p-8">
+            <h2 className="text-2xl font-display font-bold text-foreground mb-6 flex items-center gap-2">
+              <Calculator className="w-6 h-6 text-primary" />
+              The Zones
+            </h2>
+            
+            <div className="rounded-xl border border-border overflow-hidden">
+              <Table>
+                <TableHeader>
+                  <TableRow className="bg-muted/30 hover:bg-muted/30">
+                    <TableHead className="font-bold text-foreground">Score</TableHead>
+                    <TableHead className="font-bold text-foreground">Status</TableHead>
+                    <TableHead className="font-bold text-foreground">What it Means</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  <TableRow className="bg-destructive/5 hover:bg-destructive/10">
+                    <TableCell className="font-mono font-bold text-destructive">0-35</TableCell>
+                    <TableCell>
+                      <span className="font-bold text-destructive">COOKED</span> 🔥
+                    </TableCell>
+                    <TableCell className="text-muted-foreground text-sm">
+                      This post is getting absolutely ratioed. High negative engagement or a Community Note present. The crowd is not on your side.
+                    </TableCell>
+                  </TableRow>
+                  <TableRow className="bg-accent/5 hover:bg-accent/10">
+                    <TableCell className="font-mono font-bold text-accent">36-70</TableCell>
+                    <TableCell>
+                      <span className="font-bold text-accent">MID</span> 😐
+                    </TableCell>
+                    <TableCell className="text-muted-foreground text-sm">
+                      Standard social noise. Average engagement with some disagreement. Most of the internet lives here.
+                    </TableCell>
+                  </TableRow>
+                  <TableRow className="bg-primary/5 hover:bg-primary/10">
+                    <TableCell className="font-mono font-bold text-primary">71-100</TableCell>
+                    <TableCell>
+                      <span className="font-bold text-primary">BASED</span> 🗿
+                    </TableCell>
+                    <TableCell className="text-muted-foreground text-sm">
+                      Strong positive reception. High likes-to-replies ratio. This content is being amplified by the community as high-value or authoritative.
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </div>
+          </div>
+
+          {/* Why an Algorithm */}
           <div className="glass-card p-6 sm:p-8 border-primary/30">
             <div className="flex items-center gap-3 mb-4">
               <div className="p-3 rounded-lg bg-primary/20 border border-primary/30">
-                <Code2 className="w-6 h-6 text-primary" />
+                <Bot className="w-6 h-6 text-primary" />
               </div>
               <h2 className="text-2xl font-display font-bold text-foreground">
-                Why Algorithmic?
+                Why an Algorithm? (No Bot-Voting)
               </h2>
             </div>
             <div className="space-y-4 text-muted-foreground">
               <p>
-                <strong className="text-foreground">Objective, not subjective.</strong> Traditional "community notes" or voting systems are susceptible to brigading, bias, and mob mentality.
+                We don't use "Upvotes" or "Downvotes" because those are easily manipulated by <strong className="text-foreground">bot farms</strong> and <strong className="text-foreground">"brigading"</strong> (coordinated attacks).
               </p>
               <p>
-                Our algorithm analyzes <strong className="text-foreground">how the crowd actually reacted</strong> to a tweet—not how they say they feel about it. The engagement patterns don't lie.
+                By using an <strong className="text-primary">Engagement Algorithm</strong>, we look at organic behavior. It's much harder for a bot to fake a healthy "Likes-to-Quotes" ratio than it is to just click a "Dislike" button.
+              </p>
+              <p className="text-sm italic border-l-2 border-primary/50 pl-4">
+                We look at the math, not the mob.
               </p>
             </div>
           </div>
 
-          {/* The Three Metrics */}
-          <div className="glass-card p-6 sm:p-8">
-            <h2 className="text-2xl font-display font-bold text-foreground mb-6">
-              The Three Metrics
-            </h2>
+          {/* Privacy & Transparency */}
+          <div className="glass-card p-6 sm:p-8 border-primary/30">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="p-3 rounded-lg bg-primary/20 border border-primary/30">
+                <Shield className="w-6 h-6 text-primary" />
+              </div>
+              <h2 className="text-2xl font-display font-bold text-foreground">
+                Privacy & Transparency
+              </h2>
+            </div>
+            <p className="text-muted-foreground mb-6">
+              We value your privacy. Tardometer is a <strong className="text-foreground">"read-only" auditor</strong>.
+            </p>
             
-            <div className="grid gap-6">
-              {/* Reply Ratio */}
-              <div className="p-5 rounded-xl bg-secondary/30 border border-border/50">
-                <div className="flex items-start gap-4">
-                  <div className="p-3 rounded-lg bg-destructive/20 border border-destructive/30">
-                    <MessageCircle className="w-6 h-6 text-destructive" />
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2">
-                      <h3 className="text-lg font-bold text-foreground">Reply Ratio</h3>
-                      <Badge variant="outline" className="text-xs">Weight: 40%</Badge>
-                    </div>
-                    <div className="font-mono text-sm text-muted-foreground bg-muted/50 px-3 py-2 rounded mb-3 inline-block">
-                      replies ÷ likes
-                    </div>
-                    <p className="text-muted-foreground text-sm leading-relaxed">
-                      High reply ratio = people are arguing with you, not agreeing. When replies 
-                      massively outnumber likes, you're getting <strong className="text-destructive">ratioed</strong>.
-                    </p>
-                    <div className="mt-3 flex items-center gap-4 text-xs">
-                      <span className="flex items-center gap-1 text-primary">
-                        <TrendingDown className="w-3 h-3" /> Low ratio = Based
-                      </span>
-                      <span className="flex items-center gap-1 text-destructive">
-                        <TrendingUp className="w-3 h-3" /> High ratio = Tarded
-                      </span>
-                    </div>
-                  </div>
+            <div className="space-y-3">
+              <div className="flex items-start gap-3">
+                <Eye className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                <div>
+                  <strong className="text-foreground">Public Data Only:</strong>
+                  <p className="text-sm text-muted-foreground">We exclusively analyze publicly available engagement metrics (likes, replies, quotes, and retweets) fetched via Apify.</p>
                 </div>
               </div>
+              <div className="flex items-start gap-3">
+                <Shield className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                <div>
+                  <strong className="text-foreground">No Data Harvesting:</strong>
+                  <p className="text-sm text-muted-foreground">We do not store your private messages, passwords, or personal browsing history.</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <Code2 className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                <div>
+                  <strong className="text-foreground">Zero-Access:</strong>
+                  <p className="text-sm text-muted-foreground">We never ask for your X login credentials. We audit the math, not your identity.</p>
+                </div>
+              </div>
+            </div>
+          </div>
 
-              {/* Quote Ratio */}
-              <div className="p-5 rounded-xl bg-secondary/30 border border-border/50">
-                <div className="flex items-start gap-4">
-                  <div className="p-3 rounded-lg bg-accent/20 border border-accent/30">
-                    <Quote className="w-6 h-6 text-accent" />
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2">
-                      <h3 className="text-lg font-bold text-foreground">Quote Ratio</h3>
-                      <Badge variant="outline" className="text-xs">Weight: 30%</Badge>
-                    </div>
-                    <div className="font-mono text-sm text-muted-foreground bg-muted/50 px-3 py-2 rounded mb-3 inline-block">
-                      quote_tweets ÷ retweets
-                    </div>
-                    <p className="text-muted-foreground text-sm leading-relaxed">
-                      Quote tweets usually mean someone is <strong>dunking on you</strong>. When 
-                      people quote instead of retweet, they're adding their own (often mocking) 
-                      commentary.
-                    </p>
-                    <div className="mt-3 flex items-center gap-4 text-xs">
-                      <span className="flex items-center gap-1 text-primary">
-                        <TrendingDown className="w-3 h-3" /> Low ratio = Based
-                      </span>
-                      <span className="flex items-center gap-1 text-destructive">
-                        <TrendingUp className="w-3 h-3" /> High ratio = Tarded
-                      </span>
-                    </div>
-                  </div>
-                </div>
+          {/* FAQ */}
+          <div className="glass-card p-6 sm:p-8 border-accent/30">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="p-3 rounded-lg bg-accent/20 border border-accent/30">
+                <HelpCircle className="w-6 h-6 text-accent" />
               </div>
-
-              {/* Engagement Quality */}
-              <div className="p-5 rounded-xl bg-secondary/30 border border-border/50">
-                <div className="flex items-start gap-4">
-                  <div className="p-3 rounded-lg bg-primary/20 border border-primary/30">
-                    <Heart className="w-6 h-6 text-primary" />
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2">
-                      <h3 className="text-lg font-bold text-foreground">Engagement Quality</h3>
-                      <Badge variant="outline" className="text-xs">Weight: 30%</Badge>
-                    </div>
-                    <div className="font-mono text-sm text-muted-foreground bg-muted/50 px-3 py-2 rounded mb-3 inline-block">
-                      (likes + retweets) ÷ (replies + quotes)
-                    </div>
-                    <p className="text-muted-foreground text-sm leading-relaxed">
-                      The overall balance of positive vs negative engagement. High quality means 
-                      people are <strong className="text-primary">amplifying</strong> your content, 
-                      not fighting about it.
-                    </p>
-                    <div className="mt-3 flex items-center gap-4 text-xs">
-                      <span className="flex items-center gap-1 text-primary">
-                        <TrendingUp className="w-3 h-3" /> High quality = Based
-                      </span>
-                      <span className="flex items-center gap-1 text-destructive">
-                        <TrendingDown className="w-3 h-3" /> Low quality = Tarded
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <h2 className="text-2xl font-display font-bold text-foreground">
+                FAQ: Why is my score low?
+              </h2>
+            </div>
+            <div className="space-y-4 text-muted-foreground">
+              <p>
+                If you're asking a question or starting a heated debate, your score will naturally be lower. <strong className="text-foreground">That doesn't mean you're wrong</strong>—it just means the internet is arguing with you.
+              </p>
+              <p className="p-4 rounded-lg bg-accent/10 border border-accent/20">
+                The algorithm measures <strong className="text-accent">reception</strong>, not correctness. A low score reflects high-friction engagement, not a moral judgment.
+              </p>
             </div>
           </div>
 
           {/* Community Notes Penalty */}
           <div className="glass-card p-6 sm:p-8 border-amber-500/30">
-            <div className="flex items-center gap-3 mb-6">
+            <div className="flex items-center gap-3 mb-4">
               <div className="p-3 rounded-lg bg-amber-500/20 border border-amber-500/30">
                 <AlertTriangle className="w-6 h-6 text-amber-400" />
               </div>
               <h2 className="text-2xl font-display font-bold text-foreground">Community Notes Penalty</h2>
             </div>
-
             <p className="text-muted-foreground mb-4">
-              If a tweet has been flagged with a <strong className="text-amber-400">Community Note</strong>, 
-              the raw Tard score increases by 50%. This is a strong signal the content was misleading.
+              If a tweet has been flagged with a <strong className="text-amber-400">Community Note</strong>, the raw Tard score receives a flat <strong className="text-foreground">+50 point penalty</strong>. This is a strong signal the content was misleading.
             </p>
-            
             <div className="font-mono text-sm text-muted-foreground bg-muted/50 px-3 py-2 rounded inline-block">
-              raw_tard_score × 1.5 (capped at 100)
+              raw_tard_score + 50 (capped at 85)
             </div>
-          </div>
-
-          {/* The Formula */}
-          <div className="glass-card p-6 sm:p-8">
-            <h2 className="text-2xl font-display font-bold text-foreground mb-4 flex items-center gap-2">
-              <Calculator className="w-6 h-6 text-primary" />
-              The Formula
-            </h2>
-            
-            <div className="space-y-4">
-              <div className="p-4 rounded-xl bg-muted/30 border border-border/50">
-                <p className="text-sm text-muted-foreground mb-2">Step 1: Calculate Raw Tard Score</p>
-                <div className="font-mono text-sm text-foreground bg-background/50 p-3 rounded overflow-x-auto">
-                  raw_score = (reply_ratio/2 × 40) + (quote_ratio/2 × 30) + (1/engagement_quality × 30)
-                </div>
-              </div>
-              
-              <div className="p-4 rounded-xl bg-muted/30 border border-border/50">
-                <p className="text-sm text-muted-foreground mb-2">Step 2: Apply Community Note Penalty (if applicable)</p>
-                <div className="font-mono text-sm text-foreground bg-background/50 p-3 rounded">
-                  if (has_community_note) raw_score = raw_score × 1.5
-                </div>
-              </div>
-              
-              <div className="p-4 rounded-xl bg-muted/30 border border-border/50">
-                <p className="text-sm text-muted-foreground mb-2">Step 3: Invert to Final Score</p>
-                <div className="font-mono text-sm text-foreground bg-background/50 p-3 rounded">
-                  final_score = 100 - raw_score
-                </div>
-                <p className="text-xs text-muted-foreground mt-2">
-                  (0 = Maximum Tarded, 100 = Maximum Based)
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Score Zones */}
-          <div className="glass-card p-6 sm:p-8">
-            <h2 className="text-2xl font-display font-bold text-foreground mb-6">Score Zones</h2>
-            
-            <div className="grid sm:grid-cols-3 gap-4">
-              {/* Tarded Zone */}
-              <div className="p-5 rounded-xl bg-destructive/10 border border-destructive/30 text-center">
-                <div className="text-4xl mb-2">😭</div>
-                <h3 className="text-xl font-bold text-destructive mb-1">TARDED</h3>
-                <p className="font-mono text-lg text-destructive/80">0 - 24</p>
-                <p className="text-xs text-muted-foreground mt-2">
-                  Getting ratioed into oblivion
-                </p>
-              </div>
-              
-              {/* Mid Zone */}
-              <div className="p-5 rounded-xl bg-accent/10 border border-accent/30 text-center">
-                <div className="text-4xl mb-2">🐸</div>
-                <h3 className="text-xl font-bold text-accent mb-1">MID</h3>
-                <p className="font-mono text-lg text-accent/80">25 - 75</p>
-                <p className="text-xs text-muted-foreground mt-2">
-                  Average engagement, nothing special
-                </p>
-              </div>
-              
-              {/* Based Zone */}
-              <div className="p-5 rounded-xl bg-primary/10 border border-primary/30 text-center">
-                <div className="text-4xl mb-2">🗿</div>
-                <h3 className="text-xl font-bold text-primary mb-1">BASED</h3>
-                <p className="font-mono text-lg text-primary/80">76 - 100</p>
-                <p className="text-xs text-muted-foreground mt-2">
-                  Pure positive engagement energy
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Open Source */}
-          <div className="glass-card p-6 sm:p-8 border-primary/30">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="p-3 rounded-lg bg-primary/20 border border-primary/30">
-                <Code2 className="w-6 h-6 text-primary" />
-              </div>
-              <h2 className="text-2xl font-display font-bold text-foreground">
-                Open Source
-              </h2>
-            </div>
-            <p className="text-muted-foreground leading-relaxed mb-4">
-              <strong className="text-foreground">Transparency builds trust.</strong> We're planning to open source the Tardometer algorithm so anyone can verify exactly how scores are calculated, audit the logic, and propose improvements.
-            </p>
-            <p className="text-sm text-muted-foreground">
-              Currently using simulated data for demonstration. Real Twitter/X API integration coming soon.
+            <p className="text-xs text-muted-foreground mt-2 italic">
+              Community Notes ensure a tweet can never be classified as "Based."
             </p>
           </div>
 
