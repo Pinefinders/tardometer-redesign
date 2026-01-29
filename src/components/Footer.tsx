@@ -25,7 +25,7 @@ const Footer = () => {
               to="/about" 
               className="text-sm text-muted-foreground hover:text-primary transition-colors"
             >
-              About
+              Algorithm
             </Link>
             <Link 
               to="/contact" 
