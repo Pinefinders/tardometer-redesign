@@ -1,3 +1,8 @@
+import { fetchSingleTweet, fetchUserTweets, ApifyTweetData, ApifyError } from './apify';
+
+// Re-export for convenience
+export { ApifyError };
+
 // URL type detection
 export type UrlType = 'tweet' | 'profile' | 'invalid';
 
@@ -54,43 +59,36 @@ export interface TweetMetrics {
   hasCommunityNote: boolean;
 }
 
-// Mock function to simulate fetching tweet data
-// Returns realistic-looking random data for demo purposes
+/**
+ * Fetch real tweet metrics from Twitter via Apify
+ * This replaces the mock data function with real API calls
+ */
 export const fetchTweetMetrics = async (tweetId: string): Promise<TweetMetrics> => {
-  // Simulate API delay
-  await new Promise((resolve) => setTimeout(resolve, 1000 + Math.random() * 500));
-
-  // Generate mock data with some variance
-  // Using the tweet ID as a seed for pseudo-random but consistent results
-  const seed = parseInt(tweetId.slice(-6)) || 12345;
-  const random = (min: number, max: number) => {
-    const x = Math.sin(seed * (min + max)) * 10000;
-    return Math.floor((x - Math.floor(x)) * (max - min + 1)) + min;
-  };
-
-  // Generate base engagement (viral tweets vs normal tweets)
-  const isViral = random(0, 10) > 7;
-  const baseEngagement = isViral ? random(10000, 500000) : random(10, 5000);
-
-  // Generate metrics with realistic ratios
-  const likes = baseEngagement;
-  const retweets = Math.floor(likes * (random(5, 40) / 100));
-  const replies = Math.floor(likes * (random(2, 50) / 100));
-  const quoteRetweets = Math.floor(retweets * (random(10, 60) / 100));
-
-  // 5-10% chance of having a community note
-  const hasCommunityNote = random(0, 100) < random(5, 10);
-
+  const tweetData = await fetchSingleTweet(tweetId);
+  
   return {
-    likes,
-    replies,
-    retweets,
-    quoteRetweets,
-    tweetId,
-    authorUsername: "mockuser",
-    hasCommunityNote,
+    likes: tweetData.likes,
+    replies: tweetData.replies,
+    retweets: tweetData.retweets,
+    quoteRetweets: tweetData.quoteRetweets,
+    tweetId: tweetData.id,
+    authorUsername: tweetData.authorUsername,
+    hasCommunityNote: tweetData.hasCommunityNote,
   };
 };
+
+/**
+ * Convert Apify tweet data to our TweetMetrics format
+ */
+const apifyToTweetMetrics = (tweet: ApifyTweetData): TweetMetrics => ({
+  likes: tweet.likes,
+  replies: tweet.replies,
+  retweets: tweet.retweets,
+  quoteRetweets: tweet.quoteRetweets,
+  tweetId: tweet.id,
+  authorUsername: tweet.authorUsername,
+  hasCommunityNote: tweet.hasCommunityNote,
+});
 
 // Score calculation result
 export interface TardScore {
@@ -413,13 +411,15 @@ const generateAccountHealth = (username: string): AccountHealthMetrics => {
   };
 };
 
-// Mock function to fetch a user's recent tweets and calculate their average score
+/**
+ * Analyze a user's profile by fetching their recent tweets and calculating scores
+ * Now uses real Twitter data via Apify API
+ */
 export const analyzeUserProfile = async (username: string): Promise<UserAnalysis> => {
-  // Simulate API delay (longer for user analysis)
-  await new Promise((resolve) => setTimeout(resolve, 1500 + Math.random() * 1000));
-
-  // Generate 10-20 mock tweets for this user
-  const tweetCount = 10 + Math.floor(Math.random() * 11); // 10-20 tweets
+  // Fetch real tweets from Twitter via Apify
+  const tweets = await fetchUserTweets(username, 20);
+  
+  const tweetCount = tweets.length;
   const individualScores: TardScore[] = [];
   
   // Track raw metrics for averages
@@ -428,35 +428,16 @@ export const analyzeUserProfile = async (username: string): Promise<UserAnalysis
   let totalRetweets = 0;
   let totalQuoteRetweets = 0;
 
-  // Use username as seed for consistent results per user
-  const seed = username.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-
-  for (let i = 0; i < tweetCount; i++) {
-    // Generate mock metrics for each tweet
-    // 5-10% chance of having a community note
-    const hasCommunityNote = Math.abs(Math.sin(seed * (i + 5))) < 0.08;
+  // Process each tweet
+  for (const tweet of tweets) {
+    const metrics = apifyToTweetMetrics(tweet);
     
-    const likes = Math.floor(Math.abs(Math.sin(seed * (i + 1)) * 50000));
-    const replies = Math.floor(Math.abs(Math.sin(seed * (i + 2)) * 5000));
-    const retweets = Math.floor(Math.abs(Math.sin(seed * (i + 3)) * 10000));
-    const quoteRetweets = Math.floor(Math.abs(Math.sin(seed * (i + 4)) * 3000));
+    totalLikes += metrics.likes;
+    totalReplies += metrics.replies;
+    totalRetweets += metrics.retweets;
+    totalQuoteRetweets += metrics.quoteRetweets;
     
-    totalLikes += likes;
-    totalReplies += replies;
-    totalRetweets += retweets;
-    totalQuoteRetweets += quoteRetweets;
-    
-    const mockMetrics: TweetMetrics = {
-      likes,
-      replies,
-      retweets,
-      quoteRetweets,
-      tweetId: `mock_${i}`,
-      authorUsername: username,
-      hasCommunityNote,
-    };
-    
-    const score = calculateTardScore(mockMetrics);
+    const score = calculateTardScore(metrics);
     individualScores.push(score);
   }
 
@@ -508,7 +489,7 @@ export const analyzeUserProfile = async (username: string): Promise<UserAnalysis
   // Engagement quality impact: higher = more based points
   const engagementQualityImpact = Math.round((1 - Math.min(1 / avgEngagementQuality, 1)) * 30);
 
-  // Generate account health metrics
+  // Generate account health metrics (still uses seeded mock for now as Apify doesn't provide this)
   const accountHealth = generateAccountHealth(username);
 
   return {
