@@ -5,11 +5,9 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version',
 };
 
-// Actor 1: For single tweet analysis - supports individual tweet URLs
-const TWITTER_SCRAPER_UNLIMITED = "apidojo~twitter-scraper-unlimited";
-
-// Actor 2: For user profile analysis - optimized for bulk fetching
-const TWEET_SCRAPER_V2 = "apidojo~tweet-scraper";
+// Try twitter-scraper-lite which showed actual data in the docs
+// This actor works for both tweets and profiles
+const TWITTER_SCRAPER_LITE = "apidojo~twitter-scraper-lite";
 
 interface ApifyRunResponse {
   data: {
@@ -19,7 +17,7 @@ interface ApifyRunResponse {
   };
 }
 
-// Tweet data format from both Apify actors
+// Tweet data format from twitter-scraper-lite
 interface TweetData {
   // ID fields
   id?: string;
@@ -29,11 +27,12 @@ interface TweetData {
   text?: string;
   full_text?: string;
   
-  // Engagement metrics (Apify format)
+  // Engagement metrics (twitter-scraper-lite format)
   likeCount?: number;
   retweetCount?: number;
   replyCount?: number;
   quoteCount?: number;
+  bookmarkCount?: number;
   
   // Alternative format (Twitter v1)
   favorite_count?: number;
@@ -41,12 +40,14 @@ interface TweetData {
   reply_count?: number;
   quote_count?: number;
   
-  // Author info
+  // Author info (twitter-scraper-lite format)
   author?: {
     userName?: string;
     screenName?: string;
     name?: string;
     id?: string;
+    followers?: number;
+    following?: number;
   };
   
   // Alternative user format
@@ -58,7 +59,12 @@ interface TweetData {
   // Tweet metadata
   type?: string;
   url?: string;
+  twitterUrl?: string;
   createdAt?: string;
+  lang?: string;
+  isReply?: boolean;
+  isRetweet?: boolean;
+  isQuote?: boolean;
   
   // Community note / birdwatch
   birdwatch_pivot?: unknown;
@@ -82,15 +88,16 @@ interface NormalizedTweet {
 function isValidTweet(data: TweetData): boolean {
   if (!data) return false;
   if (data.noResults === true) return false;
+  // Only include actual tweets, not user objects
   if (data.type && data.type !== 'tweet') return false;
   
-  // Must have some engagement data or an ID
+  // Must have an ID and some content or engagement
   const hasId = !!(data.id || data.id_str);
-  const hasEngagement = (data.likeCount !== undefined) || 
-                        (data.favorite_count !== undefined) ||
-                        (data.retweetCount !== undefined);
+  const hasContent = !!(data.text || data.full_text);
+  const hasEngagement = data.likeCount !== undefined || 
+                        data.favorite_count !== undefined;
   
-  return hasId || hasEngagement;
+  return hasId && (hasContent || hasEngagement);
 }
 
 // Normalize tweet data from Apify response
@@ -169,11 +176,11 @@ serve(async (req) => {
     const { type, tweetId, tweetUrl, username, count = 15 } = await req.json();
 
     if (type === 'tweet' && (tweetId || tweetUrl)) {
-      // Use Twitter Scraper Unlimited for single tweets
+      // For single tweets, use the tweet URL directly
       const url = tweetUrl || `https://x.com/i/status/${tweetId}`;
       console.log(`[Tweet] Fetching single tweet: ${url}`);
       
-      const runResponse = await fetch(`https://api.apify.com/v2/acts/${TWITTER_SCRAPER_UNLIMITED}/runs`, {
+      const runResponse = await fetch(`https://api.apify.com/v2/acts/${TWITTER_SCRAPER_LITE}/runs`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${APIFY_API_KEY}`,
@@ -181,13 +188,18 @@ serve(async (req) => {
         },
         body: JSON.stringify({
           startUrls: [url],
-          maxItems: 1,
+          maxItems: 5, // Get a few in case the first is a retweet
         }),
       });
 
       if (!runResponse.ok) {
         const errorText = await runResponse.text();
         console.error(`Apify error: ${errorText}`);
+        
+        // Check for specific errors and provide helpful messages
+        if (errorText.includes('actor-is-not-rented')) {
+          throw new Error('SUBSCRIPTION_REQUIRED: Please subscribe to the Twitter Scraper Lite actor on Apify (apidojo/twitter-scraper-lite)');
+        }
         throw new Error(`Failed to start Apify run: ${runResponse.status} - ${errorText}`);
       }
 
@@ -199,7 +211,7 @@ serve(async (req) => {
       
       console.log(`[Tweet] Received ${tweets.length} items`);
       if (tweets.length > 0) {
-        console.log('[Tweet] Raw data sample:', JSON.stringify(tweets[0]).substring(0, 1200));
+        console.log('[Tweet] Raw data sample:', JSON.stringify(tweets[0]).substring(0, 1500));
       }
       
       const validTweets = tweets
@@ -225,25 +237,28 @@ serve(async (req) => {
       });
 
     } else if (type === 'profile' && username) {
-      // Use Tweet Scraper V2 for user profiles with searchTerms
+      // For profiles, use the profile URL
       console.log(`[Profile] Fetching tweets for @${username}, count: ${count}`);
       
-      const runResponse = await fetch(`https://api.apify.com/v2/acts/${TWEET_SCRAPER_V2}/runs`, {
+      const runResponse = await fetch(`https://api.apify.com/v2/acts/${TWITTER_SCRAPER_LITE}/runs`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${APIFY_API_KEY}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          searchTerms: [`from:${username}`],
-          maxItems: Math.min(count, 25),
-          sort: "Latest",
+          startUrls: [`https://x.com/${username}`],
+          maxItems: Math.min(count, 30),
         }),
       });
 
       if (!runResponse.ok) {
         const errorText = await runResponse.text();
         console.error(`Apify error: ${errorText}`);
+        
+        if (errorText.includes('actor-is-not-rented')) {
+          throw new Error('SUBSCRIPTION_REQUIRED: Please subscribe to the Twitter Scraper Lite actor on Apify (apidojo/twitter-scraper-lite)');
+        }
         throw new Error(`Failed to start Apify run: ${runResponse.status} - ${errorText}`);
       }
 
@@ -255,7 +270,7 @@ serve(async (req) => {
       
       console.log(`[Profile] Received ${tweets.length} items for @${username}`);
       if (tweets.length > 0) {
-        console.log('[Profile] Raw data sample:', JSON.stringify(tweets[0]).substring(0, 1200));
+        console.log('[Profile] Raw data sample:', JSON.stringify(tweets[0]).substring(0, 1500));
       }
       
       const validTweets = tweets
@@ -287,10 +302,12 @@ serve(async (req) => {
     
     // Provide more helpful error messages
     let userMessage = errorMessage;
-    if (errorMessage.includes('actor-is-not-rented')) {
-      userMessage = 'Apify subscription required. Please ensure you have an active subscription to the Twitter scraper actors on Apify.';
+    if (errorMessage.includes('SUBSCRIPTION_REQUIRED') || errorMessage.includes('actor-is-not-rented')) {
+      userMessage = 'Apify subscription required. Please subscribe to the Twitter Scraper Lite actor at: https://apify.com/apidojo/twitter-scraper-lite';
     } else if (errorMessage.includes('401')) {
       userMessage = 'Invalid Apify API key. Please check your API key in the Cloud secrets.';
+    } else if (errorMessage.includes('noResults')) {
+      userMessage = 'No data returned from Twitter. The content may be protected or the API rate limit was exceeded.';
     }
     
     return new Response(JSON.stringify({
