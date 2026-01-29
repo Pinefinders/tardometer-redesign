@@ -132,8 +132,11 @@ const Index = () => {
     localStorage.removeItem(RESULT_STORAGE_KEY);
   };
 
+  // Only use min-h-screen when showing results, otherwise let page height be natural
+  const hasContent = result || isLoading;
+  
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className={`${hasContent ? 'min-h-screen' : ''} bg-background flex flex-col`}>
       <Header />
       
       {/* Hero Section */}
