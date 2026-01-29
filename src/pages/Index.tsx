@@ -138,9 +138,6 @@ const Index = () => {
       
       {/* Hero Section */}
       <section className="pt-8 pb-6 px-4 text-center">
-        <div className="inline-flex items-center gap-2 mb-4 px-3 py-1.5 rounded-full bg-primary/20 border border-primary/50">
-          <span className="text-primary text-xs font-medium">✨ Live — Real Twitter Data via Apify</span>
-        </div>
         <h1 className="font-display text-5xl sm:text-6xl md:text-7xl font-bold text-gradient-title tracking-tight">
           TARDOMETER
         </h1>
