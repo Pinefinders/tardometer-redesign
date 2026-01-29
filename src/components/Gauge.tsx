@@ -27,9 +27,9 @@ const Gauge = ({ score, animated = true, showDemoBadge = false }: GaugeProps) =>
   // Convert score (0-100) to rotation angle (-90 to 90 degrees)
   const needleRotation = -90 + (displayScore / 100) * 180;
 
-  // Updated zone detection: 0-35 = TARD, 36-70 = MID, 71-100 = BASED
+  // Updated zone detection: 0-35 = COOKED, 36-70 = MID, 71-100 = BASED
   const getScoreInfo = (s: number): { label: string; colorClass: string; glowClass: string; zone: Zone } => {
-    if (s <= 35) return { label: "TARDED", colorClass: "text-destructive", glowClass: "glow-tard", zone: "tard" };
+    if (s <= 35) return { label: "COOKED", colorClass: "text-destructive", glowClass: "glow-tard", zone: "tard" };
     if (s <= 70) return { label: "MID", colorClass: "text-accent", glowClass: "glow-mid", zone: "mid" };
     return { label: "BASED", colorClass: "text-primary", glowClass: "glow-based", zone: "based" };
   };
@@ -97,7 +97,7 @@ const Gauge = ({ score, animated = true, showDemoBadge = false }: GaugeProps) =>
             />
           </div>
           <span className={`text-xs font-bold text-destructive hidden sm:block transition-opacity duration-500 ${scoreInfo.zone === "tard" ? "opacity-100" : "opacity-20"}`}>
-            TARDED
+            COOKED
           </span>
         </div>
 
