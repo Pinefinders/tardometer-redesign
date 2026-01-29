@@ -13,16 +13,23 @@ const UserResultDisplay = ({ analysis }: UserResultDisplayProps) => {
   return (
     <div className="flex flex-col items-center gap-6">
       {/* User Header */}
-      <div className="flex items-center gap-3 text-center mb-16 sm:mb-24 md:mb-28">
-        <div className="w-12 h-12 rounded-full bg-primary/20 border-2 border-primary/50 flex items-center justify-center">
-          <User className="w-6 h-6 text-primary" />
-        </div>
-        <div>
+      <div className="flex flex-col items-center gap-3 text-center mb-16 sm:mb-24 md:mb-28">
+        <div className="flex items-center gap-3">
+          <div className="w-12 h-12 rounded-full bg-primary/20 border-2 border-primary/50 flex items-center justify-center">
+            <User className="w-6 h-6 text-primary" />
+          </div>
           <h2 className="text-xl sm:text-2xl font-display font-bold text-foreground">
             @{username}
           </h2>
-          <p className="text-sm text-muted-foreground">
-            Based on {tweetCount} recent tweets
+        </div>
+        
+        {/* Analysis Scope Notice */}
+        <div className="mt-2 p-3 rounded-lg bg-muted/50 border border-border/50 max-w-sm">
+          <p className="text-sm font-medium text-foreground flex items-center justify-center gap-2">
+            📊 Analysis based on {tweetCount} most recent tweets
+          </p>
+          <p className="text-xs text-muted-foreground mt-1">
+            Does not include entire tweet history
           </p>
         </div>
       </div>

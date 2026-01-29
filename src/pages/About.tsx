@@ -45,12 +45,20 @@ const About = () => {
               <Scale className="w-6 h-6 text-accent" />
               How It Works
             </h2>
-            <p className="text-muted-foreground leading-relaxed">
+            <p className="text-muted-foreground leading-relaxed mb-4">
               The Tardometer analyzes tweet engagement patterns to determine if content is genuinely 
               appreciated (<span className="text-primary font-semibold">Based</span>) or getting 
               dunked on (<span className="text-destructive font-semibold">Tarded</span>). We use 
               algorithmic analysis of engagement ratios—not subjective voting.
             </p>
+            <div className="p-3 rounded-lg bg-muted/30 border border-border/50">
+              <p className="text-sm text-muted-foreground">
+                <strong className="text-foreground">📊 Profile Analysis:</strong> When analyzing a user profile, 
+                we analyze their <strong className="text-foreground">10-20 most recent tweets</strong> to calculate 
+                an average Tard Score. This reflects their current behavior and posting patterns, not their entire 
+                Twitter history.
+              </p>
+            </div>
           </div>
 
           {/* Why Algorithmic */}
