@@ -36,32 +36,34 @@ const Gauge = ({ score, animated = true, showDemoBadge = false }: GaugeProps) =>
 
   const scoreInfo = getScoreInfo(displayScore);
 
-  // Mascot styles based on active zone - dramatic size difference
+  // Mascot styles based on active zone - DRAMATIC size difference
   const getMascotStyles = (mascotZone: Zone) => {
     const isActive = scoreInfo.zone === mascotZone;
     
     if (isActive) {
       return {
-        // Active mascot: HUGE and dominant
-        size: "w-20 h-20 sm:w-28 sm:h-28 md:w-36 md:h-36",
-        animation: "animate-bounce-slow",
+        // Active mascot: MASSIVE and dominant - the clear verdict
+        size: "w-28 h-28 sm:w-40 sm:h-40 md:w-48 md:h-48",
+        animation: "animate-bounce",
         filter: mascotZone === "tard" 
-          ? "drop-shadow(0 0 25px hsl(0, 84%, 60%)) drop-shadow(0 0 50px hsl(0, 84%, 60%))"
+          ? "drop-shadow(0 0 30px hsl(0, 84%, 60%)) drop-shadow(0 0 60px hsl(0, 84%, 60%)) drop-shadow(0 0 90px hsl(0, 84%, 50%))"
           : mascotZone === "mid"
-          ? "drop-shadow(0 0 25px hsl(45, 100%, 55%)) drop-shadow(0 0 50px hsl(45, 100%, 55%))"
-          : "drop-shadow(0 0 25px hsl(142, 76%, 45%)) drop-shadow(0 0 50px hsl(142, 76%, 45%))",
+          ? "drop-shadow(0 0 30px hsl(45, 100%, 55%)) drop-shadow(0 0 60px hsl(45, 100%, 55%)) drop-shadow(0 0 90px hsl(45, 100%, 45%))"
+          : "drop-shadow(0 0 30px hsl(142, 76%, 45%)) drop-shadow(0 0 60px hsl(142, 76%, 45%)) drop-shadow(0 0 90px hsl(142, 76%, 35%))",
         opacity: "opacity-100",
         scale: "scale-110",
+        zIndex: "z-20",
       };
     }
     
-    // Inactive mascots: tiny and faded
+    // Inactive mascots: TINY and heavily faded - clearly background
     return {
-      size: "w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12",
+      size: "w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10",
       animation: "",
-      filter: "grayscale(100%) brightness(0.5)",
-      opacity: "opacity-30",
-      scale: "scale-90",
+      filter: "grayscale(100%) brightness(0.3) opacity(0.4)",
+      opacity: "opacity-20",
+      scale: "scale-75",
+      zIndex: "z-0",
     };
   };
 
@@ -83,9 +85,9 @@ const Gauge = ({ score, animated = true, showDemoBadge = false }: GaugeProps) =>
       {/* Gauge with All Mascots */}
       <div className="flex items-end justify-center gap-1 sm:gap-4 w-full max-w-[320px] sm:max-w-none">
         {/* Tard Mascot (Left) */}
-        <div className="flex flex-col items-center gap-1 translate-y-2 transition-all duration-500">
+        <div className={`flex flex-col items-center gap-1 translate-y-2 transition-all duration-700 ease-out ${tardStyles.zIndex}`}>
           <div 
-            className={`transition-all duration-500 rounded-full overflow-hidden border-2 ${getBorderColor("tard")} ${tardStyles.size} ${tardStyles.animation} ${tardStyles.opacity} ${tardStyles.scale}`}
+            className={`transition-all duration-700 ease-out rounded-full overflow-hidden border-2 ${getBorderColor("tard")} ${tardStyles.size} ${tardStyles.animation} ${tardStyles.opacity} ${tardStyles.scale}`}
             style={{ filter: tardStyles.filter }}
           >
             <img 
@@ -94,16 +96,16 @@ const Gauge = ({ score, animated = true, showDemoBadge = false }: GaugeProps) =>
               className="w-full h-full object-cover"
             />
           </div>
-          <span className={`text-xs font-bold text-destructive hidden sm:block transition-opacity duration-500 ${scoreInfo.zone === "tard" ? "opacity-100" : "opacity-30"}`}>
+          <span className={`text-xs font-bold text-destructive hidden sm:block transition-opacity duration-500 ${scoreInfo.zone === "tard" ? "opacity-100" : "opacity-20"}`}>
             TARDED
           </span>
         </div>
 
         <div className="relative w-44 h-28 sm:w-72 sm:h-40 md:w-80 md:h-44 mt-12 sm:mt-20 md:mt-24">
           {/* Mid Mascot - positioned well above the arc's center */}
-          <div className="absolute left-1/2 -translate-x-1/2 -top-20 sm:-top-28 md:-top-36 z-10 flex flex-col items-center gap-1 transition-all duration-500">
+          <div className={`absolute left-1/2 -translate-x-1/2 -top-24 sm:-top-36 md:-top-44 ${midStyles.zIndex} flex flex-col items-center gap-1 transition-all duration-700 ease-out`}>
             <div 
-              className={`transition-all duration-500 rounded-full overflow-hidden border-2 ${getBorderColor("mid")} ${midStyles.size} ${midStyles.animation} ${midStyles.opacity} ${midStyles.scale}`}
+              className={`transition-all duration-700 ease-out rounded-full overflow-hidden border-2 ${getBorderColor("mid")} ${midStyles.size} ${midStyles.animation} ${midStyles.opacity} ${midStyles.scale}`}
               style={{ filter: midStyles.filter }}
             >
               <img 
@@ -112,7 +114,7 @@ const Gauge = ({ score, animated = true, showDemoBadge = false }: GaugeProps) =>
                 className="w-full h-full object-cover"
               />
             </div>
-            <span className={`text-xs font-bold text-accent transition-opacity duration-500 ${scoreInfo.zone === "mid" ? "opacity-100" : "opacity-30"}`}>
+            <span className={`text-xs font-bold text-accent transition-opacity duration-500 ${scoreInfo.zone === "mid" ? "opacity-100" : "opacity-20"}`}>
               MID
             </span>
           </div>
@@ -197,9 +199,9 @@ const Gauge = ({ score, animated = true, showDemoBadge = false }: GaugeProps) =>
         </div>
 
         {/* Based Mascot (Right) */}
-        <div className="flex flex-col items-center gap-1 translate-y-2 transition-all duration-500">
+        <div className={`flex flex-col items-center gap-1 translate-y-2 transition-all duration-700 ease-out ${basedStyles.zIndex}`}>
           <div 
-            className={`transition-all duration-500 rounded-full overflow-hidden border-2 ${getBorderColor("based")} ${basedStyles.size} ${basedStyles.animation} ${basedStyles.opacity} ${basedStyles.scale}`}
+            className={`transition-all duration-700 ease-out rounded-full overflow-hidden border-2 ${getBorderColor("based")} ${basedStyles.size} ${basedStyles.animation} ${basedStyles.opacity} ${basedStyles.scale}`}
             style={{ filter: basedStyles.filter }}
           >
             <img 
@@ -208,7 +210,7 @@ const Gauge = ({ score, animated = true, showDemoBadge = false }: GaugeProps) =>
               className="w-full h-full object-cover"
             />
           </div>
-          <span className={`text-xs font-bold text-primary hidden sm:block transition-opacity duration-500 ${scoreInfo.zone === "based" ? "opacity-100" : "opacity-30"}`}>
+          <span className={`text-xs font-bold text-primary hidden sm:block transition-opacity duration-500 ${scoreInfo.zone === "based" ? "opacity-100" : "opacity-20"}`}>
             BASED
           </span>
         </div>
