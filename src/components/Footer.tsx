@@ -39,7 +39,7 @@ const Footer = () => {
         {/* Bottom - Copyright */}
         <div className="pt-6 border-t border-border/30 text-center">
           <p className="text-xs text-muted-foreground">
-            © 2026 Tardometer. Using mock data for demonstration.
+            © 2026 Tardometer. Real Twitter data via Apify.
           </p>
           <p className="text-xs text-muted-foreground/60 mt-1">
             This is a parody project. Not affiliated with Twitter/X.
