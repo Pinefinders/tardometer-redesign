@@ -198,7 +198,7 @@ const Index = () => {
         <p className="mt-4 text-muted-foreground text-lg">
           🤖 Algorithmic Tweet & Profile Analysis
         </p>
-        <div className="mt-3 flex flex-wrap justify-center items-center gap-2 text-sm text-muted-foreground">
+        <div className="mt-3 flex justify-center items-center gap-2 text-sm text-muted-foreground select-none pointer-events-none">
           <span className="flex items-center gap-1">
             <Zap className="w-4 h-4 text-primary" /> Instant
           </span>
