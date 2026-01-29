@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import wojakCrying from "@/assets/wojak-crying.webp";
+import wojakCrying from "@/assets/wojak-crying.png";
 import gigachad from "@/assets/gigachad.jpg";
 import smugPepe from "@/assets/smug-pepe.webp";
 
