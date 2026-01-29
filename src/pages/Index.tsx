@@ -160,7 +160,7 @@ const Index = () => {
       </section>
 
       {/* Main Content */}
-      <main className="flex-1 flex flex-col items-center justify-start px-4 pb-4 sm:pb-16">
+      <main className={`flex flex-col items-center justify-start px-4 ${result || isLoading ? 'flex-1 pb-4 sm:pb-16' : 'pb-2'}`}>
         {/* Input Section */}
         <div className="w-full max-w-2xl mb-2 sm:mb-6">
           <TweetInput onSubmit={handleSubmit} isLoading={isLoading} />
