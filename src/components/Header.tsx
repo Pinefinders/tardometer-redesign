@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Home, Info, Mail } from "lucide-react";
+import { Menu, X, Home, Info, Mail, Share2 } from "lucide-react";
+import { toast } from "sonner";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -13,6 +14,15 @@ const Header = () => {
   ];
 
   const isActive = (path: string) => location.pathname === path;
+
+  const handleShare = async () => {
+    try {
+      await navigator.clipboard.writeText("https://tardometer.com");
+      toast.success("✓ Link copied to clipboard!");
+    } catch (err) {
+      toast.error("Failed to copy link");
+    }
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -42,6 +52,16 @@ const Header = () => {
                 {link.label}
               </Link>
             ))}
+            
+            {/* Share Button */}
+            <button
+              onClick={handleShare}
+              className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
+              aria-label="Share app"
+            >
+              <Share2 className="w-4 h-4" />
+              Share
+            </button>
           </nav>
 
           {/* Mobile Menu Button */}
@@ -73,6 +93,18 @@ const Header = () => {
                   {link.label}
                 </Link>
               ))}
+              
+              {/* Share Button (Mobile) */}
+              <button
+                onClick={() => {
+                  handleShare();
+                  setIsMenuOpen(false);
+                }}
+                className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+              >
+                <Share2 className="w-4 h-4" />
+                Share App
+              </button>
             </div>
           </nav>
         )}
