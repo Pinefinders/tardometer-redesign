@@ -135,14 +135,14 @@ export const calculateTardScore = (metrics: TweetMetrics): TardScore => {
   // Higher quote ratio = more tard (weight: 30%)
   // Lower engagement quality = more tard (weight: 30%)
   let rawTardScore = 
-    (Math.min(replyRatio, 2) / 2) * 40 + // Cap at 2 for normalization
-    (Math.min(quoteRatio, 2) / 2) * 30 + // Cap at 2 for normalization
-    (Math.min(1 / engagementQuality, 1)) * 30;
+    (Math.min(replyRatio, 1.0) / 1.0) * 45 + // Reply ratio capped at 1.0 - anything above is heavily ratioed
+    (Math.min(quoteRatio, 0.5) / 0.5) * 35 + // Quote ratio capped at 0.5 - quotes are louder criticism
+    (engagementQuality < 5 ? 20 : 0); // Flat 20-point penalty if engagement quality is poor
 
   // Community Note penalty: 50% increase to raw tard score
   // This is a strong signal that the tweet spread misinformation
   if (hasCommunityNote) {
-    rawTardScore = Math.min(rawTardScore * 1.5, 100);
+    rawTardScore = Math.min(rawTardScore + 50, 85); // Flat 50-point penalty, cap at 85 to never allow Based
   }
 
   // Invert and normalize to 0-100 scale

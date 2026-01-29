@@ -27,10 +27,10 @@ const Gauge = ({ score, animated = true, showDemoBadge = false }: GaugeProps) =>
   // Convert score (0-100) to rotation angle (-90 to 90 degrees)
   const needleRotation = -90 + (displayScore / 100) * 180;
 
-  // Updated zone detection: 0-24 = TARD, 25-75 = MID, 76-100 = BASED
+  // Updated zone detection: 0-35 = TARD, 36-70 = MID, 71-100 = BASED
   const getScoreInfo = (s: number): { label: string; colorClass: string; glowClass: string; zone: Zone } => {
-    if (s <= 24) return { label: "TARDED", colorClass: "text-destructive", glowClass: "glow-tard", zone: "tard" };
-    if (s <= 75) return { label: "MID", colorClass: "text-accent", glowClass: "glow-mid", zone: "mid" };
+    if (s <= 35) return { label: "TARDED", colorClass: "text-destructive", glowClass: "glow-tard", zone: "tard" };
+    if (s <= 70) return { label: "MID", colorClass: "text-accent", glowClass: "glow-mid", zone: "mid" };
     return { label: "BASED", colorClass: "text-primary", glowClass: "glow-based", zone: "based" };
   };
 
@@ -161,7 +161,7 @@ const Gauge = ({ score, animated = true, showDemoBadge = false }: GaugeProps) =>
             />
 
             {/* Tick marks - updated for new zones */}
-            {[0, 24, 50, 75, 100].map((tick) => {
+            {[0, 35, 50, 70, 100].map((tick) => {
               const angle = -180 + (tick / 100) * 180;
               const rad = (angle * Math.PI) / 180;
               const innerR = 60;
