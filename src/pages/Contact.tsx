@@ -44,7 +44,7 @@ const Contact = () => {
     );
     
     // Open mailto link
-    window.location.href = `mailto:feedback@tardometer.com?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:tardometer@gmail.com?subject=${subject}&body=${body}`;
 
     // Show success message after a brief delay
     setTimeout(() => {
