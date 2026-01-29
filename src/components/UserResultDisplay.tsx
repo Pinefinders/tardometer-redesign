@@ -24,12 +24,12 @@ const UserResultDisplay = ({ analysis }: UserResultDisplayProps) => {
         </div>
         
         {/* Analysis Scope Notice */}
-        <div className="mt-2 p-3 rounded-lg bg-muted/50 border border-border/50 max-w-sm">
+        <div className="mt-2 p-3 rounded-lg bg-primary/10 border border-primary/30 max-w-sm">
           <p className="text-sm font-medium text-foreground flex items-center justify-center gap-2">
-            📊 Analysis based on {tweetCount} most recent tweets
+            📊 Analyzed {tweetCount} most recent tweets
           </p>
           <p className="text-xs text-muted-foreground mt-1">
-            Does not include entire tweet history
+            Recent behavior is the best indicator of current takes
           </p>
         </div>
       </div>

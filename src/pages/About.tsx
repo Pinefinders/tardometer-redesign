@@ -51,14 +51,42 @@ const About = () => {
               dunked on (<span className="text-destructive font-semibold">Tarded</span>). We use 
               algorithmic analysis of engagement ratios—not subjective voting.
             </p>
-            <div className="p-3 rounded-lg bg-muted/30 border border-border/50">
-              <p className="text-sm text-muted-foreground">
-                <strong className="text-foreground">📊 Profile Analysis:</strong> When analyzing a user profile, 
-                we analyze their <strong className="text-foreground">10-20 most recent tweets</strong> to calculate 
-                an average Tard Score. This reflects their current behavior and posting patterns, not their entire 
-                Twitter history.
-              </p>
+          </div>
+
+          {/* Why Recent Tweets Only */}
+          <div className="glass-card p-6 sm:p-8 border-primary/30">
+            <h2 className="text-2xl font-display font-bold text-foreground mb-4">
+              Why Recent Tweets Only?
+            </h2>
+            <p className="text-muted-foreground leading-relaxed mb-6">
+              We analyze your <strong className="text-foreground">10-20 most recent tweets</strong> because 
+              recent behavior is the best indicator of current posting quality.
+            </p>
+            
+            <div className="space-y-3">
+              <div className="flex items-start gap-3">
+                <span className="text-primary font-bold">✓</span>
+                <p className="text-muted-foreground">
+                  <strong className="text-foreground">People evolve</strong> — What you posted years ago doesn't define you today
+                </p>
+              </div>
+              <div className="flex items-start gap-3">
+                <span className="text-primary font-bold">✓</span>
+                <p className="text-muted-foreground">
+                  <strong className="text-foreground">Current relevance</strong> — Recent posts reflect your current takes
+                </p>
+              </div>
+              <div className="flex items-start gap-3">
+                <span className="text-primary font-bold">✓</span>
+                <p className="text-muted-foreground">
+                  <strong className="text-foreground">Fair assessment</strong> — Everyone deserves a fresh evaluation based on recent behavior
+                </p>
+              </div>
             </div>
+            
+            <p className="mt-6 text-sm text-muted-foreground italic">
+              The algorithm doesn't hold grudges from 2015. We measure who you are now, not who you were.
+            </p>
           </div>
 
           {/* Why Algorithmic */}
