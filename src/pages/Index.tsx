@@ -137,32 +137,32 @@ const Index = () => {
       <Header />
       
       {/* Hero Section */}
-      <section className="pt-8 pb-6 px-4 text-center">
-        <h1 className="font-display text-5xl sm:text-6xl md:text-7xl font-bold text-gradient-title tracking-tight">
+      <section className="pt-4 sm:pt-8 pb-3 sm:pb-6 px-4 text-center">
+        <h1 className="font-display text-4xl sm:text-6xl md:text-7xl font-bold text-gradient-title tracking-tight">
           TARDOMETER
         </h1>
-        <p className="mt-4 text-muted-foreground text-lg">
+        <p className="mt-2 sm:mt-4 text-muted-foreground text-base sm:text-lg">
           🤖 Algorithmic Tweet & Profile Analysis
         </p>
-        <div className="mt-3 flex justify-center items-center gap-2 text-sm text-muted-foreground select-none pointer-events-none">
+        <div className="mt-2 sm:mt-3 flex justify-center items-center gap-2 text-xs sm:text-sm text-muted-foreground select-none pointer-events-none">
           <span className="flex items-center gap-1">
-            <Zap className="w-4 h-4 text-primary" /> Instant
+            <Zap className="w-3 h-3 sm:w-4 sm:h-4 text-primary" /> Instant
           </span>
           <span className="text-border/80">|</span>
           <span className="flex items-center gap-1">
-            <Code2 className="w-4 h-4 text-primary" /> Open Source
+            <Code2 className="w-3 h-3 sm:w-4 sm:h-4 text-primary" /> Open Source
           </span>
           <span className="text-border/80">|</span>
           <span className="flex items-center gap-1">
-            <BarChart3 className="w-4 h-4 text-primary" /> Data-Driven
+            <BarChart3 className="w-3 h-3 sm:w-4 sm:h-4 text-primary" /> Data-Driven
           </span>
         </div>
       </section>
 
       {/* Main Content */}
-      <main className="flex-1 flex flex-col items-center justify-start px-4 pb-16">
+      <main className="flex-1 flex flex-col items-center justify-start px-4 pb-4 sm:pb-16">
         {/* Input Section */}
-        <div className="w-full max-w-2xl mb-6">
+        <div className="w-full max-w-2xl mb-2 sm:mb-6">
           <TweetInput onSubmit={handleSubmit} isLoading={isLoading} />
         </div>
 
