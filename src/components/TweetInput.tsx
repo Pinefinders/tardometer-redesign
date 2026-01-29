@@ -23,16 +23,16 @@ const TweetInput = ({ onSubmit, isLoading = false }: TweetInputProps) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-xl mx-auto">
-      <div className="glass-card p-6 sm:p-8">
+    <form onSubmit={handleSubmit} className="w-full max-w-2xl mx-auto">
+      <div className="glass-card p-6 sm:p-8 border-primary/20 shadow-lg shadow-primary/5">
         <div className="flex flex-col sm:flex-row gap-3">
           <Input
             id="tweet-url"
             type="url"
-            placeholder="Paste tweet or profile URL"
+            placeholder="Paste tweet or profile URL..."
             value={url}
             onChange={(e) => setUrl(e.target.value)}
-            className="flex-1 h-12 bg-input border-border text-foreground placeholder:text-muted-foreground focus-visible:ring-primary"
+            className="flex-1 h-14 text-base bg-input border-border text-foreground placeholder:text-muted-foreground focus-visible:ring-primary focus-visible:ring-2 focus-visible:border-primary"
           />
           <div className="flex gap-2">
             <Button
@@ -40,7 +40,7 @@ const TweetInput = ({ onSubmit, isLoading = false }: TweetInputProps) => {
               disabled={!url.trim() || isLoading}
               variant="calculate"
               size="lg"
-              className="h-12 px-8 font-semibold"
+              className="h-14 px-8 font-semibold text-base"
             >
               {isLoading ? (
                 <span className="flex items-center gap-2">
@@ -72,7 +72,7 @@ const TweetInput = ({ onSubmit, isLoading = false }: TweetInputProps) => {
                 variant="ghost"
                 size="lg"
                 onClick={handleClear}
-                className="h-12 px-3 text-muted-foreground hover:text-foreground"
+                className="h-14 px-3 text-muted-foreground hover:text-foreground"
               >
                 <X className="w-5 h-5" />
               </Button>

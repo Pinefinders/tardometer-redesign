@@ -189,9 +189,8 @@ const Index = () => {
       
       {/* Hero Section */}
       <section className="pt-8 pb-6 px-4 text-center">
-        <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full bg-amber-500/20 border border-amber-500/50">
-          <span className="text-amber-400 font-bold text-xs uppercase tracking-wider">⚠️ Demo Mode</span>
-          <span className="text-amber-400/80 text-xs">Using simulated data</span>
+        <div className="inline-flex items-center gap-2 mb-4 px-3 py-1.5 rounded-full bg-muted/50 border border-border/50">
+          <span className="text-muted-foreground text-xs">⚠️ Demo Mode — Using simulated data</span>
         </div>
         <h1 className="font-display text-5xl sm:text-6xl md:text-7xl font-bold text-gradient-title tracking-tight">
           TARDOMETER
@@ -199,13 +198,15 @@ const Index = () => {
         <p className="mt-4 text-muted-foreground text-lg">
           🤖 Algorithmic Tweet & Profile Analysis
         </p>
-        <div className="mt-3 flex flex-wrap justify-center gap-4 text-sm text-muted-foreground">
+        <div className="mt-3 flex flex-wrap justify-center items-center gap-2 text-sm text-muted-foreground">
           <span className="flex items-center gap-1">
             <Zap className="w-4 h-4 text-primary" /> Instant
           </span>
+          <span className="text-border/80">|</span>
           <span className="flex items-center gap-1">
             <Code2 className="w-4 h-4 text-primary" /> Open Source
           </span>
+          <span className="text-border/80">|</span>
           <span className="flex items-center gap-1">
             <BarChart3 className="w-4 h-4 text-primary" /> Data-Driven
           </span>
@@ -215,7 +216,7 @@ const Index = () => {
       {/* Main Content */}
       <main className="flex-1 flex flex-col items-center justify-start px-4 pb-16">
         {/* Input Section */}
-        <div className="w-full max-w-xl mb-6">
+        <div className="w-full max-w-2xl mb-6">
           <TweetInput onSubmit={handleSubmit} isLoading={isLoading} />
         </div>
 
