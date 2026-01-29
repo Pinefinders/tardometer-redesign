@@ -13,6 +13,7 @@ import {
   fetchTweetMetrics, 
   calculateTardScore, 
   analyzeUserProfile,
+  ApifyError,
   TweetMetrics, 
   TardScore,
   UserAnalysis 
@@ -151,7 +152,7 @@ const Index = () => {
 
     try {
       if (parsed.type === 'tweet') {
-        setLoadingMessage("Analyzing tweet...");
+        setLoadingMessage("Fetching tweet from Twitter... This may take 30-60 seconds");
         const metrics = await fetchTweetMetrics(parsed.tweetId!);
         const score = calculateTardScore(metrics);
         
@@ -159,7 +160,7 @@ const Index = () => {
         setResult(tweetResult);
         localStorage.setItem(RESULT_STORAGE_KEY, JSON.stringify(tweetResult));
       } else {
-        setLoadingMessage(`Analyzing @${parsed.username}'s recent tweets...`);
+        setLoadingMessage(`Fetching @${parsed.username}'s tweets... This may take 1-2 minutes`);
         const analysis = await analyzeUserProfile(parsed.username!);
         
         const userResult: UserResult = { type: 'user', analysis };
@@ -168,8 +169,31 @@ const Index = () => {
       }
     } catch (error) {
       console.error("Error analyzing:", error);
-      toast.error("Failed to analyze", {
-        description: "Please try again later.",
+      
+      // Provide user-friendly error messages
+      let errorMessage = "An unexpected error occurred. Please try again.";
+      let errorDescription = "";
+      
+      if (error instanceof ApifyError) {
+        if (error.isUserError) {
+          errorMessage = "Could not fetch data";
+          errorDescription = error.message;
+        } else {
+          errorMessage = "API Error";
+          errorDescription = error.message;
+        }
+      } else if (error instanceof Error) {
+        if (error.message.includes('Failed to fetch')) {
+          errorMessage = "Network Error";
+          errorDescription = "Could not connect to the server. Please check your connection.";
+        } else {
+          errorDescription = error.message;
+        }
+      }
+      
+      toast.error(errorMessage, {
+        description: errorDescription,
+        duration: 5000,
       });
     } finally {
       setIsLoading(false);
@@ -189,8 +213,8 @@ const Index = () => {
       
       {/* Hero Section */}
       <section className="pt-8 pb-6 px-4 text-center">
-        <div className="inline-flex items-center gap-2 mb-4 px-3 py-1.5 rounded-full bg-muted/50 border border-border/50">
-          <span className="text-muted-foreground text-xs">⚠️ Demo Mode — Using simulated data</span>
+        <div className="inline-flex items-center gap-2 mb-4 px-3 py-1.5 rounded-full bg-primary/20 border border-primary/50">
+          <span className="text-primary text-xs font-medium">✨ Live — Real Twitter Data via Apify</span>
         </div>
         <h1 className="font-display text-5xl sm:text-6xl md:text-7xl font-bold text-gradient-title tracking-tight">
           TARDOMETER
@@ -275,15 +299,14 @@ const Index = () => {
                     </button>
                   </div>
                   
-                  {/* Demo Mode Banner */}
-                  <div className="mb-6 p-4 rounded-xl bg-amber-500 text-center">
-                    <p className="text-amber-950 font-bold text-sm">
-                      {isDemo 
-                        ? "🎭 DEMO RESULT: This is an example to show how scores work!"
-                        : "⚠️ DEMO MODE: These scores are simulated. Real Twitter/X API coming soon!"
-                      }
-                    </p>
-                  </div>
+                  {/* Demo Mode Banner - only show for demo results */}
+                  {isDemo && (
+                    <div className="mb-6 p-4 rounded-xl bg-accent/20 border border-accent/50 text-center">
+                      <p className="text-accent font-bold text-sm">
+                        🎭 DEMO RESULT: This is an example to show how scores work!
+                      </p>
+                    </div>
+                  )}
                   
                   {result.type === 'tweet' ? (
                     <>
