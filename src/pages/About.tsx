@@ -27,7 +27,7 @@ const About = () => {
           <span className="text-primary font-bold text-xs uppercase tracking-wider">The Science</span>
         </div>
         <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-gradient-title tracking-tight pb-1">
-          About the Algorithm
+          The Algorithm
         </h1>
         <p className="mt-4 text-muted-foreground text-lg max-w-lg mx-auto">
           How we calculate if that tweet (or tweeter) is <span className="text-destructive font-semibold">Tarded</span> or{" "}
