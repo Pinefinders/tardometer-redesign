@@ -6,11 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import PasswordGate from "./components/PasswordGate";
 import ScrollToTop from "./components/ScrollToTop";
 import Index from "./pages/Index";
-import Leaderboards from "./pages/Leaderboards";
-import Algorithm from "./pages/Algorithm";
-import HowItWorks from "./pages/HowItWorks";
-import OpenSource from "./pages/OpenSource";
-import Archives from "./pages/Archives";
+import About from "./pages/About";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 
@@ -26,11 +22,7 @@ const App = () => (
           <ScrollToTop />
           <Routes>
             <Route path="/" element={<Index />} />
-            <Route path="/leaderboards" element={<Leaderboards />} />
-            <Route path="/algorithm" element={<Algorithm />} />
-            <Route path="/how-it-works" element={<HowItWorks />} />
-            <Route path="/open-source" element={<OpenSource />} />
-            <Route path="/archives" element={<Archives />} />
+            <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

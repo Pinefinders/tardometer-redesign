@@ -1,16 +1,12 @@
 import { useState, useEffect } from "react";
-import { useSearchParams, Link } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import TweetInput from "@/components/TweetInput";
 import Gauge from "@/components/Gauge";
 import MetricsDisplay from "@/components/MetricsDisplay";
 import UserResultDisplay from "@/components/UserResultDisplay";
-import BookmarkletSection from "@/components/BookmarkletSection";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import ShareButton from "@/components/ShareButton";
-import NotesSection from "@/components/NotesSection";
-import ArchiveButton from "@/components/ArchiveButton";
-import { Trophy } from "lucide-react";
+import { Zap, Code2, BarChart3 } from "lucide-react";
 
 import { 
   parseTwitterUrl, 
@@ -21,7 +17,6 @@ import {
   TardScore,
   UserAnalysis 
 } from "@/lib/twitter";
-import { saveTweetEntry, saveUserEntry } from "@/lib/leaderboard";
 import { toast } from "sonner";
 
 type ResultType = 'tweet' | 'user';
@@ -47,7 +42,6 @@ const Index = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState("");
   const [result, setResult] = useState<Result | null>(() => {
-    // Restore result from localStorage on initial load
     try {
       const saved = localStorage.getItem(RESULT_STORAGE_KEY);
       if (saved) {
@@ -132,19 +126,16 @@ const Index = () => {
     setResult(demoResults[type]);
   };
 
-  // Handle tweet URL from bookmarklet (query parameter)
+  // Handle tweet URL from query parameter
   useEffect(() => {
     const tweetUrl = searchParams.get('tweet');
     if (tweetUrl) {
-      // Clear the URL parameter to clean up the address bar
       setSearchParams({}, { replace: true });
-      // Auto-submit the tweet URL
       handleSubmit(tweetUrl);
     }
   }, []);
 
   const handleSubmit = async (url: string) => {
-    // Parse the URL to determine type
     const parsed = parseTwitterUrl(url);
     
     if (parsed.type === 'invalid') {
@@ -160,35 +151,16 @@ const Index = () => {
 
     try {
       if (parsed.type === 'tweet') {
-        // Handle tweet analysis
         setLoadingMessage("Analyzing tweet...");
         const metrics = await fetchTweetMetrics(parsed.tweetId!);
         const score = calculateTardScore(metrics);
-        
-        // Save to leaderboard
-        saveTweetEntry({
-          tweetUrl: url,
-          tweetId: parsed.tweetId!,
-          authorUsername: parsed.username || metrics.authorUsername,
-          score,
-          metrics,
-        });
         
         const tweetResult: TweetResult = { type: 'tweet', score, metrics, tweetUrl: url };
         setResult(tweetResult);
         localStorage.setItem(RESULT_STORAGE_KEY, JSON.stringify(tweetResult));
       } else {
-        // Handle user profile analysis
         setLoadingMessage(`Analyzing @${parsed.username}'s recent tweets...`);
         const analysis = await analyzeUserProfile(parsed.username!);
-        
-        // Save to leaderboard
-        saveUserEntry({
-          username: analysis.username,
-          profileUrl: url,
-          averageScore: analysis.averageScore,
-          tweetCount: analysis.tweetCount,
-        });
         
         const userResult: UserResult = { type: 'user', analysis };
         setResult(userResult);
@@ -224,11 +196,20 @@ const Index = () => {
         <h1 className="font-display text-5xl sm:text-6xl md:text-7xl font-bold text-gradient-title tracking-tight">
           TARDOMETER
         </h1>
-        <p className="mt-4 text-muted-foreground text-lg max-w-md mx-auto">
-          Find out if that tweet or account is <span className="text-destructive font-semibold">Tarded</span>,{" "}
-          <span className="text-accent font-semibold">Mid</span>, or{" "}
-          <span className="text-primary font-semibold">Based</span>
+        <p className="mt-4 text-muted-foreground text-lg">
+          🤖 Algorithmic Tweet Analysis
         </p>
+        <div className="mt-3 flex flex-wrap justify-center gap-4 text-sm text-muted-foreground">
+          <span className="flex items-center gap-1">
+            <Zap className="w-4 h-4 text-primary" /> Instant
+          </span>
+          <span className="flex items-center gap-1">
+            <Code2 className="w-4 h-4 text-primary" /> Open Source
+          </span>
+          <span className="flex items-center gap-1">
+            <BarChart3 className="w-4 h-4 text-primary" /> Data-Driven
+          </span>
+        </div>
       </section>
 
       {/* Main Content */}
@@ -238,10 +219,9 @@ const Index = () => {
           <TweetInput onSubmit={handleSubmit} isLoading={isLoading} />
         </div>
 
-        {/* Demo Buttons & Links */}
+        {/* Demo Buttons */}
         {!result && !isLoading && (
-          <div className="w-full max-w-xl mb-12 space-y-4">
-            {/* Demo Example Buttons */}
+          <div className="w-full max-w-xl mb-12">
             <div className="glass-card p-4">
               <p className="text-center text-sm text-muted-foreground mb-3">
                 👀 See example results:
@@ -267,21 +247,6 @@ const Index = () => {
                 </button>
               </div>
             </div>
-            
-            <BookmarkletSection />
-            
-            {/* Leaderboard Link */}
-            <Link 
-              to="/leaderboards"
-              className="block glass-card p-4 text-center hover:border-primary/50 transition-colors group"
-            >
-              <div className="flex items-center justify-center gap-2">
-                <Trophy className="w-5 h-5 text-accent group-hover:text-primary transition-colors" />
-                <span className="font-semibold text-foreground group-hover:text-primary transition-colors">
-                  View Weekly Leaderboards
-                </span>
-              </div>
-            </Link>
           </div>
         )}
 
@@ -299,7 +264,7 @@ const Index = () => {
                 </div>
               ) : result ? (
               <div className="relative">
-                  {/* Reset button - positioned inside container on mobile, above on larger screens */}
+                  {/* Reset button */}
                   <div className="flex justify-end mb-4 sm:absolute sm:-top-12 sm:right-0 sm:mb-0">
                     <button
                       onClick={handleReset}
@@ -323,33 +288,26 @@ const Index = () => {
                     <>
                       <Gauge score={result.score.score} showDemoBadge />
                       <MetricsDisplay metrics={result.metrics} score={result.score} />
-                      <div className="flex flex-wrap justify-center gap-3 mt-6">
-                        <ShareButton 
-                          score={result.score.score} 
-                          type="tweet" 
-                          tweetUrl={result.tweetUrl} 
-                        />
-                        <ArchiveButton
-                          tweetId={result.metrics.tweetId}
-                          tweetUrl={result.tweetUrl}
-                          authorUsername={result.metrics.authorUsername}
-                          metrics={result.metrics}
-                          score={result.score}
-                        />
+                      <div className="flex justify-center mt-6">
+                        <button
+                          onClick={handleReset}
+                          className="px-6 py-3 rounded-lg bg-primary/20 border border-primary/50 text-primary font-semibold hover:bg-primary/30 transition-colors"
+                        >
+                          Analyze Another
+                        </button>
                       </div>
-                      <NotesSection type="tweet" identifier={result.metrics.tweetId} />
                     </>
                   ) : (
                     <>
                       <UserResultDisplay analysis={result.analysis} />
                       <div className="flex justify-center mt-6">
-                        <ShareButton 
-                          score={result.analysis.averageScore.score} 
-                          type="user" 
-                          username={result.analysis.username} 
-                        />
+                        <button
+                          onClick={handleReset}
+                          className="px-6 py-3 rounded-lg bg-primary/20 border border-primary/50 text-primary font-semibold hover:bg-primary/30 transition-colors"
+                        >
+                          Analyze Another
+                        </button>
                       </div>
-                      <NotesSection type="user" identifier={result.analysis.username} />
                     </>
                   )}
                 </div>
