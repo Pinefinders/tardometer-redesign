@@ -15,7 +15,7 @@ const Footer = () => {
               TARDOMETER
             </Link>
             <p className="mt-1 text-sm text-muted-foreground">
-              🤖 Algorithmic Tweet Analysis
+              🤖 Algorithmic Tweet & Profile Analysis
             </p>
           </div>
 
