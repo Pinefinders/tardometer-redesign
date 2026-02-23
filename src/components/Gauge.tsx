@@ -27,11 +27,11 @@ const Gauge = ({ score, animated = true, showDemoBadge = false }: GaugeProps) =>
   // Convert score (0-100) to rotation angle (-90 to 90 degrees)
   const needleRotation = -90 + (displayScore / 100) * 180;
 
-  // Updated zone detection: 0-35 = COOKED, 36-70 = MID, 71-100 = BASED
+  // Zone detection: 0-35 = BASED, 36-70 = MID, 71-100 = COOKED
   const getScoreInfo = (s: number): { label: string; colorClass: string; glowClass: string; zone: Zone } => {
-    if (s <= 35) return { label: "COOKED", colorClass: "text-destructive", glowClass: "glow-tard", zone: "tard" };
+    if (s <= 35) return { label: "BASED", colorClass: "text-primary", glowClass: "glow-based", zone: "based" };
     if (s <= 70) return { label: "MID", colorClass: "text-accent", glowClass: "glow-mid", zone: "mid" };
-    return { label: "BASED", colorClass: "text-primary", glowClass: "glow-based", zone: "based" };
+    return { label: "COOKED", colorClass: "text-destructive", glowClass: "glow-tard", zone: "tard" };
   };
 
   const scoreInfo = getScoreInfo(displayScore);
@@ -84,20 +84,20 @@ const Gauge = ({ score, animated = true, showDemoBadge = false }: GaugeProps) =>
     <div className="flex flex-col items-center gap-6 px-4">
       {/* Gauge with All Mascots */}
       <div className="flex items-end justify-center gap-1 sm:gap-4 w-full max-w-[320px] sm:max-w-none">
-        {/* Tard Mascot (Left) */}
-        <div className={`flex flex-col items-center gap-1 translate-y-2 transition-all duration-700 ease-out ${tardStyles.zIndex}`}>
+        {/* Based Mascot (Left) */}
+        <div className={`flex flex-col items-center gap-1 translate-y-2 transition-all duration-700 ease-out ${basedStyles.zIndex}`}>
           <div 
-            className={`transition-all duration-700 ease-out rounded-full overflow-hidden border-2 ${getBorderColor("tard")} ${tardStyles.size} ${tardStyles.animation} ${tardStyles.opacity} ${tardStyles.scale}`}
-            style={{ filter: tardStyles.filter }}
+            className={`transition-all duration-700 ease-out rounded-full overflow-hidden border-2 ${getBorderColor("based")} ${basedStyles.size} ${basedStyles.animation} ${basedStyles.opacity} ${basedStyles.scale}`}
+            style={{ filter: basedStyles.filter }}
           >
             <img 
-              src={wojakCrying} 
-              alt="Crying Wojak" 
+              src={gigachad} 
+              alt="Gigachad" 
               className="w-full h-full object-cover"
             />
           </div>
-          <span className={`text-xs font-bold text-destructive hidden sm:block transition-opacity duration-500 ${scoreInfo.zone === "tard" ? "opacity-100" : "opacity-20"}`}>
-            COOKED
+          <span className={`text-xs font-bold text-primary hidden sm:block transition-opacity duration-500 ${scoreInfo.zone === "based" ? "opacity-100" : "opacity-20"}`}>
+            BASED
           </span>
         </div>
 
@@ -127,10 +127,10 @@ const Gauge = ({ score, animated = true, showDemoBadge = false }: GaugeProps) =>
           >
             <defs>
               <linearGradient id="gaugeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="hsl(0, 84%, 60%)" />
+                <stop offset="0%" stopColor="hsl(142, 76%, 45%)" />
                 <stop offset="25%" stopColor="hsl(45, 100%, 55%)" />
                 <stop offset="75%" stopColor="hsl(45, 100%, 55%)" />
-                <stop offset="100%" stopColor="hsl(142, 76%, 45%)" />
+                <stop offset="100%" stopColor="hsl(0, 84%, 60%)" />
               </linearGradient>
               <filter id="glow">
                 <feGaussianBlur stdDeviation="2" result="coloredBlur" />
@@ -198,20 +198,20 @@ const Gauge = ({ score, animated = true, showDemoBadge = false }: GaugeProps) =>
           <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-card border-2 border-border" />
         </div>
 
-        {/* Based Mascot (Right) */}
-        <div className={`flex flex-col items-center gap-1 translate-y-2 transition-all duration-700 ease-out ${basedStyles.zIndex}`}>
+        {/* Cooked Mascot (Right) */}
+        <div className={`flex flex-col items-center gap-1 translate-y-2 transition-all duration-700 ease-out ${tardStyles.zIndex}`}>
           <div 
-            className={`transition-all duration-700 ease-out rounded-full overflow-hidden border-2 ${getBorderColor("based")} ${basedStyles.size} ${basedStyles.animation} ${basedStyles.opacity} ${basedStyles.scale}`}
-            style={{ filter: basedStyles.filter }}
+            className={`transition-all duration-700 ease-out rounded-full overflow-hidden border-2 ${getBorderColor("tard")} ${tardStyles.size} ${tardStyles.animation} ${tardStyles.opacity} ${tardStyles.scale}`}
+            style={{ filter: tardStyles.filter }}
           >
             <img 
-              src={gigachad} 
-              alt="Gigachad" 
+              src={wojakCrying} 
+              alt="Crying Wojak" 
               className="w-full h-full object-cover"
             />
           </div>
-          <span className={`text-xs font-bold text-primary hidden sm:block transition-opacity duration-500 ${scoreInfo.zone === "based" ? "opacity-100" : "opacity-20"}`}>
-            BASED
+          <span className={`text-xs font-bold text-destructive hidden sm:block transition-opacity duration-500 ${scoreInfo.zone === "tard" ? "opacity-100" : "opacity-20"}`}>
+            COOKED
           </span>
         </div>
       </div>
