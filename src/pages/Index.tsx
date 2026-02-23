@@ -152,7 +152,7 @@ const Index = () => {
                 {/* Share on X button */}
                 {(() => {
                   const zone = result.score.score <= 35 ? "GOAT" : result.score.score <= 70 ? "MID" : "REKT";
-                  const tweetText = encodeURIComponent(`My tweet scored ${result.score.score}/100 — ${zone} on the Tardometer 💀\n\nCheck your Tard Score 👇\nhttps://tardometer.com`);
+                  const tweetText = encodeURIComponent(`This tweet scored ${result.score.score}/100 — ${zone} on the Tardometer 💀\n\nCheck your Tard Score 👇\nhttps://tardometer.com`);
                   return (
                     <div className="flex justify-center mt-6">
                       <a
