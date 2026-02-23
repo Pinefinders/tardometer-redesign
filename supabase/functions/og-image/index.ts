@@ -1,9 +1,22 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { Resvg, initWasm } from "https://esm.sh/@aspect-dev/resvg-wasm@1.0.4";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
+
+let wasmInitialized = false;
+
+async function ensureWasmInitialized() {
+  if (!wasmInitialized) {
+    const wasmUrl = "https://esm.sh/@aspect-dev/resvg-wasm@1.0.4/resvg.wasm";
+    const wasmResponse = await fetch(wasmUrl);
+    const wasmBuffer = await wasmResponse.arrayBuffer();
+    await initWasm(wasmBuffer);
+    wasmInitialized = true;
+  }
+}
 
 function getZoneColor(zone: string): { bg: string; text: string; accent: string } {
   switch (zone) {
@@ -17,7 +30,9 @@ function getZoneColor(zone: string): { bg: string; text: string; accent: string 
 function generateSVG(score: number, zone: string): string {
   const colors = getZoneColor(zone);
   
-  const cx = 300, cy = 220, r = 150;
+  const width = 1200;
+  const height = 630;
+  const cx = 600, cy = 380, r = 220;
   const startAngle = Math.PI;
   const endAngle = 0;
   const scoreAngle = startAngle - (score / 100) * Math.PI;
@@ -27,10 +42,16 @@ function generateSVG(score: number, zone: string): string {
   const arcEndX = cx + r * Math.cos(endAngle);
   const arcEndY = cy + r * Math.sin(endAngle);
   
-  const needleX = cx + (r - 20) * Math.cos(scoreAngle);
-  const needleY = cy + (r - 20) * Math.sin(scoreAngle);
+  const needleX = cx + (r - 30) * Math.cos(scoreAngle);
+  const needleY = cy + (r - 30) * Math.sin(scoreAngle);
 
-  return `<svg width="600" height="315" xmlns="http://www.w3.org/2000/svg">
+  // Zone label positions along the arc
+  const goatAngle = Math.PI - (17.5 / 100) * Math.PI;
+  const midAngle = Math.PI - (52.5 / 100) * Math.PI;
+  const rektAngle = Math.PI - (85 / 100) * Math.PI;
+  const labelR = r + 40;
+
+  return `<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" style="stop-color:#0a0a0a"/>
@@ -43,22 +64,35 @@ function generateSVG(score: number, zone: string): string {
     </linearGradient>
   </defs>
   
-  <rect width="600" height="315" fill="url(#bg-grad)"/>
-  <rect x="1" y="1" width="598" height="313" fill="none" stroke="${colors.accent}" stroke-opacity="0.3" stroke-width="2"/>
+  <rect width="${width}" height="${height}" fill="url(#bg-grad)"/>
+  <rect x="2" y="2" width="${width - 4}" height="${height - 4}" fill="none" stroke="${colors.accent}" stroke-opacity="0.3" stroke-width="3" rx="12"/>
   
-  <text x="300" y="45" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-size="28" font-weight="900" fill="white" letter-spacing="4">TARDOMETER</text>
+  <text x="${width / 2}" y="75" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-size="52" font-weight="900" fill="white" letter-spacing="8">TARDOMETER</text>
   
+  <!-- Background track -->
   <path d="M ${arcStartX} ${arcStartY} A ${r} ${r} 0 0 1 ${arcEndX} ${arcEndY}" 
-        fill="none" stroke="#333333" stroke-width="20" stroke-linecap="round"/>
+        fill="none" stroke="#333333" stroke-width="30" stroke-linecap="round"/>
+  <!-- Colored arc -->
   <path d="M ${arcStartX} ${arcStartY} A ${r} ${r} 0 0 1 ${arcEndX} ${arcEndY}" 
-        fill="none" stroke="url(#arc-grad)" stroke-width="20" stroke-linecap="round" opacity="0.6"/>
+        fill="none" stroke="url(#arc-grad)" stroke-width="24" stroke-linecap="round" opacity="0.7"/>
   
+  <!-- Zone labels -->
+  <text x="${cx + labelR * Math.cos(goatAngle)}" y="${cy + labelR * Math.sin(goatAngle)}" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#22c55e" opacity="0.6">GOAT</text>
+  <text x="${cx + labelR * Math.cos(midAngle)}" y="${cy + labelR * Math.sin(midAngle)}" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#eab308" opacity="0.6">MID</text>
+  <text x="${cx + labelR * Math.cos(rektAngle)}" y="${cy + labelR * Math.sin(rektAngle)}" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#ef4444" opacity="0.6">REKT</text>
+  
+  <!-- Needle -->
   <line x1="${cx}" y1="${cy}" x2="${needleX}" y2="${needleY}" 
-        stroke="${colors.text}" stroke-width="4" stroke-linecap="round"/>
-  <circle cx="${cx}" cy="${cy}" r="8" fill="${colors.text}"/>
+        stroke="${colors.text}" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="${cx}" cy="${cy}" r="12" fill="${colors.text}"/>
+  <circle cx="${cx}" cy="${cy}" r="6" fill="#0a0a0a"/>
   
-  <text x="300" y="265" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-size="48" font-weight="900" fill="${colors.text}">${score}</text>
-  <text x="300" y="300" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-size="24" font-weight="900" fill="${colors.text}" opacity="0.8">${zone}</text>
+  <!-- Score -->
+  <text x="${width / 2}" y="${cy + 60}" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-size="96" font-weight="900" fill="${colors.text}">${score}</text>
+  <text x="${width / 2}" y="${cy + 110}" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-size="42" font-weight="900" fill="${colors.text}" opacity="0.8">${zone}</text>
+  
+  <!-- Footer -->
+  <text x="${width / 2}" y="${height - 25}" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" fill="#666666">tardometer.com</text>
 </svg>`;
 }
 
@@ -74,15 +108,34 @@ serve(async (req) => {
 
     const svg = generateSVG(score, zone);
 
-    return new Response(svg, {
+    await ensureWasmInitialized();
+    
+    const resvg = new Resvg(svg, {
+      fitTo: { mode: 'width', value: 1200 },
+    });
+    const pngData = resvg.render();
+    const pngBuffer = pngData.asPng();
+
+    return new Response(pngBuffer, {
       headers: {
         ...corsHeaders,
-        'Content-Type': 'image/svg+xml',
+        'Content-Type': 'image/png',
         'Cache-Control': 'public, max-age=86400, s-maxage=86400',
       },
     });
   } catch (error) {
     console.error('Error generating OG image:', error);
-    return new Response('Error generating image', { status: 500, headers: corsHeaders });
+    // Fallback: return SVG if PNG conversion fails
+    try {
+      const url = new URL(req.url);
+      const score = Math.max(0, Math.min(100, parseInt(url.searchParams.get('score') || '50', 10)));
+      const zone = url.searchParams.get('zone') || 'MID';
+      const svg = generateSVG(score, zone);
+      return new Response(svg, {
+        headers: { ...corsHeaders, 'Content-Type': 'image/svg+xml' },
+      });
+    } catch {
+      return new Response('Error generating image', { status: 500, headers: corsHeaders });
+    }
   }
 });

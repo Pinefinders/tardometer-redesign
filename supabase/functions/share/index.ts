@@ -45,7 +45,7 @@ serve(async (req) => {
   <meta property="og:title" content="Tard Score: ${score}/100 — ${zone} 💀" />
   <meta property="og:description" content="This tweet scored ${score}/100 — ${zone} on the Tardometer. The Tard Score doesn't lie." />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="${siteUrl}" />
+  <meta property="og:url" content="${siteUrl}/?score=${score}&zone=${zone}" />
   <meta property="og:image" content="${ogImageUrl}" />
   <meta property="og:image:width" content="600" />
   <meta property="og:image:height" content="315" />
