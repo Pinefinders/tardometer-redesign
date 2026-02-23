@@ -22,13 +22,14 @@ interface TweetResult {
   tweetUrl: string;
 }
 
+
 const RESULT_STORAGE_KEY = 'tardometer_last_result';
 
 const Index = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState("");
-  const [clearTrigger, setClearTrigger] = useState(0);
+  const [errorMessage, setErrorMessage] = useState("");
   const [result, setResult] = useState<TweetResult | null>(() => {
     try {
       const saved = localStorage.getItem(RESULT_STORAGE_KEY);
@@ -51,11 +52,11 @@ const Index = () => {
     const parsed = parseTwitterUrl(url);
     
     if (parsed.type === 'invalid') {
-      toast.error("ARE YOU TARDED?", {
-        description: "Enter a valid tweet URL",
-      });
+      setErrorMessage("ARE YOU TARDED? Enter a valid tweet URL");
       return;
     }
+
+    setErrorMessage("");
 
     setIsLoading(true);
     setResult(null);
@@ -98,8 +99,8 @@ const Index = () => {
 
   const handleReset = () => {
     setResult(null);
+    setErrorMessage("");
     localStorage.removeItem(RESULT_STORAGE_KEY);
-    setClearTrigger(c => c + 1);
   };
 
   return (
@@ -116,7 +117,10 @@ const Index = () => {
       <main className="flex flex-col items-center justify-start px-4 flex-1 pb-4 sm:pb-16">
         {/* Input */}
         <div className="w-full max-w-2xl mb-4 sm:mb-8">
-          <TweetInput onSubmit={handleSubmit} isLoading={isLoading} clearTrigger={clearTrigger} />
+          <TweetInput onSubmit={handleSubmit} isLoading={isLoading} />
+          {errorMessage && (
+            <p className="text-destructive text-sm font-medium mt-2 text-center">{errorMessage}</p>
+          )}
         </div>
 
         {/* Gauge - always visible */}
