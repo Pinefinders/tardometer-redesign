@@ -167,43 +167,6 @@ const Index = () => {
         {/* Input Section */}
         <div className="w-full max-w-2xl mb-2 sm:mb-6">
           <TweetInput onSubmit={handleSubmit} isLoading={isLoading} />
-          
-          {/* Demo Button - only show when no results */}
-          {!result && !isLoading && (
-            <div className="flex justify-center mt-4">
-              <button
-                onClick={() => {
-                  const demoScore = Math.floor(Math.random() * 101);
-                  const rawTardScore = 100 - demoScore;
-                  const demoResult: TweetResult = {
-                    type: 'tweet',
-                    score: {
-                      score: demoScore,
-                      replyRatio: 0.35,
-                      quoteRatio: 0.15,
-                      engagementQuality: 8.2,
-                      rawTardScore: rawTardScore,
-                      hasCommunityNote: false,
-                    },
-                    metrics: {
-                      likes: 12500,
-                      retweets: 3200,
-                      replies: 4375,
-                      quoteRetweets: 480,
-                      tweetId: 'demo123',
-                      authorUsername: 'demo_user',
-                      hasCommunityNote: false,
-                    },
-                    tweetUrl: 'https://x.com/demo/status/123',
-                  };
-                  setResult(demoResult);
-                }}
-                className="text-sm text-muted-foreground hover:text-primary transition-colors underline underline-offset-4"
-              >
-                👀 See demo result
-              </button>
-            </div>
-          )}
         </div>
 
 
