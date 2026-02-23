@@ -61,7 +61,7 @@ const Index = () => {
     setResult(null);
 
     try {
-      setLoadingMessage("Fetching tweet from Twitter... This may take 30-60 seconds");
+      setLoadingMessage("Tardorizing now, this could take a minute..");
       const metrics = await fetchTweetMetrics(parsed.tweetId!);
       const score = calculateTardScore(metrics);
       
