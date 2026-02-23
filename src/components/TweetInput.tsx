@@ -33,7 +33,7 @@ const TweetInput = ({ onSubmit, isLoading = false, clearTrigger = 0 }: TweetInpu
         <div className="flex flex-col sm:flex-row gap-3">
           <Input
             id="tweet-url"
-            type="url"
+            type="text"
             placeholder="Paste a tweet URL..."
             value={url}
             onChange={(e) => setUrl(e.target.value)}
