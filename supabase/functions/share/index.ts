@@ -109,7 +109,7 @@ serve(async (req) => {
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:site" content="@Tardometer" />
   <meta name="twitter:title" content="Tard Score: ${score}/100 — ${zone} 💀" />
-  <meta name="twitter:description" content="The Tard Score doesn't lie. Check yours at tardometer.com" />
+  <meta name="twitter:description" content="The Tard Score doesn't lie." />
   <meta name="twitter:image" content="${ogImageUrl}" />
   
   ${!isBot(userAgent) ? `<meta http-equiv="refresh" content="0;url=${siteUrl}" />` : ''}
