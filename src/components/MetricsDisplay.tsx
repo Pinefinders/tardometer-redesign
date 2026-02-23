@@ -36,31 +36,7 @@ const MetricsDisplay = ({ metrics, score }: MetricsDisplayProps) => {
         </div>
       )}
 
-      {/* Raw Metrics */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div className="flex flex-col items-center p-3 rounded-xl bg-secondary/50 border border-border/50">
-          <Heart className="w-5 h-5 text-destructive mb-1" />
-          <span className="text-lg font-bold text-foreground">{formatNumber(metrics.likes)}</span>
-          <span className="text-xs text-muted-foreground">Likes</span>
-        </div>
-        <div className="flex flex-col items-center p-3 rounded-xl bg-secondary/50 border border-border/50">
-          <MessageCircle className="w-5 h-5 text-primary mb-1" />
-          <span className="text-lg font-bold text-foreground">{formatNumber(metrics.replies)}</span>
-          <span className="text-xs text-muted-foreground">Replies</span>
-        </div>
-        <div className="flex flex-col items-center p-3 rounded-xl bg-secondary/50 border border-border/50">
-          <Repeat2 className="w-5 h-5 text-primary mb-1" />
-          <span className="text-lg font-bold text-foreground">{formatNumber(metrics.retweets)}</span>
-          <span className="text-xs text-muted-foreground">Retweets</span>
-        </div>
-        <div className="flex flex-col items-center p-3 rounded-xl bg-secondary/50 border border-border/50">
-          <Quote className="w-5 h-5 text-accent mb-1" />
-          <span className="text-lg font-bold text-foreground">{formatNumber(metrics.quoteRetweets)}</span>
-          <span className="text-xs text-muted-foreground">Quotes</span>
-        </div>
-      </div>
-
-      {/* Score Breakdown Toggle */}
+      {/* Breakdown Toggle */}
       <button
         onClick={() => setShowBreakdown(!showBreakdown)}
         className="flex items-center justify-center gap-1.5 w-full text-xs text-muted-foreground hover:text-foreground transition-colors py-1"
@@ -70,24 +46,51 @@ const MetricsDisplay = ({ metrics, score }: MetricsDisplayProps) => {
       </button>
 
       {showBreakdown && (
-        <div className="p-4 rounded-xl bg-muted/30 border border-border/30 animate-fade-in">
-          <div className="grid grid-cols-3 gap-2 text-center">
-            <div>
-              <div className="text-xs text-muted-foreground">Reply Ratio</div>
-              <div className={`text-sm font-mono font-bold ${score.replyRatio > 0.5 ? "text-destructive" : "text-primary"}`}>
-                {score.replyRatio}
-              </div>
+        <div className="space-y-3 animate-fade-in">
+          {/* Raw Metrics */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div className="flex flex-col items-center p-3 rounded-xl bg-secondary/50 border border-border/50">
+              <Heart className="w-5 h-5 text-destructive mb-1" />
+              <span className="text-lg font-bold text-foreground">{formatNumber(metrics.likes)}</span>
+              <span className="text-xs text-muted-foreground">Likes</span>
             </div>
-            <div>
-              <div className="text-xs text-muted-foreground">Quote Ratio</div>
-              <div className={`text-sm font-mono font-bold ${score.quoteRatio > 0.5 ? "text-destructive" : "text-primary"}`}>
-                {score.quoteRatio}
-              </div>
+            <div className="flex flex-col items-center p-3 rounded-xl bg-secondary/50 border border-border/50">
+              <MessageCircle className="w-5 h-5 text-primary mb-1" />
+              <span className="text-lg font-bold text-foreground">{formatNumber(metrics.replies)}</span>
+              <span className="text-xs text-muted-foreground">Replies</span>
             </div>
-            <div>
-              <div className="text-xs text-muted-foreground">Eng. Quality</div>
-              <div className={`text-sm font-mono font-bold ${score.engagementQuality < 5 ? "text-destructive" : "text-primary"}`}>
-                {score.engagementQuality}
+            <div className="flex flex-col items-center p-3 rounded-xl bg-secondary/50 border border-border/50">
+              <Repeat2 className="w-5 h-5 text-primary mb-1" />
+              <span className="text-lg font-bold text-foreground">{formatNumber(metrics.retweets)}</span>
+              <span className="text-xs text-muted-foreground">Retweets</span>
+            </div>
+            <div className="flex flex-col items-center p-3 rounded-xl bg-secondary/50 border border-border/50">
+              <Quote className="w-5 h-5 text-accent mb-1" />
+              <span className="text-lg font-bold text-foreground">{formatNumber(metrics.quoteRetweets)}</span>
+              <span className="text-xs text-muted-foreground">Quotes</span>
+            </div>
+          </div>
+
+          {/* Score Ratios */}
+          <div className="p-4 rounded-xl bg-muted/30 border border-border/30">
+            <div className="grid grid-cols-3 gap-2 text-center">
+              <div>
+                <div className="text-xs text-muted-foreground">Reply Ratio</div>
+                <div className={`text-sm font-mono font-bold ${score.replyRatio > 0.5 ? "text-destructive" : "text-primary"}`}>
+                  {score.replyRatio}
+                </div>
+              </div>
+              <div>
+                <div className="text-xs text-muted-foreground">Quote Ratio</div>
+                <div className={`text-sm font-mono font-bold ${score.quoteRatio > 0.5 ? "text-destructive" : "text-primary"}`}>
+                  {score.quoteRatio}
+                </div>
+              </div>
+              <div>
+                <div className="text-xs text-muted-foreground">Eng. Quality</div>
+                <div className={`text-sm font-mono font-bold ${score.engagementQuality < 5 ? "text-destructive" : "text-primary"}`}>
+                  {score.engagementQuality}
+                </div>
               </div>
             </div>
           </div>
