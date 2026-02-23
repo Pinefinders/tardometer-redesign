@@ -134,13 +134,13 @@ const About = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  <TableRow className="bg-destructive/5 hover:bg-destructive/10">
-                    <TableCell className="font-mono font-bold text-destructive">0-35</TableCell>
+                  <TableRow className="bg-primary/5 hover:bg-primary/10">
+                    <TableCell className="font-mono font-bold text-primary">0-35</TableCell>
                     <TableCell>
-                      <span className="font-bold text-destructive">COOKED</span> 🔥
+                      <span className="font-bold text-primary">GOAT</span> 🐐
                     </TableCell>
                     <TableCell className="text-muted-foreground text-sm">
-                      This post is getting absolutely ratioed. High negative engagement or a Community Note present. The crowd is not on your side.
+                      Strong positive reception. High likes-to-replies ratio. This content is being amplified by the community as high-value or authoritative.
                     </TableCell>
                   </TableRow>
                   <TableRow className="bg-accent/5 hover:bg-accent/10">
@@ -152,13 +152,13 @@ const About = () => {
                       Standard social noise. Average engagement with some disagreement. Most of the internet lives here.
                     </TableCell>
                   </TableRow>
-                  <TableRow className="bg-primary/5 hover:bg-primary/10">
-                    <TableCell className="font-mono font-bold text-primary">71-100</TableCell>
+                  <TableRow className="bg-destructive/5 hover:bg-destructive/10">
+                    <TableCell className="font-mono font-bold text-destructive">71-100</TableCell>
                     <TableCell>
-                      <span className="font-bold text-primary">BASED</span> 🗿
+                      <span className="font-bold text-destructive">REKT</span> 💀
                     </TableCell>
                     <TableCell className="text-muted-foreground text-sm">
-                      Strong positive reception. High likes-to-replies ratio. This content is being amplified by the community as high-value or authoritative.
+                      This post is getting absolutely ratioed. High negative engagement or a Community Note present. The crowd is not on your side.
                     </TableCell>
                   </TableRow>
                 </TableBody>
@@ -262,8 +262,8 @@ const About = () => {
             <div className="font-mono text-sm text-muted-foreground bg-muted/50 px-3 py-2 rounded inline-block">
               raw_tard_score + 50 (capped at 85)
             </div>
-            <p className="text-xs text-muted-foreground mt-2 italic">
-              Community Notes ensure a tweet can never be classified as "Based."
+             <p className="text-xs text-muted-foreground mt-2 italic">
+               Community Notes ensure a tweet can never be classified as "GOAT."
             </p>
           </div>
 

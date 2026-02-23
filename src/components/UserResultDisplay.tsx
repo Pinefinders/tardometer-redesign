@@ -35,7 +35,7 @@ const UserResultDisplay = ({ analysis }: UserResultDisplayProps) => {
       </div>
 
       {/* Gauge */}
-      <Gauge score={averageScore.score} showDemoBadge />
+      <Gauge score={averageScore.score} />
 
       {/* Community Notes Warning */}
       {communityNotePercentage > 0 && (
