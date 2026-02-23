@@ -125,9 +125,6 @@ const Gauge = ({ score, animated = true, showDemoBadge = false }: GaugeProps) =>
               className="w-full h-full object-cover"
             />
           </div>
-          <span className={`text-xs font-bold text-primary hidden sm:block transition-opacity duration-500 ${scoreInfo?.zone === "based" ? "opacity-100" : "opacity-20"}`}>
-            GOAT
-          </span>
         </div>
         )}
 
@@ -145,9 +142,6 @@ const Gauge = ({ score, animated = true, showDemoBadge = false }: GaugeProps) =>
                 className="w-full h-full object-cover"
               />
             </div>
-            <span className={`text-xs font-bold text-accent transition-opacity duration-500 ${scoreInfo?.zone === "mid" ? "opacity-100" : "opacity-20"}`}>
-              MID
-            </span>
           </div>
           )}
 
@@ -249,9 +243,6 @@ const Gauge = ({ score, animated = true, showDemoBadge = false }: GaugeProps) =>
               className="w-full h-full object-cover"
             />
           </div>
-          <span className={`text-xs font-bold text-destructive hidden sm:block transition-opacity duration-500 ${scoreInfo?.zone === "tard" ? "opacity-100" : "opacity-20"}`}>
-            REKT
-          </span>
         </div>
         )}
       </div>
