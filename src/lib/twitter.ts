@@ -84,7 +84,7 @@ export const calculateTardScore = (metrics: TweetMetrics): TardScore => {
     (engagementQuality < 5 ? 20 : 0);
 
   if (hasCommunityNote) {
-    rawTardScore = Math.min(rawTardScore + 50, 85);
+    rawTardScore = rawTardScore + 25;
   }
 
   const normalizedScore = Math.max(0, Math.min(100, 100 - rawTardScore));
