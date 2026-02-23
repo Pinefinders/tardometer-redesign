@@ -51,8 +51,8 @@ const Index = () => {
     const parsed = parseTwitterUrl(url);
     
     if (parsed.type === 'invalid') {
-      toast.error("Invalid Tweet URL", {
-        description: "Please enter a valid tweet URL (e.g., x.com/user/status/123...)",
+      toast.error("ARE YOU TARDED?", {
+        description: "Enter a valid tweet URL",
       });
       return;
     }
