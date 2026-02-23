@@ -29,7 +29,7 @@ const TweetInput = ({ onSubmit, isLoading = false }: TweetInputProps) => {
           <Input
             id="tweet-url"
             type="url"
-            placeholder="Paste a tweet URL to get your Tard Score..."
+            placeholder="Paste a tweet URL..."
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             className="flex-1 h-14 text-base bg-input border-border text-foreground placeholder:text-muted-foreground focus-visible:ring-primary focus-visible:ring-2 focus-visible:border-primary"
