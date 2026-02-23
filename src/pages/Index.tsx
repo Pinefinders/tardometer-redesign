@@ -3,7 +3,6 @@ import { useSearchParams } from "react-router-dom";
 import TweetInput from "@/components/TweetInput";
 import Gauge from "@/components/Gauge";
 import MetricsDisplay from "@/components/MetricsDisplay";
-import UserResultDisplay from "@/components/UserResultDisplay";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
@@ -11,29 +10,17 @@ import {
   parseTwitterUrl, 
   fetchTweetMetrics, 
   calculateTardScore, 
-  analyzeUserProfile,
   ApifyError,
   TweetMetrics, 
   TardScore,
-  UserAnalysis 
 } from "@/lib/twitter";
 import { toast } from "sonner";
 
-type ResultType = 'tweet' | 'user';
-
 interface TweetResult {
-  type: 'tweet';
   score: TardScore;
   metrics: TweetMetrics;
   tweetUrl: string;
 }
-
-interface UserResult {
-  type: 'user';
-  analysis: UserAnalysis;
-}
-
-type Result = TweetResult | UserResult;
 
 const RESULT_STORAGE_KEY = 'tardometer_last_result';
 
@@ -41,7 +28,7 @@ const Index = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState("");
-  const [result, setResult] = useState<Result | null>(() => {
+  const [result, setResult] = useState<TweetResult | null>(() => {
     try {
       const saved = localStorage.getItem(RESULT_STORAGE_KEY);
       if (saved) return JSON.parse(saved);
@@ -63,8 +50,8 @@ const Index = () => {
     const parsed = parseTwitterUrl(url);
     
     if (parsed.type === 'invalid') {
-      toast.error("Invalid Twitter/X URL", {
-        description: "Please enter a valid tweet or profile URL (e.g., x.com/user or x.com/user/status/123...)",
+      toast.error("Invalid Tweet URL", {
+        description: "Please enter a valid tweet URL (e.g., x.com/user/status/123...)",
       });
       return;
     }
@@ -73,22 +60,13 @@ const Index = () => {
     setResult(null);
 
     try {
-      if (parsed.type === 'tweet') {
-        setLoadingMessage("Fetching tweet from Twitter... This may take 30-60 seconds");
-        const metrics = await fetchTweetMetrics(parsed.tweetId!);
-        const score = calculateTardScore(metrics);
-        
-        const tweetResult: TweetResult = { type: 'tweet', score, metrics, tweetUrl: url };
-        setResult(tweetResult);
-        localStorage.setItem(RESULT_STORAGE_KEY, JSON.stringify(tweetResult));
-      } else {
-        setLoadingMessage(`Fetching @${parsed.username}'s tweets... This may take 1-2 minutes`);
-        const analysis = await analyzeUserProfile(parsed.username!);
-        
-        const userResult: UserResult = { type: 'user', analysis };
-        setResult(userResult);
-        localStorage.setItem(RESULT_STORAGE_KEY, JSON.stringify(userResult));
-      }
+      setLoadingMessage("Fetching tweet from Twitter... This may take 30-60 seconds");
+      const metrics = await fetchTweetMetrics(parsed.tweetId!);
+      const score = calculateTardScore(metrics);
+      
+      const tweetResult: TweetResult = { score, metrics, tweetUrl: url };
+      setResult(tweetResult);
+      localStorage.setItem(RESULT_STORAGE_KEY, JSON.stringify(tweetResult));
     } catch (error) {
       console.error("Error analyzing:", error);
       
@@ -96,13 +74,8 @@ const Index = () => {
       let errorDescription = "";
       
       if (error instanceof ApifyError) {
-        if (error.isUserError) {
-          errorMessage = "Could not fetch data";
-          errorDescription = error.message;
-        } else {
-          errorMessage = "API Error";
-          errorDescription = error.message;
-        }
+        errorMessage = error.isUserError ? "Could not fetch data" : "API Error";
+        errorDescription = error.message;
       } else if (error instanceof Error) {
         if (error.message.includes('Failed to fetch')) {
           errorMessage = "Network Error";
@@ -127,8 +100,6 @@ const Index = () => {
     localStorage.removeItem(RESULT_STORAGE_KEY);
   };
 
-  const hasResult = result !== null;
-
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Header />
@@ -141,7 +112,7 @@ const Index = () => {
       </section>
 
       <main className="flex flex-col items-center justify-start px-4 flex-1 pb-4 sm:pb-16">
-        {/* Input - always visible at top */}
+        {/* Input */}
         <div className="w-full max-w-2xl mb-4 sm:mb-8">
           <TweetInput onSubmit={handleSubmit} isLoading={isLoading} />
         </div>
@@ -156,9 +127,8 @@ const Index = () => {
                   {loadingMessage || "Analyzing..."}
                 </div>
               </div>
-            ) : hasResult ? (
+            ) : result ? (
               <div className="relative">
-                {/* Reset button */}
                 <div className="flex justify-end mb-4 sm:absolute sm:-top-12 sm:right-0 sm:mb-0">
                   <button
                     onClick={handleReset}
@@ -167,36 +137,18 @@ const Index = () => {
                     ✕ Reset
                   </button>
                 </div>
-
-                {result.type === 'tweet' ? (
-                  <>
-                    <Gauge score={result.score.score} showDemoBadge />
-                    <MetricsDisplay metrics={result.metrics} score={result.score} />
-                    <div className="flex justify-center mt-6">
-                      <button
-                        onClick={handleReset}
-                        className="px-6 py-3 rounded-lg bg-primary/20 border border-primary/50 text-primary font-semibold hover:bg-primary/30 transition-colors"
-                      >
-                        Analyze Another
-                      </button>
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <UserResultDisplay analysis={result.analysis} />
-                    <div className="flex justify-center mt-6">
-                      <button
-                        onClick={handleReset}
-                        className="px-6 py-3 rounded-lg bg-primary/20 border border-primary/50 text-primary font-semibold hover:bg-primary/30 transition-colors"
-                      >
-                        Analyze Another
-                      </button>
-                    </div>
-                  </>
-                )}
+                <Gauge score={result.score.score} />
+                <MetricsDisplay metrics={result.metrics} score={result.score} />
+                <div className="flex justify-center mt-6">
+                  <button
+                    onClick={handleReset}
+                    className="px-6 py-3 rounded-lg bg-primary/20 border border-primary/50 text-primary font-semibold hover:bg-primary/30 transition-colors"
+                  >
+                    Analyze Another
+                  </button>
+                </div>
               </div>
             ) : (
-              /* Idle state - gauge waiting */
               <Gauge score={null} />
             )}
           </div>
