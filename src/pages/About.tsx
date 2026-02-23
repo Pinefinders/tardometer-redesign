@@ -38,13 +38,13 @@ const About = () => {
             </p>
             <div className="space-y-3">
               <div className="flex items-start gap-3 p-3 rounded-lg bg-destructive/10 border border-destructive/20">
-                <span className="text-destructive font-bold mt-0.5">↑</span>
+                <span className="mt-0.5">🔥</span>
                 <p className="text-muted-foreground">
                   <strong className="text-destructive">High score</strong> = the crowd is dunking, arguing, and ratio'ing
                 </p>
               </div>
               <div className="flex items-start gap-3 p-3 rounded-lg bg-primary/10 border border-primary/20">
-                <span className="text-primary font-bold mt-0.5">↓</span>
+                <span className="mt-0.5">🐐</span>
                 <p className="text-muted-foreground">
                   <strong className="text-primary">Low score</strong> = the crowd is amplifying and agreeing
                 </p>
