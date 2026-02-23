@@ -27,11 +27,11 @@ const Gauge = ({ score, animated = true, showDemoBadge = false }: GaugeProps) =>
   // Convert score (0-100) to rotation angle (-90 to 90 degrees)
   const needleRotation = -90 + (displayScore / 100) * 180;
 
-  // Zone detection: 0-35 = BASED, 36-70 = MID, 71-100 = COOKED
+  // Zone detection: 0-35 = GOAT, 36-70 = MID, 71-100 = REKT
   const getScoreInfo = (s: number): { label: string; colorClass: string; glowClass: string; zone: Zone } => {
-    if (s <= 35) return { label: "BASED", colorClass: "text-primary", glowClass: "glow-based", zone: "based" };
+    if (s <= 35) return { label: "GOAT", colorClass: "text-primary", glowClass: "glow-based", zone: "based" };
     if (s <= 70) return { label: "MID", colorClass: "text-accent", glowClass: "glow-mid", zone: "mid" };
-    return { label: "COOKED", colorClass: "text-destructive", glowClass: "glow-tard", zone: "tard" };
+    return { label: "REKT", colorClass: "text-destructive", glowClass: "glow-tard", zone: "tard" };
   };
 
   const scoreInfo = getScoreInfo(displayScore);
@@ -97,7 +97,7 @@ const Gauge = ({ score, animated = true, showDemoBadge = false }: GaugeProps) =>
             />
           </div>
           <span className={`text-xs font-bold text-primary hidden sm:block transition-opacity duration-500 ${scoreInfo.zone === "based" ? "opacity-100" : "opacity-20"}`}>
-            BASED
+            GOAT
           </span>
         </div>
 
@@ -211,7 +211,7 @@ const Gauge = ({ score, animated = true, showDemoBadge = false }: GaugeProps) =>
             />
           </div>
           <span className={`text-xs font-bold text-destructive hidden sm:block transition-opacity duration-500 ${scoreInfo.zone === "tard" ? "opacity-100" : "opacity-20"}`}>
-            COOKED
+            REKT
           </span>
         </div>
       </div>
