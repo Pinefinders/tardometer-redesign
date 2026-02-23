@@ -138,6 +138,25 @@ const Index = () => {
                   </button>
                 </div>
                 <Gauge score={result.score.score} />
+                
+                {/* Share on X button */}
+                {(() => {
+                  const zone = result.score.score <= 35 ? "GOAT" : result.score.score <= 70 ? "MID" : "REKT";
+                  const tweetText = encodeURIComponent(`My tweet scored ${result.score.score}/100 — ${zone} on the Tardometer 💀\n\nCheck your Tard Score 👇\nhttps://tardometer.com`);
+                  return (
+                    <div className="flex justify-center mt-6">
+                      <a
+                        href={`https://x.com/intent/tweet?text=${tweetText}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-8 py-4 rounded-xl bg-foreground text-background font-bold text-lg hover:opacity-90 transition-opacity shadow-lg animate-fade-in"
+                      >
+                        🐦 Post this on X
+                      </a>
+                    </div>
+                  );
+                })()}
+                
                 <MetricsDisplay metrics={result.metrics} score={result.score} />
                 <div className="flex justify-center mt-6">
                   <button
