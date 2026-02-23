@@ -137,7 +137,7 @@ const About = () => {
                   <TableRow className="bg-primary/5 hover:bg-primary/10">
                     <TableCell className="font-mono font-bold text-primary">0-35</TableCell>
                     <TableCell>
-                      <span className="font-bold text-primary">GOAT</span> 🐐
+                      <span className="font-bold text-primary">GOAT</span>
                     </TableCell>
                     <TableCell className="text-muted-foreground text-sm">
                       Strong positive reception. High likes-to-replies ratio. This content is being amplified by the community as high-value or authoritative.
@@ -146,7 +146,7 @@ const About = () => {
                   <TableRow className="bg-accent/5 hover:bg-accent/10">
                     <TableCell className="font-mono font-bold text-accent">36-70</TableCell>
                     <TableCell>
-                      <span className="font-bold text-accent">MID</span> 😐
+                      <span className="font-bold text-accent">MID</span>
                     </TableCell>
                     <TableCell className="text-muted-foreground text-sm">
                       Standard social noise. Average engagement with some disagreement. Most of the internet lives here.
@@ -155,7 +155,7 @@ const About = () => {
                   <TableRow className="bg-destructive/5 hover:bg-destructive/10">
                     <TableCell className="font-mono font-bold text-destructive">71-100</TableCell>
                     <TableCell>
-                      <span className="font-bold text-destructive">REKT</span> 💀
+                      <span className="font-bold text-destructive">REKT</span>
                     </TableCell>
                     <TableCell className="text-muted-foreground text-sm">
                       This post is getting absolutely ratioed. High negative engagement or a Community Note present. The crowd is not on your side.
