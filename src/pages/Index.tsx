@@ -153,7 +153,7 @@ const Index = () => {
                 {(() => {
                   const zone = result.score.score <= 35 ? "GOAT" : result.score.score <= 70 ? "MID" : "REKT";
                    const shareUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/share?score=${result.score.score}&zone=${zone}&v=4`;
-                   const tweetText = encodeURIComponent(`This tweet scored ${result.score.score}/100 — ${zone}\nThe Tard Score doesn't lie.`);
+                   const tweetText = encodeURIComponent(`This tweet scored ${result.score.score}/100 — ${zone}\nThe Tard Score doesn't lie.\ntardometer.com`);
                    const fullShareUrl = `https://x.com/intent/tweet?text=${tweetText}`;
                   return (
                     <div className="flex justify-center mt-6">
