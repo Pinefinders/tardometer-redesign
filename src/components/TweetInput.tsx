@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { X } from "lucide-react";
@@ -6,10 +6,15 @@ import { X } from "lucide-react";
 interface TweetInputProps {
   onSubmit: (url: string) => void;
   isLoading?: boolean;
+  clearTrigger?: number;
 }
 
-const TweetInput = ({ onSubmit, isLoading = false }: TweetInputProps) => {
+const TweetInput = ({ onSubmit, isLoading = false, clearTrigger = 0 }: TweetInputProps) => {
   const [url, setUrl] = useState("");
+
+  useEffect(() => {
+    if (clearTrigger > 0) setUrl("");
+  }, [clearTrigger]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

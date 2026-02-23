@@ -28,6 +28,7 @@ const Index = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState("");
+  const [clearTrigger, setClearTrigger] = useState(0);
   const [result, setResult] = useState<TweetResult | null>(() => {
     try {
       const saved = localStorage.getItem(RESULT_STORAGE_KEY);
@@ -98,6 +99,7 @@ const Index = () => {
   const handleReset = () => {
     setResult(null);
     localStorage.removeItem(RESULT_STORAGE_KEY);
+    setClearTrigger(c => c + 1);
   };
 
   return (
@@ -114,7 +116,7 @@ const Index = () => {
       <main className="flex flex-col items-center justify-start px-4 flex-1 pb-4 sm:pb-16">
         {/* Input */}
         <div className="w-full max-w-2xl mb-4 sm:mb-8">
-          <TweetInput onSubmit={handleSubmit} isLoading={isLoading} />
+          <TweetInput onSubmit={handleSubmit} isLoading={isLoading} clearTrigger={clearTrigger} />
         </div>
 
         {/* Gauge - always visible */}
@@ -129,14 +131,12 @@ const Index = () => {
               </div>
             ) : result ? (
               <div className="relative">
-                <div className="flex justify-end mb-4 sm:absolute sm:-top-12 sm:right-0 sm:mb-0">
-                  <button
-                    onClick={handleReset}
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors px-4 py-2 rounded-full bg-muted/50 hover:bg-muted font-medium"
-                  >
-                    ✕ Reset
-                  </button>
-                </div>
+                <button
+                  onClick={handleReset}
+                  className="absolute top-0 right-0 text-xs text-muted-foreground hover:text-foreground transition-colors px-3 py-1.5 rounded-full bg-muted/50 hover:bg-muted font-medium z-10"
+                >
+                  ✕ Clear
+                </button>
                 <Gauge score={result.score.score} />
                 
                 {/* Share on X button */}
@@ -158,14 +158,6 @@ const Index = () => {
                 })()}
                 
                 <MetricsDisplay metrics={result.metrics} score={result.score} />
-                <div className="flex justify-center mt-6">
-                  <button
-                    onClick={handleReset}
-                    className="px-6 py-3 rounded-lg bg-primary/20 border border-primary/50 text-primary font-semibold hover:bg-primary/30 transition-colors"
-                  >
-                    Analyze Another
-                  </button>
-                </div>
               </div>
             ) : (
               <Gauge score={null} />
