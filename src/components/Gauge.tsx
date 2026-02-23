@@ -38,9 +38,9 @@ const Gauge = ({ score, animated = true, showDemoBadge = false }: GaugeProps) =>
 
   // Zone detection: 0-35 = GOAT, 36-70 = MID, 71-100 = REKT
   const getScoreInfo = (s: number): { label: string; colorClass: string; glowClass: string; zone: Zone } => {
-    if (s <= 35) return { label: "GOAT 🐐", colorClass: "text-primary", glowClass: "glow-based", zone: "based" };
-    if (s <= 70) return { label: "MID 😐", colorClass: "text-accent", glowClass: "glow-mid", zone: "mid" };
-    return { label: "REKT 💀", colorClass: "text-destructive", glowClass: "glow-tard", zone: "tard" };
+    if (s <= 35) return { label: "GOAT", colorClass: "text-primary", glowClass: "glow-based", zone: "based" };
+    if (s <= 70) return { label: "MID", colorClass: "text-accent", glowClass: "glow-mid", zone: "mid" };
+    return { label: "REKT", colorClass: "text-destructive", glowClass: "glow-tard", zone: "tard" };
   };
 
   const scoreInfo = displayScore !== null ? getScoreInfo(displayScore) : null;
@@ -125,7 +125,7 @@ const Gauge = ({ score, animated = true, showDemoBadge = false }: GaugeProps) =>
             />
           </div>
           <span className={`text-xs font-bold text-primary hidden sm:block transition-opacity duration-500 ${isIdle || scoreInfo?.zone === "based" ? "opacity-100" : "opacity-20"}`}>
-            GOAT 🐐
+            GOAT
           </span>
         </div>
 
@@ -143,7 +143,7 @@ const Gauge = ({ score, animated = true, showDemoBadge = false }: GaugeProps) =>
               />
             </div>
             <span className={`text-xs font-bold text-accent transition-opacity duration-500 ${isIdle || scoreInfo?.zone === "mid" ? "opacity-100" : "opacity-20"}`}>
-              MID 😐
+              MID
             </span>
           </div>
 
@@ -245,7 +245,7 @@ const Gauge = ({ score, animated = true, showDemoBadge = false }: GaugeProps) =>
             />
           </div>
           <span className={`text-xs font-bold text-destructive hidden sm:block transition-opacity duration-500 ${isIdle || scoreInfo?.zone === "tard" ? "opacity-100" : "opacity-20"}`}>
-            REKT 💀
+            REKT
           </span>
         </div>
       </div>
