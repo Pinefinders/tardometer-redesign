@@ -132,7 +132,8 @@ const Gauge = ({ score, animated = true, showDemoBadge = false }: GaugeProps) =>
         )}
 
         <div className="relative w-44 h-28 sm:w-72 sm:h-40 md:w-80 md:h-44 mt-12 sm:mt-20 md:mt-24">
-          {/* Mid Mascot - positioned above the arc */}
+          {/* Mid Mascot - hidden in idle */}
+          {!isIdle && (
           <div className={`absolute left-1/2 -translate-x-1/2 -top-24 sm:-top-36 md:-top-44 ${midStyles.zIndex} flex flex-col items-center gap-1 transition-all duration-700 ease-out`}>
             <div 
               className={`transition-all duration-700 ease-out rounded-full overflow-hidden border-2 ${getBorderColor("mid")} ${midStyles.size} ${midStyles.animation} ${midStyles.opacity} ${midStyles.scale}`}
@@ -144,10 +145,11 @@ const Gauge = ({ score, animated = true, showDemoBadge = false }: GaugeProps) =>
                 className="w-full h-full object-cover"
               />
             </div>
-            <span className={`text-xs font-bold text-accent transition-opacity duration-500 ${isIdle || scoreInfo?.zone === "mid" ? "opacity-100" : "opacity-20"}`}>
+            <span className={`text-xs font-bold text-accent transition-opacity duration-500 ${scoreInfo?.zone === "mid" ? "opacity-100" : "opacity-20"}`}>
               MID
             </span>
           </div>
+          )}
 
           {/* Background arc */}
           <svg
