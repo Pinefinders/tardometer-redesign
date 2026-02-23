@@ -139,6 +139,12 @@ const Index = () => {
                 </button>
                 <Gauge score={result.score.score} />
                 
+                {/* Low data warning */}
+                {(result.metrics.likes + result.metrics.replies + result.metrics.retweets + result.metrics.quoteRetweets) < 50 && (
+                  <div className="text-center mt-2 text-xs text-amber-400/80">
+                    ⚠️ Low data — score may not be reliable
+                  </div>
+                )}
                 {/* Share on X button */}
                 {(() => {
                   const zone = result.score.score <= 35 ? "GOAT" : result.score.score <= 70 ? "MID" : "REKT";
