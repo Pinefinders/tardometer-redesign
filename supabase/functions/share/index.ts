@@ -29,7 +29,7 @@ serve(async (req) => {
     const userAgent = req.headers.get('user-agent') || '';
 
     const supabaseUrl = Deno.env.get('SUPABASE_URL') || '';
-    const ogImageUrl = `${supabaseUrl}/functions/v1/og-image?score=${score}&zone=${zone}`;
+    const ogImageUrl = `${supabaseUrl}/functions/v1/og-image?score=${score}&zone=${zone}&v=2`;
     const siteUrl = 'https://tardometer.com';
 
     // Always serve the HTML with OG tags (bots need it, humans get redirected via JS)
