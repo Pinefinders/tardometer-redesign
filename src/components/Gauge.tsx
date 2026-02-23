@@ -112,7 +112,8 @@ const Gauge = ({ score, animated = true, showDemoBadge = false }: GaugeProps) =>
     <div className="flex flex-col items-center gap-6 px-4">
       {/* Gauge with All Mascots */}
       <div className="flex items-end justify-center gap-1 sm:gap-4 w-full max-w-[320px] sm:max-w-none">
-        {/* GOAT Mascot (Left) */}
+        {/* GOAT Mascot (Left) - hidden in idle */}
+        {!isIdle && (
         <div className={`flex flex-col items-center gap-1 translate-y-2 transition-all duration-700 ease-out ${basedStyles.zIndex}`}>
           <div 
             className={`transition-all duration-700 ease-out rounded-full overflow-hidden border-2 ${getBorderColor("based")} ${basedStyles.size} ${basedStyles.animation} ${basedStyles.opacity} ${basedStyles.scale}`}
@@ -124,10 +125,11 @@ const Gauge = ({ score, animated = true, showDemoBadge = false }: GaugeProps) =>
               className="w-full h-full object-cover"
             />
           </div>
-          <span className={`text-xs font-bold text-primary hidden sm:block transition-opacity duration-500 ${isIdle || scoreInfo?.zone === "based" ? "opacity-100" : "opacity-20"}`}>
+          <span className={`text-xs font-bold text-primary hidden sm:block transition-opacity duration-500 ${scoreInfo?.zone === "based" ? "opacity-100" : "opacity-20"}`}>
             GOAT
           </span>
         </div>
+        )}
 
         <div className="relative w-44 h-28 sm:w-72 sm:h-40 md:w-80 md:h-44 mt-12 sm:mt-20 md:mt-24">
           {/* Mid Mascot - positioned above the arc */}
@@ -233,6 +235,7 @@ const Gauge = ({ score, animated = true, showDemoBadge = false }: GaugeProps) =>
         </div>
 
         {/* REKT Mascot (Right) */}
+        {!isIdle && (
         <div className={`flex flex-col items-center gap-1 translate-y-2 transition-all duration-700 ease-out ${tardStyles.zIndex}`}>
           <div 
             className={`transition-all duration-700 ease-out rounded-full overflow-hidden border-2 ${getBorderColor("tard")} ${tardStyles.size} ${tardStyles.animation} ${tardStyles.opacity} ${tardStyles.scale}`}
@@ -244,10 +247,11 @@ const Gauge = ({ score, animated = true, showDemoBadge = false }: GaugeProps) =>
               className="w-full h-full object-cover"
             />
           </div>
-          <span className={`text-xs font-bold text-destructive hidden sm:block transition-opacity duration-500 ${isIdle || scoreInfo?.zone === "tard" ? "opacity-100" : "opacity-20"}`}>
+          <span className={`text-xs font-bold text-destructive hidden sm:block transition-opacity duration-500 ${scoreInfo?.zone === "tard" ? "opacity-100" : "opacity-20"}`}>
             REKT
           </span>
         </div>
+        )}
       </div>
 
       {/* Score Display - only show when we have a score */}
@@ -267,12 +271,6 @@ const Gauge = ({ score, animated = true, showDemoBadge = false }: GaugeProps) =>
         </div>
       )}
 
-      {/* Idle hint */}
-      {isIdle && (
-        <div className="text-center text-muted-foreground text-sm animate-pulse">
-          Paste a URL above to get your Tard Score...
-        </div>
-      )}
     </div>
   );
 };
