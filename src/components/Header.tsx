@@ -12,7 +12,7 @@ const Header = () => {
             to="/" 
             className="font-display text-xl font-bold text-gradient-title hover:opacity-80 transition-opacity"
           >
-            💀 TARDOMETER
+            TARDOMETER
           </Link>
 
           <nav className="flex items-center">

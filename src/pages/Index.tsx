@@ -109,7 +109,7 @@ const Index = () => {
       {/* Title */}
       <section className="pt-4 sm:pt-6 pb-2 sm:pb-4 px-4 text-center">
         <h1 className="font-display text-4xl sm:text-6xl md:text-7xl font-bold text-gradient-title tracking-tight">
-          TARDOMETER
+          💀 TARDOMETER
         </h1>
       </section>
 
