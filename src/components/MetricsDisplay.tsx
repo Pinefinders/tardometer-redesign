@@ -1,5 +1,6 @@
+import { useState } from "react";
 import { TweetMetrics, TardScore } from "@/lib/twitter";
-import { Heart, MessageCircle, Repeat2, Quote, AlertTriangle } from "lucide-react";
+import { Heart, MessageCircle, Repeat2, Quote, AlertTriangle, ChevronDown, ChevronUp } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 interface MetricsDisplayProps {
@@ -18,6 +19,8 @@ const formatNumber = (num: number): string => {
 };
 
 const MetricsDisplay = ({ metrics, score }: MetricsDisplayProps) => {
+  const [showBreakdown, setShowBreakdown] = useState(false);
+
   return (
     <div className="mt-6 space-y-4">
       {/* Community Note Warning */}
@@ -57,30 +60,39 @@ const MetricsDisplay = ({ metrics, score }: MetricsDisplayProps) => {
         </div>
       </div>
 
-      {/* Score Breakdown */}
-      <div className="p-4 rounded-xl bg-muted/30 border border-border/30">
-        <h4 className="text-sm font-semibold text-muted-foreground mb-3 text-center">Score Breakdown</h4>
-        <div className="grid grid-cols-3 gap-2 text-center">
-          <div>
-            <div className="text-xs text-muted-foreground">Reply Ratio</div>
-            <div className={`text-sm font-mono font-bold ${score.replyRatio > 0.5 ? "text-destructive" : "text-primary"}`}>
-              {score.replyRatio}
+      {/* Score Breakdown Toggle */}
+      <button
+        onClick={() => setShowBreakdown(!showBreakdown)}
+        className="flex items-center justify-center gap-1.5 w-full text-xs text-muted-foreground hover:text-foreground transition-colors py-1"
+      >
+        {showBreakdown ? "hide breakdown" : "show breakdown"}
+        {showBreakdown ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+      </button>
+
+      {showBreakdown && (
+        <div className="p-4 rounded-xl bg-muted/30 border border-border/30 animate-fade-in">
+          <div className="grid grid-cols-3 gap-2 text-center">
+            <div>
+              <div className="text-xs text-muted-foreground">Reply Ratio</div>
+              <div className={`text-sm font-mono font-bold ${score.replyRatio > 0.5 ? "text-destructive" : "text-primary"}`}>
+                {score.replyRatio}
+              </div>
             </div>
-          </div>
-          <div>
-            <div className="text-xs text-muted-foreground">Quote Ratio</div>
-            <div className={`text-sm font-mono font-bold ${score.quoteRatio > 0.5 ? "text-destructive" : "text-primary"}`}>
-              {score.quoteRatio}
+            <div>
+              <div className="text-xs text-muted-foreground">Quote Ratio</div>
+              <div className={`text-sm font-mono font-bold ${score.quoteRatio > 0.5 ? "text-destructive" : "text-primary"}`}>
+                {score.quoteRatio}
+              </div>
             </div>
-          </div>
-          <div>
-            <div className="text-xs text-muted-foreground">Eng. Quality</div>
-            <div className={`text-sm font-mono font-bold ${score.engagementQuality < 5 ? "text-destructive" : "text-primary"}`}>
-              {score.engagementQuality}
+            <div>
+              <div className="text-xs text-muted-foreground">Eng. Quality</div>
+              <div className={`text-sm font-mono font-bold ${score.engagementQuality < 5 ? "text-destructive" : "text-primary"}`}>
+                {score.engagementQuality}
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
