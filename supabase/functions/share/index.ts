@@ -47,8 +47,8 @@ serve(async (req) => {
   <meta property="og:type" content="website" />
   <meta property="og:url" content="${siteUrl}/?score=${score}&zone=${zone}" />
   <meta property="og:image" content="${ogImageUrl}" />
-  <meta property="og:image:width" content="600" />
-  <meta property="og:image:height" content="315" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
   
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
