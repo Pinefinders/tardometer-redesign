@@ -87,7 +87,7 @@ export const calculateTardScore = (metrics: TweetMetrics): TardScore => {
     rawTardScore = rawTardScore + 25;
   }
 
-  const normalizedScore = Math.max(0, Math.min(100, 100 - rawTardScore));
+  const normalizedScore = Math.max(0, Math.min(100, rawTardScore));
 
   return {
     score: Math.round(normalizedScore),
