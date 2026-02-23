@@ -155,6 +155,8 @@ const Index = () => {
                   const shareUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/share?score=${result.score.score}&zone=${zone}`;
                   const tweetText = encodeURIComponent(`This tweet scored ${result.score.score}/100 — ${zone} 💀 The Tard Score doesn't lie.`);
                   const fullShareUrl = `https://x.com/intent/tweet?text=${tweetText}&url=${encodeURIComponent(shareUrl)}`;
+                  console.log('[SHARE DEBUG] shareUrl:', shareUrl);
+                  console.log('[SHARE DEBUG] fullShareUrl:', fullShareUrl);
                   return (
                     <div className="flex justify-center mt-6">
                       <a
