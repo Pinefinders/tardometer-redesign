@@ -36,6 +36,19 @@ const MetricsDisplay = ({ metrics, score }: MetricsDisplayProps) => {
         </div>
       )}
 
+      {/* Reply Suppression Warning */}
+      {score.replySuppressed && (
+        <div className="flex items-center justify-center gap-2 p-3 rounded-xl bg-amber-500/20 border border-amber-500/50">
+          <AlertTriangle className="w-5 h-5 text-amber-400" />
+          <span className="text-amber-400 font-semibold text-sm">
+            ⚠️ Replies may be limited or suppressed
+          </span>
+          <Badge className="bg-amber-500/30 text-amber-300 border-amber-500/50 text-xs">
+            +10 Penalty
+          </Badge>
+        </div>
+      )}
+
       {/* Breakdown Toggle */}
       <button
         onClick={() => setShowBreakdown(!showBreakdown)}
