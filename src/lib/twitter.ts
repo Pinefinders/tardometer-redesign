@@ -63,6 +63,7 @@ export interface TardScore {
   engagementQuality: number;
   rawTardScore: number;
   hasCommunityNote?: boolean;
+  replySuppressed?: boolean;
 }
 
 // Calculate the Retard score based on tweet metrics
@@ -87,6 +88,12 @@ export const calculateTardScore = (metrics: TweetMetrics): TardScore => {
     rawTardScore = rawTardScore + 25;
   }
 
+  // Reply suppression detection
+  const replySuppressed = likes > 10000 && replyRatio < 0.001;
+  if (replySuppressed) {
+    rawTardScore = rawTardScore + 10;
+  }
+
   const normalizedScore = Math.max(0, Math.min(100, rawTardScore));
 
   return {
@@ -96,5 +103,6 @@ export const calculateTardScore = (metrics: TweetMetrics): TardScore => {
     engagementQuality: Math.round(engagementQuality * 100) / 100,
     rawTardScore: Math.round(rawTardScore * 100) / 100,
     hasCommunityNote,
+    replySuppressed,
   };
 };
