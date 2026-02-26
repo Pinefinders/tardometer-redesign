@@ -18,9 +18,9 @@ function isBot(userAgent: string): boolean {
 
 function getOgImage(zone: string): string {
   switch (zone) {
-    case 'GOAT': return 'https://tardometer.com/og-goat.png';
-    case 'REKT': return 'https://tardometer.com/og-rekt.png';
-    default: return 'https://tardometer.com/og-mid.png';
+    case 'GOAT': return 'https://retardometer.com/og-goat.png';
+    case 'REKT': return 'https://retardometer.com/og-rekt.png';
+    default: return 'https://retardometer.com/og-mid.png';
   }
 }
 
@@ -36,19 +36,19 @@ serve(async (req) => {
     const userAgent = req.headers.get('user-agent') || '';
 
     const ogImageUrl = getOgImage(zone);
-    const siteUrl = 'https://tardometer.com';
+    const siteUrl = 'https://retardometer.com';
 
     const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tard Score: ${score}/100 — ${zone} | Tardometer</title>
-  <meta name="description" content="This tweet scored ${score}/100 — ${zone} on the Tardometer. The Tard Score doesn't lie." />
+  <title>Retard Score: ${score}/100 — ${zone} | Retardometer</title>
+  <meta name="description" content="This tweet scored ${score}/100 — ${zone} on the Retardometer. The Retard Score doesn't lie." />
   
   <!-- Open Graph -->
-  <meta property="og:title" content="Tard Score: ${score}/100 — ${zone} 💀" />
-  <meta property="og:description" content="This tweet scored ${score}/100 — ${zone} on the Tardometer. The Tard Score doesn't lie." />
+  <meta property="og:title" content="Retard Score: ${score}/100 — ${zone} 💀" />
+  <meta property="og:description" content="This tweet scored ${score}/100 — ${zone} on the Retardometer. The Retard Score doesn't lie." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="${siteUrl}/?score=${score}&zone=${zone}" />
   <meta property="og:image" content="${ogImageUrl}" />
@@ -57,15 +57,15 @@ serve(async (req) => {
   
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:site" content="@Tardometer" />
-  <meta name="twitter:title" content="Tard Score: ${score}/100 — ${zone} 💀" />
-  <meta name="twitter:description" content="The Tard Score doesn't lie." />
+  <meta name="twitter:site" content="@Retardometer" />
+  <meta name="twitter:title" content="Retard Score: ${score}/100 — ${zone} 💀" />
+  <meta name="twitter:description" content="The Retard Score doesn't lie." />
   <meta name="twitter:image" content="${ogImageUrl}" />
   
   ${!isBot(userAgent) ? `<meta http-equiv="refresh" content="0;url=${siteUrl}" />` : ''}
 </head>
 <body>
-  <p>Redirecting to <a href="${siteUrl}">Tardometer</a>...</p>
+  <p>Redirecting to <a href="${siteUrl}">Retardometer</a>...</p>
   ${!isBot(userAgent) ? `<script>window.location.replace("${siteUrl}");</script>` : ''}
 </body>
 </html>`;

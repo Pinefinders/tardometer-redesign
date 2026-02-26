@@ -24,7 +24,7 @@ interface TweetResult {
 }
 
 
-const RESULT_STORAGE_KEY = 'tardometer_last_result';
+const RESULT_STORAGE_KEY = 'retardometer_last_result';
 
 const Index = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -54,7 +54,7 @@ const Index = () => {
     const parsed = parseTwitterUrl(url);
     
     if (parsed.type === 'invalid') {
-      setErrorMessage("ARE YOU TARDED? Enter a valid tweet URL");
+      setErrorMessage("ARE YOU RETARDED? Enter a valid tweet URL");
       return;
     }
 
@@ -64,7 +64,7 @@ const Index = () => {
     setResult(null);
 
     try {
-      setLoadingMessage("Tardorizing now, this could take a minute..");
+      setLoadingMessage("Retardorizing now, this could take a minute..");
       const metrics = await fetchTweetMetrics(parsed.tweetId!);
       const score = calculateTardScore(metrics);
       
@@ -112,7 +112,7 @@ const Index = () => {
       {/* Title */}
       <section className="pt-4 sm:pt-6 pb-2 sm:pb-4 px-4 text-center">
         <h1 className="font-display text-4xl sm:text-6xl md:text-7xl font-bold text-gradient-title tracking-tight">
-          TARDOMETER
+          RETARDOMETER
         </h1>
       </section>
 
@@ -161,9 +161,10 @@ const Index = () => {
                 )}
                 {/* Share on X button */}
                 {(() => {
-                  const zone = result.score.score <= 35 ? "GOAT" : result.score.score <= 70 ? "MID" : "REKT";
-                   const shareUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/share?score=${result.score.score}&zone=${zone}&v=4`;
-                   const tweetText = encodeURIComponent(`This tweet scored ${result.score.score}/100 — ${zone}\nThe Tard Score doesn't lie.`);
+                  const zone = result.score.score <= 35 ? "NOT RETARDED" : result.score.score <= 70 ? "SEMI-RETARDED" : "FULLY RETARDED";
+                   const shareZone = result.score.score <= 35 ? "GOAT" : result.score.score <= 70 ? "MID" : "REKT";
+                   const shareUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/share?score=${result.score.score}&zone=${shareZone}&v=4`;
+                   const tweetText = encodeURIComponent(`This tweet scored ${result.score.score}/100 — ${zone}. The Retard Score doesn't lie. retardometer.com`);
                    const fullShareUrl = `https://x.com/intent/tweet?text=${tweetText}&url=${encodeURIComponent(shareUrl)}`;
                   return (
                     <div className="flex justify-center mt-6">

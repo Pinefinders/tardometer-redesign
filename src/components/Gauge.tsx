@@ -36,11 +36,11 @@ const Gauge = ({ score, animated = true, showDemoBadge = false }: GaugeProps) =>
   // For idle, we want needle pointing straight down, which is 180 from up... but since the needle hangs from bottom of the arc pointing up, "straight down" means hidden behind the center cap. Let's use 0 (straight up/neutral center).
   const needleRotation = displayScore === null ? 0 : -90 + (displayScore / 100) * 180;
 
-  // Zone detection: 0-35 = GOAT, 36-70 = MID, 71-100 = REKT
+  // Zone detection: 0-35 = NOT RETARDED, 36-70 = SEMI-RETARDED, 71-100 = FULLY RETARDED
   const getScoreInfo = (s: number): { label: string; colorClass: string; glowClass: string; zone: Zone } => {
-    if (s <= 35) return { label: "GOAT", colorClass: "text-primary", glowClass: "glow-based", zone: "based" };
-    if (s <= 70) return { label: "MID", colorClass: "text-accent", glowClass: "glow-mid", zone: "mid" };
-    return { label: "REKT", colorClass: "text-destructive", glowClass: "glow-tard", zone: "tard" };
+    if (s <= 35) return { label: "NOT RETARDED", colorClass: "text-primary", glowClass: "glow-based", zone: "based" };
+    if (s <= 70) return { label: "SEMI-RETARDED", colorClass: "text-accent", glowClass: "glow-mid", zone: "mid" };
+    return { label: "FULLY RETARDED", colorClass: "text-destructive", glowClass: "glow-tard", zone: "tard" };
   };
 
   const scoreInfo = displayScore !== null ? getScoreInfo(displayScore) : null;
@@ -112,7 +112,7 @@ const Gauge = ({ score, animated = true, showDemoBadge = false }: GaugeProps) =>
     <div className="flex flex-col items-center gap-6 px-4">
       {/* Gauge with All Mascots */}
       <div className="flex items-end justify-center gap-1 sm:gap-4 w-full max-w-[320px] sm:max-w-none">
-        {/* GOAT Mascot (Left) - hidden in idle */}
+        {/* NOT RETARDED Mascot (Left) */}
         {!isIdle && (
         <div className={`flex flex-col items-center gap-1 translate-y-2 transition-all duration-700 ease-out ${basedStyles.zIndex}`}>
           <div 
@@ -230,7 +230,7 @@ const Gauge = ({ score, animated = true, showDemoBadge = false }: GaugeProps) =>
           <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-card border-2 border-border" />
         </div>
 
-        {/* REKT Mascot (Right) */}
+        {/* FULLY RETARDED Mascot (Right) */}
         {!isIdle && (
         <div className={`flex flex-col items-center gap-1 translate-y-2 transition-all duration-700 ease-out ${tardStyles.zIndex}`}>
           <div 

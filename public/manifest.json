@@ -1,7 +1,7 @@
 {
-  "name": "Tardometer",
-  "short_name": "Tardometer",
-  "description": "Algorithmic Tweet & Profile Analysis - Find out if that tweet is Tard, Mid, or Based",
+  "name": "Retardometer",
+  "short_name": "Retardometer",
+  "description": "Algorithmic Tweet Analysis - Find out if that tweet is Fully Retarded, Semi-Retarded, or Not Retarded",
   "icons": [
     {
       "src": "/icon-192.png",
