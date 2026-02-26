@@ -1,6 +1,6 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { MessageCircle, Quote, Calculator, Scale, Bot, AlertTriangle } from "lucide-react";
+import { MessageCircle, Quote, Calculator, Scale, Bot, AlertTriangle, Code } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -38,7 +38,7 @@ const About = () => {
             </p>
             <div className="space-y-3">
               <div className="flex items-start gap-3 p-3 rounded-lg bg-destructive/10 border border-destructive/20">
-                <span className="mt-0.5">🔥</span>
+                <span className="mt-0.5">🤡</span>
                 <p className="text-muted-foreground">
                   <strong className="text-destructive">High score</strong> = the crowd is dunking, arguing, and ratio'ing
                 </p>
@@ -62,28 +62,52 @@ const About = () => {
                 The Science of the Ratio
               </h2>
             </div>
-            <p className="text-muted-foreground leading-relaxed mb-6">
+            <p className="text-muted-foreground leading-relaxed">
               In 2026, a healthy tweet has roughly 300 likes for every reply. When that balance flips, something has gone wrong.
             </p>
+          </div>
 
-            <div className="grid sm:grid-cols-2 gap-4">
-              <div className="p-4 rounded-xl bg-destructive/10 border border-destructive/30">
-                <div className="flex items-center gap-2 mb-2">
-                  <MessageCircle className="w-5 h-5 text-destructive" />
-                  <h3 className="font-bold text-foreground">The Reply Ratio</h3>
-                </div>
-                <p className="text-sm text-muted-foreground">
-                  If a tweet has as many replies as likes, the crowd is arguing — not agreeing. That's a red flag.
+          {/* The Actual Formula */}
+          <div className="glass-card p-6 sm:p-8">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="p-3 rounded-lg bg-primary/20 border border-primary/30">
+                <Code className="w-6 h-6 text-primary" />
+              </div>
+              <h2 className="text-2xl font-display font-bold text-foreground">
+                The Actual Formula
+              </h2>
+            </div>
+
+            <pre className="bg-muted/30 border border-border rounded-xl p-4 sm:p-6 text-sm sm:text-base font-mono text-foreground overflow-x-auto mb-6">
+{`replyRatio  = replies ÷ likes
+quoteRatio  = quotes ÷ retweets
+
+rawScore = (replyRatio × 45)
+         + (quoteRatio × 35)
+         + (engagementQuality < 5 ? +20 : 0)
+
+Community Note = +25 penalty
+
+Final Retard Score = rawScore (capped 0–100)`}
+            </pre>
+
+            <div className="space-y-4">
+              <div className="flex items-start gap-3 p-3 rounded-lg bg-destructive/10 border border-destructive/20">
+                <MessageCircle className="w-5 h-5 text-destructive mt-0.5 shrink-0" />
+                <p className="text-muted-foreground text-sm">
+                  <strong className="text-foreground">The Reply Ratio</strong> accounts for 45% of the score. A tweet with as many replies as likes means the crowd is arguing, not agreeing.
                 </p>
               </div>
-
-              <div className="p-4 rounded-xl bg-accent/10 border border-accent/30">
-                <div className="flex items-center gap-2 mb-2">
-                  <Quote className="w-5 h-5 text-accent" />
-                  <h3 className="font-bold text-foreground">The Quote-Tweet Dunk</h3>
-                </div>
-                <p className="text-sm text-muted-foreground">
-                  Quote tweets are weighted heavily. More quotes than retweets means the poster is being mocked, not shared.
+              <div className="flex items-start gap-3 p-3 rounded-lg bg-accent/10 border border-accent/20">
+                <Quote className="w-5 h-5 text-accent mt-0.5 shrink-0" />
+                <p className="text-muted-foreground text-sm">
+                  <strong className="text-foreground">The Quote-Tweet Dunk</strong> accounts for 35%. More quotes than retweets means the poster is being mocked, not shared.
+                </p>
+              </div>
+              <div className="flex items-start gap-3 p-3 rounded-lg bg-primary/10 border border-primary/20">
+                <Calculator className="w-5 h-5 text-primary mt-0.5 shrink-0" />
+                <p className="text-muted-foreground text-sm">
+                  <strong className="text-foreground">Engagement Quality</strong> adds up to 20 points when the ratio of negative to positive engagement tips below a healthy threshold.
                 </p>
               </div>
             </div>
@@ -112,7 +136,7 @@ const About = () => {
                       <span className="font-bold text-primary">NOT RETARDED 🧠</span>
                     </TableCell>
                     <TableCell className="text-muted-foreground text-sm">
-                      Strong positive reception. High likes-to-replies ratio. The crowd is with you.
+                      Strong positive reception. The crowd is with you.
                     </TableCell>
                   </TableRow>
                   <TableRow className="bg-accent/5 hover:bg-accent/10">
@@ -121,7 +145,7 @@ const About = () => {
                       <span className="font-bold text-accent">SEMI-RETARDED 😐</span>
                     </TableCell>
                     <TableCell className="text-muted-foreground text-sm">
-                      Average engagement. Some noise, some agreement. Most of the internet lives here.
+                      Average engagement. Most of the internet lives here.
                     </TableCell>
                   </TableRow>
                   <TableRow className="bg-destructive/5 hover:bg-destructive/10">
@@ -130,7 +154,7 @@ const About = () => {
                       <span className="font-bold text-destructive">FULLY RETARDED 🤡</span>
                     </TableCell>
                     <TableCell className="text-muted-foreground text-sm">
-                      Absolutely ratio'd. High negative engagement. The crowd is not on your side.
+                      Absolutely ratio'd. The crowd is not on your side.
                     </TableCell>
                   </TableRow>
                 </TableBody>
