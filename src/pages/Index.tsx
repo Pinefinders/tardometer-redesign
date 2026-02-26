@@ -176,9 +176,13 @@ const Index = () => {
             <p className="text-destructive text-sm font-medium mt-2 text-center">{errorMessage}</p>
           )}
           {canInstall && !isLoading && !result && !isMobile && (
-            <p className="mt-3 text-xs text-muted-foreground/70 text-center">
-              💻 Use as a desktop tool — click the install icon in your browser address bar to pin Retardometer alongside X
-            </p>
+            <div className="mt-4 text-xs text-muted-foreground/70 text-center space-y-1">
+              <p className="font-medium text-muted-foreground/90">💻 Use alongside X on desktop:</p>
+              <p><strong>Install:</strong> Click the install icon (⊕) in your browser address bar</p>
+              <p><strong>Windows:</strong> Find it pinned to your taskbar</p>
+              <p><strong>Mac:</strong> Find it in Launchpad or Applications — drag it to your Dock for quick access</p>
+              <p><strong>Using it:</strong> Click the icon while browsing X, paste any tweet URL, get the verdict instantly</p>
+            </div>
           )}
         </div>
 
