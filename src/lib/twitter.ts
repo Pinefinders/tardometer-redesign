@@ -89,7 +89,7 @@ export const calculateTardScore = (metrics: TweetMetrics): TardScore => {
   }
 
   // Reply suppression detection
-  const replySuppressed = likes > 10000 && replyRatio < 0.001;
+  const replySuppressed = likes > 500 && replyRatio < 0.001;
   if (replySuppressed) {
     rawTardScore = rawTardScore + 10;
   }
