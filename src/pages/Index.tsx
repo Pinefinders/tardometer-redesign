@@ -270,7 +270,7 @@ const Index = () => {
                           🔗 Copy link
                         </button>
                       </div>
-                      <p className="text-xs text-muted-foreground text-center mt-3">
+                      <p className="text-base font-semibold text-foreground/90 text-center mt-4">
                         💡 For maximum impact: paste the link as a quote tweet or reply
                       </p>
                     </div>
