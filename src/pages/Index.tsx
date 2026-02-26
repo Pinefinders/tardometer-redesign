@@ -6,7 +6,7 @@ import Gauge from "@/components/Gauge";
 import MetricsDisplay from "@/components/MetricsDisplay";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import SharePreviewModal from "@/components/SharePreviewModal";
+
 
 import { 
   parseTwitterUrl, 
@@ -35,7 +35,7 @@ const Index = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [showShareModal, setShowShareModal] = useState(false);
+  
   const [result, setResult] = useState<TweetResult | null>(() => {
     try {
       const saved = localStorage.getItem(RESULT_STORAGE_KEY);
@@ -216,19 +216,40 @@ const Index = () => {
                     ⚠️ Low data — score may not be reliable
                   </div>
                 )}
-                {/* Share on X button */}
+                {/* Inline Share Preview */}
                 {(() => {
                   const zone = result.score.score <= 35 ? "NOT RETARDED" : result.score.score <= 70 ? "SEMI-RETARDED" : "FULLY RETARDED";
-                   const shareZone = result.score.score <= 35 ? "NOT RETARDED" : result.score.score <= 70 ? "SEMI-RETARDED" : "FULLY RETARDED";
-                   const shareUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/share?score=${result.score.score}&zone=${shareZone}&v=4`;
+                  const shareUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/share?score=${result.score.score}&zone=${zone}&v=4`;
+                  const ogImages: Record<string, string> = {
+                    "NOT RETARDED": "/og-not-retarded.png",
+                    "SEMI-RETARDED": "/og-semi-retarded.png",
+                    "FULLY RETARDED": "/og-fully-retarded.png",
+                  };
+                  const ogImage = ogImages[zone] || ogImages["SEMI-RETARDED"];
+                  const tweetText = `This tweet scored ${result.score.score}/100 — ${zone}. The Retard Score doesn't lie. retardometer.com`;
+
+                  const handlePost = () => {
+                    const fullUrl = `https://x.com/intent/tweet?text=${encodeURIComponent(tweetText)}&url=${encodeURIComponent(shareUrl)}`;
+                    window.open(fullUrl, "_blank", "noopener,noreferrer");
+                  };
+
                   return (
-                    <div className="flex flex-col items-center mt-6 gap-3">
-                      <div className="flex items-center gap-3">
+                    <div className="mt-6 animate-fade-in">
+                      {/* Tweet Preview Card */}
+                      <div className="rounded-xl border border-border/40 bg-secondary/30 overflow-hidden">
+                        <img src={ogImage} alt={`${zone} OG card`} className="w-full object-cover" />
+                        <div className="px-4 py-3">
+                          <p className="text-sm text-foreground/80 leading-relaxed">{tweetText}</p>
+                        </div>
+                      </div>
+
+                      {/* Action Buttons */}
+                      <div className="flex items-center gap-3 mt-4">
                         <button
-                          onClick={() => setShowShareModal(true)}
-                          className="inline-flex items-center gap-3 px-10 py-4 rounded-xl bg-foreground text-background font-bold text-lg hover:opacity-90 transition-opacity shadow-lg animate-fade-in"
+                          onClick={handlePost}
+                          className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-foreground text-background font-bold text-base hover:opacity-90 transition-opacity shadow-lg"
                         >
-                          <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current" aria-hidden="true">
+                          <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current" aria-hidden="true">
                             <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                           </svg>
                           Post on X
@@ -244,22 +265,14 @@ const Index = () => {
                             });
                           }}
                           id="copy-link-btn"
-                          className="inline-flex items-center px-6 py-4 rounded-xl border border-border bg-muted text-foreground font-bold text-lg hover:bg-accent transition-colors shadow-lg animate-fade-in"
+                          className="flex-1 inline-flex items-center justify-center px-6 py-3.5 rounded-xl border border-border bg-muted text-foreground font-bold text-base hover:bg-accent transition-colors shadow-lg"
                         >
                           🔗 Copy link
                         </button>
                       </div>
-                      <p className="text-sm text-muted-foreground text-center">
+                      <p className="text-xs text-muted-foreground text-center mt-3">
                         💡 For maximum impact: paste the link as a quote tweet or reply
                       </p>
-                      {showShareModal && (
-                        <SharePreviewModal
-                          score={result.score.score}
-                          zone={zone}
-                          shareUrl={shareUrl}
-                          onClose={() => setShowShareModal(false)}
-                        />
-                      )}
                     </div>
                   );
                 })()}
