@@ -14,7 +14,60 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      tweet_cache: {
+        Row: {
+          author_username: string | null
+          created_at: string
+          engagement_quality: number | null
+          has_community_note: boolean
+          likes: number
+          quote_ratio: number | null
+          quotes: number
+          raw_score: number | null
+          replies: number
+          reply_ratio: number | null
+          retweets: number
+          score: number
+          tweet_id: string
+          tweet_url: string
+          zone: string
+        }
+        Insert: {
+          author_username?: string | null
+          created_at?: string
+          engagement_quality?: number | null
+          has_community_note?: boolean
+          likes?: number
+          quote_ratio?: number | null
+          quotes?: number
+          raw_score?: number | null
+          replies?: number
+          reply_ratio?: number | null
+          retweets?: number
+          score: number
+          tweet_id: string
+          tweet_url: string
+          zone: string
+        }
+        Update: {
+          author_username?: string | null
+          created_at?: string
+          engagement_quality?: number | null
+          has_community_note?: boolean
+          likes?: number
+          quote_ratio?: number | null
+          quotes?: number
+          raw_score?: number | null
+          replies?: number
+          reply_ratio?: number | null
+          retweets?: number
+          score?: number
+          tweet_id?: string
+          tweet_url?: string
+          zone?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
