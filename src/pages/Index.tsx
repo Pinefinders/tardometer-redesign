@@ -280,10 +280,9 @@ const Index = () => {
           <div className="rounded-xl border border-destructive/40 bg-destructive/5 px-6 py-5">
             <p className="text-destructive font-bold text-sm tracking-wide mb-3">⚠️ OFFICIAL NOTICE</p>
             <div className="text-foreground/70 text-xs leading-relaxed space-y-2">
-              <p>Anyone found posting incorrect results to the wrong tweet will be immediately blocked and their account publicly exposed as <span className="text-destructive font-bold">FULLY RETARDED</span>.</p>
-              <p>No appeals. No redemption. Permanent block.</p>
-              <p>The Retard Score doesn't lie — and neither do we.</p>
-              <p className="text-foreground/50 italic mt-3">You have been warned.</p>
+              <p>Anyone found posting incorrect results to the wrong tweet will be immediately and silently blocked.</p>
+              <p>No appeal. No redemption.</p>
+              <p className="text-foreground/50 italic mt-3">You have been warned. Don't be retarded.</p>
             </div>
           </div>
         </div>
