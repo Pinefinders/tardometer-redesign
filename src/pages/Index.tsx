@@ -252,8 +252,8 @@ const Index = () => {
                           🔗 Copy link
                         </button>
                       </div>
-                      <p className="text-xs text-muted-foreground text-center">
-                        💡 For maximum roast: paste the link as a quote tweet or reply
+                      <p className="text-sm text-muted-foreground text-center">
+                        💡 For maximum impact: paste the link as a quote tweet or reply
                       </p>
                     </div>
                   );
