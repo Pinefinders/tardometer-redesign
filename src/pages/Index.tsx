@@ -219,8 +219,9 @@ const Index = () => {
                   const zone = result.score.score <= 35 ? "NOT RETARDED" : result.score.score <= 70 ? "SEMI-RETARDED" : "FULLY RETARDED";
                    const shareZone = result.score.score <= 35 ? "GOAT" : result.score.score <= 70 ? "MID" : "REKT";
                    const shareUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/share?score=${result.score.score}&zone=${shareZone}&v=4`;
-                   const tweetText = encodeURIComponent(`This tweet scored ${result.score.score}/100 — ${zone}. The Retard Score doesn't lie. retardometer.com`);
-                   const fullShareUrl = `https://x.com/intent/tweet?in_reply_to=${result.metrics.tweetId}&text=${tweetText}&url=${encodeURIComponent(shareUrl)}`;
+                   const originalTweetUrl = `https://x.com/i/status/${result.metrics.tweetId}`;
+                   const tweetText = encodeURIComponent(`This tweet scored ${result.score.score}/100 — ${zone}. The Retard Score doesn't lie. retardometer.com\n\n${originalTweetUrl}`);
+                   const fullShareUrl = `https://x.com/intent/tweet?text=${tweetText}&url=${encodeURIComponent(shareUrl)}`;
                   return (
                     <div className="flex justify-center mt-6">
                       <a
@@ -234,6 +235,9 @@ const Index = () => {
                         </svg>
                         Post on X
                       </a>
+                      <p className="text-xs text-muted-foreground mt-2 text-center">
+                        💡 For maximum roast: copy the tweet URL and paste it as a quote tweet or reply manually
+                      </p>
                     </div>
                   );
                 })()}
