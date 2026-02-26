@@ -217,7 +217,7 @@ const Index = () => {
                 {/* Share on X button */}
                 {(() => {
                   const zone = result.score.score <= 35 ? "NOT RETARDED" : result.score.score <= 70 ? "SEMI-RETARDED" : "FULLY RETARDED";
-                   const shareZone = result.score.score <= 35 ? "GOAT" : result.score.score <= 70 ? "MID" : "REKT";
+                   const shareZone = result.score.score <= 35 ? "NOT RETARDED" : result.score.score <= 70 ? "SEMI-RETARDED" : "FULLY RETARDED";
                    const shareUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/share?score=${result.score.score}&zone=${shareZone}&v=4`;
                    const originalTweetUrl = `https://x.com/i/status/${result.metrics.tweetId}`;
                    const tweetText = encodeURIComponent(`This tweet scored ${result.score.score}/100 — ${zone}. The Retard Score doesn't lie. retardometer.com\n\n${originalTweetUrl}`);
