@@ -38,6 +38,7 @@ serve(async (req) => {
 
     const ogImageUrl = getOgImage(zone);
     const siteUrl = 'https://retardometer.com';
+    const encodedZone = encodeURIComponent(zone);
 
     const html = `<!DOCTYPE html>
 <html lang="en">
@@ -48,11 +49,13 @@ serve(async (req) => {
   <meta name="description" content="This tweet scored ${score}/100 — ${zone} on the Retardometer. The Retard Score doesn't lie." />
   
   <!-- Open Graph -->
+  <meta property="og:site_name" content="Retardometer" />
   <meta property="og:title" content="Retard Score: ${score}/100 — ${zone} 💀" />
   <meta property="og:description" content="This tweet scored ${score}/100 — ${zone} on the Retardometer. The Retard Score doesn't lie." />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="${siteUrl}/?score=${score}&zone=${zone}" />
+  <meta property="og:url" content="${siteUrl}/?score=${score}&zone=${encodedZone}" />
   <meta property="og:image" content="${ogImageUrl}" />
+  <meta property="og:image:type" content="image/png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   
@@ -62,6 +65,7 @@ serve(async (req) => {
   <meta name="twitter:title" content="Retard Score: ${score}/100 — ${zone} 💀" />
   <meta name="twitter:description" content="The Retard Score doesn't lie." />
   <meta name="twitter:image" content="${ogImageUrl}" />
+  <meta name="twitter:image:alt" content="Retardometer score: ${score}/100 — ${zone}" />
   
   ${!isBot(userAgent) ? `<meta http-equiv="refresh" content="0;url=${siteUrl}" />` : ''}
 </head>
