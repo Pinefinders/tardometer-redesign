@@ -190,6 +190,24 @@ Final Retard Score = rawScore (capped 0–100)`}
             </p>
           </div>
 
+          {/* Is the algorithm fair? */}
+          <div className="glass-card p-6 sm:p-8">
+            <h2 className="text-2xl font-display font-bold text-foreground mb-4">
+              Is the algorithm fair?
+            </h2>
+            <p className="text-muted-foreground leading-relaxed mb-4">
+              We believe the Retard Score is mathematically just. The crowd always tells the truth.
+            </p>
+            <p className="text-muted-foreground leading-relaxed mb-4">
+              If you disagree with the weightings, believe your score was unfair, or think you have a better formula — contact us on X at{" "}
+              <a href="https://x.com/Retardometer" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-bold">@Retardometer</a>{" "}
+              with your proposed algorithm. We will consider all submissions seriously.
+            </p>
+            <p className="text-muted-foreground italic">
+              We probably won't change it though.
+            </p>
+          </div>
+
         </div>
       </main>
 
