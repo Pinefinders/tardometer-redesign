@@ -15,12 +15,14 @@ import {
   TweetMetrics, 
   TardScore,
 } from "@/lib/twitter";
+import { checkCache, storeInCache } from "@/lib/apify";
 import { toast } from "sonner";
 
 interface TweetResult {
   score: TardScore;
   metrics: TweetMetrics;
   tweetUrl: string;
+  fromCache?: boolean;
 }
 
 
@@ -59,18 +61,64 @@ const Index = () => {
     }
 
     setErrorMessage("");
-
     setIsLoading(true);
     setResult(null);
 
     try {
+      // Check cache first
+      setLoadingMessage("Checking cache...");
+      const cached = await checkCache(url);
+
+      if (cached) {
+        console.log('[Cache] Hit! Returning cached result');
+        const metrics: TweetMetrics = {
+          likes: cached.likes,
+          replies: cached.replies,
+          retweets: cached.retweets,
+          quoteRetweets: cached.quotes,
+          tweetId: cached.tweet_id,
+          authorUsername: cached.author_username,
+          hasCommunityNote: cached.has_community_note,
+        };
+        const score: TardScore = {
+          score: cached.score,
+          replyRatio: cached.reply_ratio,
+          quoteRatio: cached.quote_ratio,
+          engagementQuality: cached.engagement_quality,
+          rawTardScore: cached.raw_score,
+          hasCommunityNote: cached.has_community_note,
+        };
+        const tweetResult: TweetResult = { score, metrics, tweetUrl: url, fromCache: true };
+        setResult(tweetResult);
+        localStorage.setItem(RESULT_STORAGE_KEY, JSON.stringify(tweetResult));
+        return;
+      }
+
+      // No cache hit — call Apify
       setLoadingMessage("Scanning Tweet for any retardation..");
       const metrics = await fetchTweetMetrics(parsed.tweetId!);
       const score = calculateTardScore(metrics);
       
-      const tweetResult: TweetResult = { score, metrics, tweetUrl: url };
+      const tweetResult: TweetResult = { score, metrics, tweetUrl: url, fromCache: false };
       setResult(tweetResult);
       localStorage.setItem(RESULT_STORAGE_KEY, JSON.stringify(tweetResult));
+
+      // Store in cache
+      const zone = score.score <= 35 ? "NOT RETARDED" : score.score <= 70 ? "SEMI-RETARDED" : "FULLY RETARDED";
+      await storeInCache(url, parsed.tweetId!, score.score, zone, {
+        id: metrics.tweetId,
+        likes: metrics.likes,
+        replies: metrics.replies,
+        retweets: metrics.retweets,
+        quoteRetweets: metrics.quoteRetweets,
+        authorUsername: metrics.authorUsername,
+        hasCommunityNote: metrics.hasCommunityNote,
+      }, {
+        replyRatio: score.replyRatio,
+        quoteRatio: score.quoteRatio,
+        engagementQuality: score.engagementQuality,
+        rawTardScore: score.rawTardScore,
+      });
     } catch (error) {
       console.error("Error analyzing:", error);
       
@@ -152,6 +200,13 @@ const Index = () => {
                   ✕ Clear
                 </button>
                 <Gauge score={result.score.score} />
+                
+                {/* Cached result indicator */}
+                {result.fromCache && (
+                  <div className="text-center mt-2 text-xs text-primary/80 font-medium">
+                    ⚡ Cached result
+                  </div>
+                )}
                 
                 {/* Low data warning */}
                 {(result.metrics.likes + result.metrics.replies + result.metrics.retweets + result.metrics.quoteRetweets) < 50 && (
