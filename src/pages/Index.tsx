@@ -219,7 +219,7 @@ const Index = () => {
                 {/* Inline Share Preview */}
                 {(() => {
                   const zone = result.score.score <= 35 ? "NOT RETARDED" : result.score.score <= 70 ? "SEMI-RETARDED" : "FULLY RETARDED";
-                  const shareUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/share?score=${result.score.score}&zone=${zone}&v=4`;
+                  const shareUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/share?score=${result.score.score}&zone=${encodeURIComponent(zone)}&v=4`;
                   const ogImages: Record<string, string> = {
                     "NOT RETARDED": "/og-not-retarded.png",
                     "SEMI-RETARDED": "/og-semi-retarded.png",

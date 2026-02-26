@@ -19,6 +19,7 @@ function isBot(userAgent: string): boolean {
 function getOgImage(zone: string): string {
   switch (zone) {
     case 'NOT RETARDED': return 'https://retardometer.com/og-not-retarded.png';
+    case 'SEMI-RETARDED': return 'https://retardometer.com/og-semi-retarded.png';
     case 'FULLY RETARDED': return 'https://retardometer.com/og-fully-retarded.png';
     default: return 'https://retardometer.com/og-semi-retarded.png';
   }
