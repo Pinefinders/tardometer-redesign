@@ -243,17 +243,8 @@ const Index = () => {
                         </div>
                       </div>
 
-                      {/* Action Buttons */}
-                      <div className="flex items-center gap-3 mt-4">
-                        <button
-                          onClick={handlePost}
-                          className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-foreground text-background font-bold text-base hover:opacity-90 transition-opacity shadow-lg"
-                        >
-                          <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current" aria-hidden="true">
-                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                          </svg>
-                          Post on X
-                        </button>
+                      {/* Action Button */}
+                      <div className="mt-4">
                         <button
                           onClick={() => {
                             navigator.clipboard.writeText(shareUrl).then(() => {
@@ -265,13 +256,13 @@ const Index = () => {
                             });
                           }}
                           id="copy-link-btn"
-                          className="flex-1 inline-flex items-center justify-center px-6 py-3.5 rounded-xl border border-border bg-muted text-foreground font-bold text-base hover:bg-accent transition-colors shadow-lg"
+                          className="w-full inline-flex items-center justify-center px-6 py-3.5 rounded-xl border border-border bg-muted text-foreground font-bold text-base hover:bg-accent transition-colors shadow-lg"
                         >
                           🔗 Copy link
                         </button>
                       </div>
                       <p className="text-base font-semibold text-foreground/90 text-center mt-4">
-                        💡 For maximum impact: paste the link as a quote tweet or reply
+                        💡 Paste the link as a reply or quote tweet
                       </p>
                     </div>
                   );
