@@ -223,20 +223,37 @@ const Index = () => {
                    const tweetText = encodeURIComponent(`This tweet scored ${result.score.score}/100 — ${zone}. The Retard Score doesn't lie. retardometer.com\n\n${originalTweetUrl}`);
                    const fullShareUrl = `https://x.com/intent/tweet?text=${tweetText}&url=${encodeURIComponent(shareUrl)}`;
                   return (
-                    <div className="flex justify-center mt-6">
-                      <a
-                        href={fullShareUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-3 px-10 py-4 rounded-xl bg-foreground text-background font-bold text-lg hover:opacity-90 transition-opacity shadow-lg animate-fade-in"
-                      >
-                        <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current" aria-hidden="true">
-                          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                        </svg>
-                        Post on X
-                      </a>
-                      <p className="text-xs text-muted-foreground mt-2 text-center">
-                        💡 For maximum roast: copy the tweet URL and paste it as a quote tweet or reply manually
+                    <div className="flex flex-col items-center mt-6 gap-3">
+                      <div className="flex items-center gap-3">
+                        <a
+                          href={fullShareUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-3 px-10 py-4 rounded-xl bg-foreground text-background font-bold text-lg hover:opacity-90 transition-opacity shadow-lg animate-fade-in"
+                        >
+                          <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current" aria-hidden="true">
+                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                          </svg>
+                          Post on X
+                        </a>
+                        <button
+                          onClick={() => {
+                            navigator.clipboard.writeText(shareUrl).then(() => {
+                              const btn = document.getElementById('copy-link-btn');
+                              if (btn) {
+                                btn.textContent = '✓ Copied!';
+                                setTimeout(() => { btn.textContent = '🔗 Copy link'; }, 2000);
+                              }
+                            });
+                          }}
+                          id="copy-link-btn"
+                          className="inline-flex items-center px-6 py-4 rounded-xl border border-border bg-muted text-foreground font-bold text-lg hover:bg-accent transition-colors shadow-lg animate-fade-in"
+                        >
+                          🔗 Copy link
+                        </button>
+                      </div>
+                      <p className="text-xs text-muted-foreground text-center">
+                        💡 For maximum roast: paste the link as a quote tweet or reply
                       </p>
                     </div>
                   );
