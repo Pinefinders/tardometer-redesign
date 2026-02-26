@@ -275,6 +275,18 @@ const Index = () => {
             )}
           </div>
         </div>
+        {/* Official Warning Notice */}
+        <div className="w-full max-w-xl mt-8 sm:mt-12">
+          <div className="rounded-xl border border-destructive/40 bg-destructive/5 px-6 py-5">
+            <p className="text-destructive font-bold text-sm tracking-wide mb-3">⚠️ OFFICIAL NOTICE</p>
+            <div className="text-foreground/70 text-xs leading-relaxed space-y-2">
+              <p>Anyone found posting incorrect results to the wrong tweet will be severely reprimanded and their account publicly exposed.</p>
+              <p>The only path to redemption is a public apology tweeted in reply.</p>
+              <p>Failure to comply will result in permanent classification as <span className="text-destructive font-bold">FULLY RETARDED</span>.</p>
+              <p className="text-foreground/50 italic mt-3">You have been warned.</p>
+            </div>
+          </div>
+        </div>
       </main>
 
       <Footer />
