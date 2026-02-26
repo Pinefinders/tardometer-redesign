@@ -6,6 +6,7 @@ import Gauge from "@/components/Gauge";
 import MetricsDisplay from "@/components/MetricsDisplay";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import SharePreviewModal from "@/components/SharePreviewModal";
 
 import { 
   parseTwitterUrl, 
@@ -34,6 +35,7 @@ const Index = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [showShareModal, setShowShareModal] = useState(false);
   const [result, setResult] = useState<TweetResult | null>(() => {
     try {
       const saved = localStorage.getItem(RESULT_STORAGE_KEY);
@@ -219,23 +221,18 @@ const Index = () => {
                   const zone = result.score.score <= 35 ? "NOT RETARDED" : result.score.score <= 70 ? "SEMI-RETARDED" : "FULLY RETARDED";
                    const shareZone = result.score.score <= 35 ? "NOT RETARDED" : result.score.score <= 70 ? "SEMI-RETARDED" : "FULLY RETARDED";
                    const shareUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/share?score=${result.score.score}&zone=${shareZone}&v=4`;
-                   const originalTweetUrl = `https://x.com/i/status/${result.metrics.tweetId}`;
-                   const tweetText = encodeURIComponent(`This tweet scored ${result.score.score}/100 — ${zone}. The Retard Score doesn't lie. retardometer.com\n\n${originalTweetUrl}`);
-                   const fullShareUrl = `https://x.com/intent/tweet?text=${tweetText}&url=${encodeURIComponent(shareUrl)}`;
                   return (
                     <div className="flex flex-col items-center mt-6 gap-3">
                       <div className="flex items-center gap-3">
-                        <a
-                          href={fullShareUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
+                        <button
+                          onClick={() => setShowShareModal(true)}
                           className="inline-flex items-center gap-3 px-10 py-4 rounded-xl bg-foreground text-background font-bold text-lg hover:opacity-90 transition-opacity shadow-lg animate-fade-in"
                         >
                           <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current" aria-hidden="true">
                             <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                           </svg>
                           Post on X
-                        </a>
+                        </button>
                         <button
                           onClick={() => {
                             navigator.clipboard.writeText(shareUrl).then(() => {
@@ -255,6 +252,14 @@ const Index = () => {
                       <p className="text-sm text-muted-foreground text-center">
                         💡 For maximum impact: paste the link as a quote tweet or reply
                       </p>
+                      {showShareModal && (
+                        <SharePreviewModal
+                          score={result.score.score}
+                          zone={zone}
+                          shareUrl={shareUrl}
+                          onClose={() => setShowShareModal(false)}
+                        />
+                      )}
                     </div>
                   );
                 })()}
