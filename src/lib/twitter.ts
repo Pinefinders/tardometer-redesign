@@ -65,7 +65,7 @@ export interface TardScore {
   hasCommunityNote?: boolean;
 }
 
-// Calculate the Tard score based on tweet metrics
+// Calculate the Retard score based on tweet metrics
 export const calculateTardScore = (metrics: TweetMetrics): TardScore => {
   const { likes, replies, retweets, quoteRetweets, hasCommunityNote } = metrics;
 

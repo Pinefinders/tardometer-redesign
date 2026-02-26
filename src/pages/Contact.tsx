@@ -38,7 +38,7 @@ const Contact = () => {
     setIsSubmitting(true);
 
     // Construct mailto link
-    const subject = encodeURIComponent(`[Tardometer ${category || "Feedback"}] ${name ? `From ${name}` : "Anonymous"}`);
+    const subject = encodeURIComponent(`[Retardometer ${category || "Feedback"}] ${name ? `From ${name}` : "Anonymous"}`);
     const body = encodeURIComponent(
       `Name: ${name || "Not provided"}\nEmail: ${email || "Not provided"}\nCategory: ${category || "Not specified"}\n\nMessage:\n${message}`
     );
@@ -96,7 +96,7 @@ const Contact = () => {
           <h2 className="text-xl font-semibold text-foreground mb-4">Get in Touch</h2>
           <p className="text-muted-foreground leading-relaxed">
             We'd love to hear from you! Whether you've found a bug, have a feature suggestion, 
-            or just want to share your thoughts on Tardometer.
+            or just want to share your thoughts on Retardometer.
           </p>
         </section>
 

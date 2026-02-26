@@ -21,7 +21,7 @@ const About = () => {
           The Algorithm
         </h1>
         <p className="mt-4 text-muted-foreground text-lg max-w-xl mx-auto">
-          The internet is noisy. Tardometer cuts through it using real engagement data to tell you if a tweet is landing — or getting destroyed.
+          The internet is noisy. Retardometer cuts through it using real engagement data to tell you if a tweet is landing — or getting destroyed.
         </p>
       </section>
 
@@ -44,7 +44,7 @@ const About = () => {
                 </p>
               </div>
               <div className="flex items-start gap-3 p-3 rounded-lg bg-primary/10 border border-primary/20">
-                <span className="mt-0.5">🐐</span>
+                <span className="mt-0.5">🧠</span>
                 <p className="text-muted-foreground">
                   <strong className="text-primary">Low score</strong> = the crowd is amplifying and agreeing
                 </p>
@@ -109,7 +109,7 @@ const About = () => {
                   <TableRow className="bg-primary/5 hover:bg-primary/10">
                     <TableCell className="font-mono font-bold text-primary">0–35</TableCell>
                     <TableCell>
-                      <span className="font-bold text-primary">GOAT 🐐</span>
+                      <span className="font-bold text-primary">NOT RETARDED 🧠</span>
                     </TableCell>
                     <TableCell className="text-muted-foreground text-sm">
                       Strong positive reception. High likes-to-replies ratio. The crowd is with you.
@@ -118,7 +118,7 @@ const About = () => {
                   <TableRow className="bg-accent/5 hover:bg-accent/10">
                     <TableCell className="font-mono font-bold text-accent">36–70</TableCell>
                     <TableCell>
-                      <span className="font-bold text-accent">MID 😐</span>
+                      <span className="font-bold text-accent">SEMI-RETARDED 😐</span>
                     </TableCell>
                     <TableCell className="text-muted-foreground text-sm">
                       Average engagement. Some noise, some agreement. Most of the internet lives here.
@@ -127,7 +127,7 @@ const About = () => {
                   <TableRow className="bg-destructive/5 hover:bg-destructive/10">
                     <TableCell className="font-mono font-bold text-destructive">71–100</TableCell>
                     <TableCell>
-                      <span className="font-bold text-destructive">REKT 💀</span>
+                      <span className="font-bold text-destructive">FULLY RETARDED 🤡</span>
                     </TableCell>
                     <TableCell className="text-muted-foreground text-sm">
                       Absolutely ratio'd. High negative engagement. The crowd is not on your side.
@@ -162,7 +162,7 @@ const About = () => {
               <h2 className="text-2xl font-display font-bold text-foreground">Community Notes Penalty</h2>
             </div>
             <p className="text-muted-foreground">
-              A Community Note is a crowd-sourced flag for misleading content. If a tweet carries one, the raw score receives a flat <strong className="text-foreground">+25 penalty</strong> — enough to push any borderline tweet firmly into REKT territory. A Community Note means the crowd has already spoken.
+              A Community Note is a crowd-sourced flag for misleading content. If a tweet carries one, the raw score receives a flat <strong className="text-foreground">+25 penalty</strong> — enough to push any borderline tweet firmly into FULLY RETARDED territory. A Community Note means the crowd has already spoken.
             </p>
           </div>
 

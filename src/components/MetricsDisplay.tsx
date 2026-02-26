@@ -31,7 +31,7 @@ const MetricsDisplay = ({ metrics, score }: MetricsDisplayProps) => {
             ⚠️ Community Note
           </span>
           <Badge className="bg-amber-500/30 text-amber-300 border-amber-500/50 text-xs">
-            +50% Tard Penalty
+            +50% Retard Penalty
           </Badge>
         </div>
       )}
