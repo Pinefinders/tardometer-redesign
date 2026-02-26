@@ -1,12 +1,10 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { Resvg, initWasm } from "npm:@resvg/resvg-wasm@2.6.2";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-// Bot user agents that fetch OG tags
 const BOT_USER_AGENTS = [
   'twitterbot', 'facebookexternalhit', 'linkedinbot', 'slackbot',
   'discordbot', 'telegrambot', 'whatsapp', 'googlebot', 'bingbot',
@@ -18,43 +16,12 @@ function isBot(userAgent: string): boolean {
   return BOT_USER_AGENTS.some(bot => ua.includes(bot));
 }
 
-function getZoneColor(zone: string): string {
+function getOgImage(zone: string): string {
   switch (zone) {
-    case 'GOAT': return '#22c55e';
-    case 'MID': return '#eab308';
-    case 'REKT': return '#ef4444';
-    default: return '#ffffff';
+    case 'GOAT': return 'https://tardometer.com/og-goat.png';
+    case 'REKT': return 'https://tardometer.com/og-rekt.png';
+    default: return 'https://tardometer.com/og-mid.png';
   }
-}
-
-let wasmInitialized = false;
-
-async function ensureWasm() {
-  if (wasmInitialized) return;
-  const wasmResponse = await fetch("https://unpkg.com/@resvg/resvg-wasm@2.6.2/index_bg.wasm");
-  await initWasm(wasmResponse);
-  wasmInitialized = true;
-}
-
-function generatePng(score: number, zone: string): Uint8Array {
-  const color = getZoneColor(zone);
-  const svg = `<svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#0a0a0a"/>
-      <stop offset="100%" stop-color="#1a1a1a"/>
-    </linearGradient>
-  </defs>
-  <rect width="1200" height="630" fill="url(#bg)"/>
-  <text x="600" y="120" text-anchor="middle" font-family="Arial,sans-serif" font-size="52" font-weight="900" fill="white" letter-spacing="8">TARDOMETER</text>
-  <text x="600" y="340" text-anchor="middle" font-family="Arial,sans-serif" font-size="160" font-weight="900" fill="${color}">${score}</text>
-  <text x="600" y="420" text-anchor="middle" font-family="Arial,sans-serif" font-size="56" font-weight="900" fill="${color}" opacity="0.8">${zone}</text>
-  <text x="600" y="600" text-anchor="middle" font-family="Arial,sans-serif" font-size="22" fill="#666666">tardometer.com</text>
-</svg>`;
-
-  const resvg = new Resvg(svg, { fitTo: { mode: 'width', value: 1200 } });
-  const pngData = resvg.render();
-  return pngData.asPng();
 }
 
 serve(async (req) => {
@@ -66,26 +33,9 @@ serve(async (req) => {
     const url = new URL(req.url);
     const score = Math.max(0, Math.min(100, parseInt(url.searchParams.get('score') || '50', 10)));
     const zone = url.searchParams.get('zone') || 'MID';
-    const format = url.searchParams.get('format');
     const userAgent = req.headers.get('user-agent') || '';
 
-    // If format=image, serve the PNG directly from this same function
-    if (format === 'image') {
-      await ensureWasm();
-      const pngBuffer = generatePng(score, zone);
-      return new Response(pngBuffer, {
-        headers: {
-          ...corsHeaders,
-          'Content-Type': 'image/png',
-          'Cache-Control': 'public, max-age=86400, s-maxage=86400',
-        },
-      });
-    }
-
-    // Otherwise serve the HTML with OG tags
-    const supabaseUrl = Deno.env.get('SUPABASE_URL') || '';
-    // Point og:image to THIS function with format=image so it comes from the same origin
-    const ogImageUrl = `${supabaseUrl}/functions/v1/share?score=${score}&zone=${zone}&format=image&v=4`;
+    const ogImageUrl = getOgImage(zone);
     const siteUrl = 'https://tardometer.com';
 
     const html = `<!DOCTYPE html>
