@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { usePwaInstall } from "@/hooks/use-pwa-install";
+import { useIsMobile } from "@/hooks/use-mobile";
 import TweetInput from "@/components/TweetInput";
 import Gauge from "@/components/Gauge";
 import MetricsDisplay from "@/components/MetricsDisplay";
@@ -32,6 +33,7 @@ const RESULT_STORAGE_KEY = 'retardometer_last_result';
 const Index = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { canInstall, install } = usePwaInstall();
+  const isMobile = useIsMobile();
   const [isLoading, setIsLoading] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -173,13 +175,10 @@ const Index = () => {
           {errorMessage && (
             <p className="text-destructive text-sm font-medium mt-2 text-center">{errorMessage}</p>
           )}
-          {canInstall && !isLoading && !result && (
-            <button
-              onClick={install}
-              className="block mx-auto mt-3 text-xs text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Install as app 💀
-            </button>
+          {canInstall && !isLoading && !result && !isMobile && (
+            <p className="mt-3 text-xs text-muted-foreground/70 text-center">
+              💻 Use as a desktop tool — click the install icon in your browser address bar to pin Retardometer alongside X
+            </p>
           )}
         </div>
 
