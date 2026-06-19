@@ -1,7 +1,4 @@
 import { useEffect, useState } from "react";
-import wojakCrying from "@/assets/wojak-crying.png";
-import gigachad from "@/assets/gigachad.jpg";
-import smugPepe from "@/assets/smug-pepe.webp";
 
 interface GaugeProps {
   score: number | null; // 0-100, null = idle state
@@ -10,6 +7,50 @@ interface GaugeProps {
 }
 
 type Zone = "tard" | "mid" | "based";
+
+// Zone boundaries — must stay in sync with calculateTardScore in src/lib/twitter.ts
+const ZONE_BOUNDARIES = { based: 35, mid: 70 };
+
+// --- Verified dial geometry (do not change without re-deriving by hand) ---
+// Pivot sits 30% down from the top of the dial face, horizontally centred.
+const CX = 200;
+const CY = 200;
+const FACE_RADIUS = 178;
+const PIVOT_Y = 122;
+const NEEDLE_LENGTH = 181.44;
+
+// Needle sweeps from bearing -120deg (score 0, left) through 180deg (straight down)
+// to bearing +120deg (score 100, right) — a 240deg sweep, using the convention where
+// 0deg = straight up and bearings increase clockwise.
+const MIN_BEARING = -120;
+const MAX_BEARING = 120;
+
+const scoreToBearing = (score: number): number => MIN_BEARING + (score / 100) * (MAX_BEARING - MIN_BEARING);
+
+// Walking from MIN_BEARING to MAX_BEARING the long way (through 180deg) requires
+// continuing past -180 rather than wrapping back through 0. This mirrors the
+// verified prototype math exactly.
+const sweepBearing = (score: number): number => MIN_BEARING - (score / 100) * 120;
+
+const bearingToPoint = (bearingDeg: number, radius: number) => {
+  const rad = (bearingDeg * Math.PI) / 180;
+  return {
+    x: CX + radius * Math.sin(rad),
+    y: PIVOT_Y - radius * Math.cos(rad),
+  };
+};
+
+const getScoreInfo = (s: number): { label: string; colorVar: string; zone: Zone } => {
+  if (s <= ZONE_BOUNDARIES.based) return { label: "NOT RETARDED", colorVar: "var(--gauge-based)", zone: "based" };
+  if (s <= ZONE_BOUNDARIES.mid) return { label: "SEMI-RETARDED", colorVar: "var(--gauge-mid)", zone: "mid" };
+  return { label: "FULLY RETARDED", colorVar: "var(--gauge-tard)", zone: "tard" };
+};
+
+const describeArc = (radius: number, fromScore: number, toScore: number): string => {
+  const start = bearingToPoint(sweepBearing(fromScore), radius);
+  const end = bearingToPoint(sweepBearing(toScore), radius);
+  return `M ${start.x} ${start.y} A ${radius} ${radius} 0 0 0 ${end.x} ${end.y}`;
+};
 
 const Gauge = ({ score, animated = true, showDemoBadge = false }: GaugeProps) => {
   const isIdle = score === null;
@@ -29,241 +70,75 @@ const Gauge = ({ score, animated = true, showDemoBadge = false }: GaugeProps) =>
     }
   }, [score, animated]);
 
-  // Convert score (0-100) to rotation angle (-90 to 90 degrees)
-  // Idle (null) = straight down = 0 degrees (but we position from bottom, so -90 + 90 = 0 which is straight up... 
-  // Actually needle at bottom center pointing down = no rotation needed if origin is bottom
-  // -90 = full left, 0 = straight up, 90 = full right
-  // For idle, we want needle pointing straight down, which is 180 from up... but since the needle hangs from bottom of the arc pointing up, "straight down" means hidden behind the center cap. Let's use 0 (straight up/neutral center).
-  const needleRotation = displayScore === null ? 0 : -90 + (displayScore / 100) * 180;
-
-  // Zone detection: 0-35 = NOT RETARDED, 36-70 = SEMI-RETARDED, 71-100 = FULLY RETARDED
-  const getScoreInfo = (s: number): { label: string; colorClass: string; glowClass: string; zone: Zone } => {
-    if (s <= 35) return { label: "NOT RETARDED", colorClass: "text-primary", glowClass: "glow-based", zone: "based" };
-    if (s <= 70) return { label: "SEMI-RETARDED", colorClass: "text-accent", glowClass: "glow-mid", zone: "mid" };
-    return { label: "FULLY RETARDED", colorClass: "text-destructive", glowClass: "glow-tard", zone: "tard" };
-  };
+  const effectiveScore = displayScore ?? 50; // idle resting position: straight down, centre of dial
+  const needleTip = bearingToPoint(sweepBearing(effectiveScore), NEEDLE_LENGTH);
 
   const scoreInfo = displayScore !== null ? getScoreInfo(displayScore) : null;
 
-  // Mascot styles based on active zone
-  const getMascotStyles = (mascotZone: Zone) => {
-    const isActive = scoreInfo?.zone === mascotZone;
-    
-    if (isIdle) {
-      // All mascots at a neutral mid size in idle
-      if (mascotZone === "mid") {
-        return {
-          size: "w-20 h-20 sm:w-28 sm:h-28 md:w-32 md:h-32",
-          animation: "",
-          filter: "drop-shadow(0 0 15px hsl(45, 100%, 55%))",
-          opacity: "opacity-70",
-          scale: "scale-100",
-          zIndex: "z-10",
-        };
-      }
-      return {
-        size: "w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20",
-        animation: "",
-        filter: "grayscale(50%) brightness(0.6)",
-        opacity: "opacity-40",
-        scale: "scale-90",
-        zIndex: "z-0",
-      };
-    }
-    
-    if (isActive) {
-      return {
-        size: "w-28 h-28 sm:w-40 sm:h-40 md:w-48 md:h-48",
-        animation: "animate-bounce",
-        filter: mascotZone === "tard" 
-          ? "drop-shadow(0 0 30px hsl(0, 84%, 60%)) drop-shadow(0 0 60px hsl(0, 84%, 60%)) drop-shadow(0 0 90px hsl(0, 84%, 50%))"
-          : mascotZone === "mid"
-          ? "drop-shadow(0 0 30px hsl(45, 100%, 55%)) drop-shadow(0 0 60px hsl(45, 100%, 55%)) drop-shadow(0 0 90px hsl(45, 100%, 45%))"
-          : "drop-shadow(0 0 30px hsl(142, 76%, 45%)) drop-shadow(0 0 60px hsl(142, 76%, 45%)) drop-shadow(0 0 90px hsl(142, 76%, 35%))",
-        opacity: "opacity-100",
-        scale: "scale-110",
-        zIndex: "z-20",
-      };
-    }
-    
-    return {
-      size: "w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10",
-      animation: "",
-      filter: "grayscale(100%) brightness(0.3) opacity(0.4)",
-      opacity: "opacity-20",
-      scale: "scale-75",
-      zIndex: "z-0",
-    };
-  };
-
-  const tardStyles = getMascotStyles("tard");
-  const midStyles = getMascotStyles("mid");
-  const basedStyles = getMascotStyles("based");
-
-  const getBorderColor = (zone: Zone) => {
-    switch (zone) {
-      case "tard": return "border-destructive/50";
-      case "mid": return "border-accent/50";
-      case "based": return "border-primary/50";
-    }
-  };
+  // The wedge (active zone) between the pivot and the two extreme needle positions
+  const leftEdge = bearingToPoint(sweepBearing(0), NEEDLE_LENGTH);
+  const rightEdge = bearingToPoint(sweepBearing(100), NEEDLE_LENGTH);
+  const wedgePath = `M ${CX} ${PIVOT_Y} L ${leftEdge.x} ${leftEdge.y} A ${NEEDLE_LENGTH} ${NEEDLE_LENGTH} 0 0 0 ${rightEdge.x} ${rightEdge.y} Z`;
 
   return (
-    <div className="flex flex-col items-center gap-6 px-4">
-      {/* Gauge with All Mascots */}
-      <div className="flex items-end justify-center gap-1 sm:gap-4 w-full max-w-[320px] sm:max-w-none">
-        {/* NOT RETARDED Mascot (Left) */}
-        {!isIdle && (
-        <div className={`flex flex-col items-center gap-1 translate-y-2 transition-all duration-700 ease-out ${basedStyles.zIndex}`}>
-          <div 
-            className={`transition-all duration-700 ease-out rounded-full overflow-hidden border-2 ${getBorderColor("based")} ${basedStyles.size} ${basedStyles.animation} ${basedStyles.opacity} ${basedStyles.scale}`}
-            style={{ filter: basedStyles.filter }}
-          >
-            <img 
-              src={gigachad} 
-              alt="Gigachad" 
-              className="w-full h-full object-cover"
-            />
-          </div>
-        </div>
-        )}
+    <div className="flex flex-col items-center gap-2 px-4">
+      <div className="relative w-full max-w-[320px] sm:max-w-[360px] aspect-square">
+        <svg viewBox="0 0 400 400" className="w-full h-full">
+          {/* Outer bezel */}
+          <circle cx={CX} cy={CY} r="195" fill="#0a0a0a" />
 
-        <div className="relative w-44 h-28 sm:w-72 sm:h-40 md:w-80 md:h-44 mt-12 sm:mt-20 md:mt-24">
-          {/* Mid Mascot - hidden in idle */}
-          {!isIdle && (
-          <div className={`absolute left-1/2 -translate-x-1/2 -top-24 sm:-top-36 md:-top-44 ${midStyles.zIndex} flex flex-col items-center gap-1 transition-all duration-700 ease-out`}>
-            <div 
-              className={`transition-all duration-700 ease-out rounded-full overflow-hidden border-2 ${getBorderColor("mid")} ${midStyles.size} ${midStyles.animation} ${midStyles.opacity} ${midStyles.scale}`}
-              style={{ filter: midStyles.filter }}
-            >
-              <img 
-                src={smugPepe} 
-                alt="Smug Pepe" 
-                className="w-full h-full object-cover"
-              />
-            </div>
-          </div>
-          )}
+          {/* Dial face */}
+          <circle cx={CX} cy={CY} r={FACE_RADIUS} fill="#555555" />
 
-          {/* Background arc */}
-          <svg
-            viewBox="0 0 200 110"
-            className="w-full h-full"
-            style={{ filter: "drop-shadow(0 4px 20px rgba(0,0,0,0.3))" }}
-          >
-            <defs>
-              <linearGradient id="gaugeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="hsl(142, 76%, 45%)" />
-                <stop offset="25%" stopColor="hsl(45, 100%, 55%)" />
-                <stop offset="75%" stopColor="hsl(45, 100%, 55%)" />
-                <stop offset="100%" stopColor="hsl(0, 84%, 60%)" />
-              </linearGradient>
-              <filter id="glow">
-                <feGaussianBlur stdDeviation="2" result="coloredBlur" />
-                <feMerge>
-                  <feMergeNode in="coloredBlur" />
-                  <feMergeNode in="SourceGraphic" />
-                </feMerge>
-              </filter>
-            </defs>
+          {/* Active zone wedge (lighter, marks where the needle can travel) */}
+          <path d={wedgePath} fill="#6b6b6b" />
 
-            {/* Background track */}
-            <path
-              d="M 20 100 A 80 80 0 0 1 180 100"
-              fill="none"
-              stroke="hsl(220, 15%, 18%)"
-              strokeWidth="16"
-              strokeLinecap="round"
-            />
-
-            {/* Colored arc */}
-            <path
-              d="M 20 100 A 80 80 0 0 1 180 100"
-              fill="none"
-              stroke="url(#gaugeGradient)"
-              strokeWidth="12"
-              strokeLinecap="round"
-              filter="url(#glow)"
-              className={isIdle ? "opacity-50" : "opacity-100"}
-              style={{ transition: "opacity 0.5s ease" }}
-            />
-
-            {/* Tick marks */}
-            {[0, 35, 50, 70, 100].map((tick) => {
-              const angle = -180 + (tick / 100) * 180;
-              const rad = (angle * Math.PI) / 180;
-              const innerR = 60;
-              const outerR = 68;
-              const x1 = 100 + innerR * Math.cos(rad);
-              const y1 = 100 + innerR * Math.sin(rad);
-              const x2 = 100 + outerR * Math.cos(rad);
-              const y2 = 100 + outerR * Math.sin(rad);
-              return (
-                <line
-                  key={tick}
-                  x1={x1}
-                  y1={y1}
-                  x2={x2}
-                  y2={y2}
-                  stroke="hsl(0, 0%, 50%)"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                />
-              );
-            })}
-          </svg>
+          {/* Colour scale, in even thirds along the swept arc */}
+          <path d={describeArc(NEEDLE_LENGTH, 0, 33.33)} fill="none" stroke="hsl(var(--gauge-based))" strokeWidth="14" />
+          <path d={describeArc(NEEDLE_LENGTH, 33.33, 66.66)} fill="none" stroke="hsl(var(--gauge-mid))" strokeWidth="14" />
+          <path d={describeArc(NEEDLE_LENGTH, 66.66, 100)} fill="none" stroke="hsl(var(--gauge-tard))" strokeWidth="14" />
 
           {/* Needle */}
-          <div
-            className="absolute bottom-2 left-1/2 -translate-x-1/2 origin-bottom"
-            style={{ 
-              transform: `translateX(-50%) rotate(${needleRotation}deg)`,
-              transition: "transform 1s cubic-bezier(0.34, 1.56, 0.64, 1)",
-              opacity: isIdle ? 0.4 : 1,
+          <line
+            x1={CX}
+            y1={PIVOT_Y}
+            x2={needleTip.x}
+            y2={needleTip.y}
+            stroke="#f0eee8"
+            strokeWidth="5"
+            strokeLinecap="round"
+            style={{
+              transition: "x2 1s cubic-bezier(0.34, 1.56, 0.64, 1), y2 1s cubic-bezier(0.34, 1.56, 0.64, 1)",
+              opacity: isIdle ? 0.5 : 1,
             }}
-          >
-            <div className="w-1 h-16 sm:h-24 md:h-28 bg-gradient-to-t from-foreground via-foreground to-transparent rounded-full" />
-            <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-5 h-5 rounded-full bg-foreground border-2 border-muted" />
-          </div>
+          />
+          <circle cx={CX} cy={PIVOT_Y} r="6" fill="#f0eee8" />
+        </svg>
 
-          {/* Center cap */}
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-card border-2 border-border" />
-        </div>
-
-        {/* FULLY RETARDED Mascot (Right) */}
-        {!isIdle && (
-        <div className={`flex flex-col items-center gap-1 translate-y-2 transition-all duration-700 ease-out ${tardStyles.zIndex}`}>
-          <div 
-            className={`transition-all duration-700 ease-out rounded-full overflow-hidden border-2 ${getBorderColor("tard")} ${tardStyles.size} ${tardStyles.animation} ${tardStyles.opacity} ${tardStyles.scale}`}
-            style={{ filter: tardStyles.filter }}
-          >
-            <img 
-              src={wojakCrying} 
-              alt="Crying Wojak" 
-              className="w-full h-full object-cover"
-            />
-          </div>
-        </div>
-        )}
-      </div>
-
-      {/* Score Display - only show when we have a score */}
-      {displayScore !== null && scoreInfo && (
-        <div className={`text-center animate-fade-up ${scoreInfo.glowClass} rounded-2xl px-8 py-4 relative`}>
+        {/* Score readout, overlaid in the lower portion of the face */}
+        <div className="absolute inset-x-0 bottom-[12%] flex flex-col items-center gap-1">
           {showDemoBadge && (
-            <span className="absolute -top-2 left-1/2 -translate-x-1/2 px-2 py-0.5 text-[10px] font-bold bg-amber-500 text-amber-950 rounded-full">
+            <span className="px-2 py-0.5 text-[10px] font-bold bg-amber-500 text-amber-950 rounded-full mb-1">
               DEMO
             </span>
           )}
-          <div className={`text-5xl md:text-6xl font-display font-bold ${scoreInfo.colorClass}`}>
-            {Math.round(displayScore)}
-          </div>
-          <div className={`text-2xl md:text-3xl font-display font-bold mt-1 ${scoreInfo.colorClass}`}>
-            {scoreInfo.label}
-          </div>
+          {displayScore !== null && scoreInfo ? (
+            <div className="text-center animate-fade-up">
+              <div className="text-4xl sm:text-5xl font-display font-bold" style={{ color: scoreInfo.colorVar }}>
+                {Math.round(displayScore)}
+              </div>
+              <div
+                className="text-xs sm:text-sm font-display font-bold tracking-widest mt-1"
+                style={{ color: scoreInfo.colorVar }}
+              >
+                {scoreInfo.label}
+              </div>
+            </div>
+          ) : (
+            <div className="text-muted-foreground/50 text-sm tracking-widest font-display">— — —</div>
+          )}
         </div>
-      )}
-
+      </div>
     </div>
   );
 };
