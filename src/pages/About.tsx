@@ -87,6 +87,7 @@ rawScore = (replyRatio × 45)
          + (engagementQuality < 5 ? +20 : 0)
 
 Community Note = +25 penalty
+Reply Suppression (likes > 500 && replyRatio < 0.001) = +10 penalty
 
 Final Retard Score = rawScore (capped 0–100)`}
             </pre>
@@ -187,6 +188,19 @@ Final Retard Score = rawScore (capped 0–100)`}
             </div>
             <p className="text-muted-foreground">
               A Community Note is a crowd-sourced flag for misleading content. If a tweet carries one, the raw score receives a flat <strong className="text-foreground">+25 penalty</strong> — enough to push any borderline tweet firmly into FULLY RETARDED territory. A Community Note means the crowd has already spoken.
+            </p>
+          </div>
+
+          {/* Reply Suppression Penalty */}
+          <div className="glass-card p-6 sm:p-8 border-amber-500/30">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="p-3 rounded-lg bg-amber-500/20 border border-amber-500/30">
+                <AlertTriangle className="w-6 h-6 text-amber-400" />
+              </div>
+              <h2 className="text-2xl font-display font-bold text-foreground">Reply Suppression Penalty</h2>
+            </div>
+            <p className="text-muted-foreground">
+              Some accounts suppress replies — accumulating likes while hiding the crowd's reaction. If a tweet has over 500 likes but a reply ratio below 0.001, the score receives a flat <strong className="text-foreground">+10 penalty</strong>. Burying the ratio doesn't make it go away.
             </p>
           </div>
 
